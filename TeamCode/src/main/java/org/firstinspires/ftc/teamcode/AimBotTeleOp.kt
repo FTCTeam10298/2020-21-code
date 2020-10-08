@@ -11,9 +11,10 @@ class AimBotTeleOp(): OpMode() {
     override fun init() {
         robot.init(hardwareMap)
     }
-
+    
     override fun loop() {
+        if (gamepad1.left_stick_x > 0)
+            robot.lBDrive?.power= 1.0
 
     }
-
 }
