@@ -21,14 +21,14 @@ open class AimBotHardware {
         lBDrive = hwMap?.get("leftBDrive") as DcMotor
         rBDrive = hwMap?.get("rightBDrive") as DcMotor
 
-        lFDrive?.direction = DcMotorSimple.Direction.REVERSE
-        rFDrive?.direction = DcMotorSimple.Direction.FORWARD
+        lFDrive?.direction = DcMotorSimple.Direction.FORWARD
+        rFDrive?.direction = DcMotorSimple.Direction.REVERSE
         lBDrive?.direction = DcMotorSimple.Direction.REVERSE
         rBDrive?.direction = DcMotorSimple.Direction.FORWARD
 
-        lFDrive?.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-        rFDrive?.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-        lBDrive?.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-        rBDrive?.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+        lFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }
 }
