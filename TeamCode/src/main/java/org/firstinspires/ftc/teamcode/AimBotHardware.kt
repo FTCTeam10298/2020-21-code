@@ -16,10 +16,12 @@ open class AimBotHardware {
 
     fun init(ahwMap: HardwareMap) {
 
-        lFDrive = hwMap?.get("leftFDrive") as DcMotor
-        rFDrive = hwMap?.get("rightFDrive") as DcMotor
-        lBDrive = hwMap?.get("leftBDrive") as DcMotor
-        rBDrive = hwMap?.get("rightBDrive") as DcMotor
+        hwMap = ahwMap
+
+        lFDrive = hwMap?.get("lFDrive") as DcMotor
+        rFDrive = hwMap?.get("rFDrive") as DcMotor
+        lBDrive = hwMap?.get("lBDrive") as DcMotor
+        rBDrive = hwMap?.get("rBDrive") as DcMotor
 
         lFDrive?.direction = DcMotorSimple.Direction.FORWARD
         rFDrive?.direction = DcMotorSimple.Direction.REVERSE

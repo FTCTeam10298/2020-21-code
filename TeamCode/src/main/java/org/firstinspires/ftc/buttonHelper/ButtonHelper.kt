@@ -1,7 +1,7 @@
 package buttonHelper
 
 class ButtonHelper() {
-
+//var name: Int = 0
 //    val gamepad: Gamepad = Gamepad()
 
     var buttonPreviousValue = false
