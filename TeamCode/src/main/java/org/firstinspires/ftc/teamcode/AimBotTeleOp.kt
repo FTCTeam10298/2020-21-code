@@ -32,10 +32,21 @@ class AimBotTeleOp(): OpMode() {
         robot.init(hardwareMap)
     }
 
-    override fun loop() {
-        driveY(gamepad1.left_stick_y.toDouble())
-        driveX(gamepad1.left_stick_x.toDouble())
-        driveR(gamepad1.right_stick_x.toDouble())
 
+
+
+
+    override fun loop() {
+        val y =gamepad1.left_stick_y.toDouble()
+        val x =gamepad1.left_stick_x.toDouble()
+        val r =gamepad1.right_stick_x.toDouble()
+
+        fourMotors(
+                -(y + x + r),
+                (-y + x + r),
+                -(y + x - r),
+                -(y + -x + r)
+
+        )
     }
 }
