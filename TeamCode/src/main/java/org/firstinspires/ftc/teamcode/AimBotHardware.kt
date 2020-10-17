@@ -25,8 +25,8 @@ open class AimBotHardware {
 
         rFDrive?.direction = DcMotorSimple.Direction.FORWARD
         lFDrive?.direction = DcMotorSimple.Direction.REVERSE
-        lBDrive?.direction = DcMotorSimple.Direction.REVERSE
-        rBDrive?.direction = DcMotorSimple.Direction.FORWARD
+        lBDrive?.direction = DcMotorSimple.Direction.FORWARD
+        rBDrive?.direction = DcMotorSimple.Direction.REVERSE
 
         rFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         lFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
