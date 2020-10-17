@@ -6,14 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    val robot= AimBotHardware()
+    val robot= AimBotMovement()
 
     override fun runOpMode() {
 
         robot.init(hardwareMap)
 
         waitForStart()
-
+        robot.straight(1.0)
+        sleep(2000)
 
     }
 }
