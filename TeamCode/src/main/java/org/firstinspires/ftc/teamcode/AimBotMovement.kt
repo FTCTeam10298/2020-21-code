@@ -14,7 +14,8 @@ open class AimBotMovement(): AimBotHardware() {
         fourMotors(power, power, power, power)
         sleep(time.toLong())
     }
-    fun side(power: Double, time: Int){
+    fun side(power: Double, milis: Int){
         fourMotors(-power, power, -power, power)
-        sleep(time.toLong())
-}}
+        sleep(milis.toLong())
+    }
+}
