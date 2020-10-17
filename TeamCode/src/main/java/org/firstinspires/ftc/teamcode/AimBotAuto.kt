@@ -13,8 +13,9 @@ class AimBotAuto(): LinearOpMode() {
         robot.init(hardwareMap)
 
         waitForStart()
-        robot.straight(1.0)
-        sleep(2000)
+        robot.side(1.0, 700)
+
+
 
     }
 }

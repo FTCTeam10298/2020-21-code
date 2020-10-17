@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode
 
+import java.lang.Thread.sleep
 
 
 open class AimBotMovement(): AimBotHardware() {
@@ -9,7 +10,8 @@ open class AimBotMovement(): AimBotHardware() {
         lBDrive?.power = lBpower
         rBDrive?.power = rBpower
     }
-    fun straight(power: Double){
+    fun straight(power: Double, time: Int){
         fourMotors(power, power, power, power)
+        sleep(time.toLong())
     }
 }
