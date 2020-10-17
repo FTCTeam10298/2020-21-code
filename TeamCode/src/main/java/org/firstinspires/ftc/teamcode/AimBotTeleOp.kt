@@ -26,10 +26,10 @@ class AimBotTeleOp(): OpMode() {
         val r =gamepad1.right_stick_x.toDouble()
 
         fourMotors(
-                (y + x + r),
-                (y - x - r),
-                (y + x - r),
-                (y - x + r)
+               -(y + x + r),
+                -(y - x - r),
+                -(y + x - r),
+                -(y - x + r)
         )
 //        fourMotors(y, y, y, y)
     }
