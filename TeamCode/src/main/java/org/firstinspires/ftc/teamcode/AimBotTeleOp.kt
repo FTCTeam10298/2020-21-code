@@ -9,7 +9,7 @@ class AimBotTeleOp(): OpMode() {
     val robot = AimBotHardware()
 
 
-    fun fourMotors(lFpower: Double, lBpower: Double, rFpower: Double, rBpower: Double) {
+    fun fourMotors(rFpower: Double, lFpower: Double, lBpower: Double, rBpower: Double) {
         robot.rFDrive?.power = rFpower
         robot.lFDrive?.power = lFpower
         robot.lBDrive?.power = lBpower
