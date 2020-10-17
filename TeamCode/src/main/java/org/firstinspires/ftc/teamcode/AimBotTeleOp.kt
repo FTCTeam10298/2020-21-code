@@ -16,25 +16,9 @@ class AimBotTeleOp(): OpMode() {
         robot.rBDrive?.power = rBpower
     }
 
-    fun driveY(power: Double) {
-        fourMotors(-power, -power, -power, -power)
-    }
-
-    fun driveX(power: Double) {
-        fourMotors(-power, power, -power, power)
-    }
-
-    fun driveR(power: Double) {
-        fourMotors(-power, power, power, -power)
-    }
-
     override fun init() {
         robot.init(hardwareMap)
     }
-
-
-
-
 
     override fun loop() {
         val y =gamepad1.left_stick_y.toDouble()
@@ -42,11 +26,11 @@ class AimBotTeleOp(): OpMode() {
         val r =gamepad1.right_stick_x.toDouble()
 
         fourMotors(
-                (y - x + r),
-                (y + x - r),
+                (y + x + r),
                 (y - x - r),
-                (y + x + r)
-
+                (y + x - r),
+                (y - x + r)
         )
+//        fourMotors(y, y, y, y)
     }
 }
