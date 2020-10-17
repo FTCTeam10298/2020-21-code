@@ -10,10 +10,10 @@ class AimBotTeleOp(): OpMode() {
 
 
     fun fourMotors(lFpower: Double, lBpower: Double, rFpower: Double, rBpower: Double) {
-        robot.lBDrive?.power = lBpower
-        robot.lFDrive?.power = lFpower
-        robot.rBDrive?.power = rBpower
         robot.rFDrive?.power = rFpower
+        robot.lFDrive?.power = lFpower
+        robot.lBDrive?.power = lBpower
+        robot.rBDrive?.power = rBpower
     }
 
     fun driveY(power: Double) {
@@ -21,11 +21,11 @@ class AimBotTeleOp(): OpMode() {
     }
 
     fun driveX(power: Double) {
-        fourMotors(power, -power, -power, power)
+        fourMotors(-power, power, -power, power)
     }
 
     fun driveR(power: Double) {
-        fourMotors(power, power, -power, -power)
+        fourMotors(-power, power, power, -power)
     }
 
     override fun init() {
