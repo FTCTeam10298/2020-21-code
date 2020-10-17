@@ -10,9 +10,9 @@ open class AimBotMovement(): AimBotHardware() {
         lBDrive?.power = lBpower
         rBDrive?.power = rBpower
     }
-    fun straight(power: Double, time: Int){
+    fun straight(power: Double, milis: Int){
         fourMotors(power, power, power, power)
-        sleep(time.toLong())
+        sleep(milis.toLong())
     }
     fun side(power: Double, milis: Int){
         fourMotors(-power, power, -power, power)
