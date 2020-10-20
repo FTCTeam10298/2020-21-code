@@ -1,40 +1,72 @@
 package org.firstinspires.ftc.teamcode
 
+import com.qualcomm.robotcore.hardware.DcMotor
 import java.lang.Thread.sleep
 
 
 open class AimBotMovement(): AimBotHardware() {
 
-    fun stopMotors() {
-        rFDrive?.power = 0.0
-        lFDrive?.power = 0.0
-        lBDrive?.power = 0.0
-        rBDrive?.power = 0.0
-    }
-
-    fun fourMotors(rFpower: Double, lFpower: Double, lBpower: Double, rBpower: Double) {
+    fun fourMotors(rFpower: Double, lFpower: Double, rBpower: Double, lBpower: Double) {
         rFDrive?.power = rFpower
         lFDrive?.power = lFpower
-        lBDrive?.power = lBpower
         rBDrive?.power = rBpower
+        lBDrive?.power = lBpower
+    }
+
+    fun moveTime(rFpower: Double, lFpower: Double, rBpower: Double, lBpower: Double, milis: Int) {
+        fourMotors(rFpower, lFpower, rBpower, lBpower)
+        sleep(milis.toLong())
     }
 
     fun straight(power: Double, milis: Int) {
-        fourMotors(power, power, power, power)
-        sleep(milis.toLong())
+        moveTime(power, power, power, power, milis)
     }
 
     fun side(power: Double, milis: Int) {
-        fourMotors(-power, power, -power, power)
-        sleep(milis.toLong())
+        moveTime(-power, power, power, -power, milis)
     }
 
-    fun eStraight(power: Double, ticks: Double) {
-        fourMotors(power, power, power, power)
-        while (lFDrive!!.currentPosition > ticks) {
-            stopMotors()
+    fun rotate(power: Double, milis: Int) {
+        moveTime(-power, power, -power, power, milis)
+    }
+
+    fun setPos(target: Int) {
+//        reset encoder counts kept by motors.
+        lFDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        rFDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        rBDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        lBDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+
+//        set motors to run toward for encoder counts.
+        lFDrive?.targetPosition = target
+        rFDrive?.targetPosition = target
+        rBDrive?.targetPosition = target
+        lBDrive?.targetPosition = target
+
+//        set motors to run to target encoder position and stop with brakes on.
+        lFDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
+        rFDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
+        rBDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
+        lBDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
+    }
+
+    fun moveEncoder(rFpower: Double, lFpower: Double, rBpower: Double, lBpower: Double, ticks: Int) {
+        fourMotors(rFpower, lFpower, rBpower, lBpower)
+        setPos(ticks)
+        while (!rFDrive!!.isBusy && !lFDrive!!.isBusy && !rBDrive!!.isBusy && !lBDrive!!.isBusy) {
+            print("rF = ${rFDrive?.currentPosition} n/ lF = ${lFDrive?.currentPosition} n/ rB = ${rBDrive?.currentPosition} n/ lB = ${lBDrive?.currentPosition} n/ ")
         }
     }
 
+    fun eStraight(power: Double, ticks: Int) {
+        moveEncoder(power, power, power, power, ticks)
+    }
 
+    fun eStrafe(power: Double, ticks: Int) {
+        moveEncoder(-power, power, power, -power, ticks)
+    }
+
+    fun eRotate(power: Double, ticks: Int) {
+        moveEncoder(-power, power, -power, power, ticks)
+    }
 }
