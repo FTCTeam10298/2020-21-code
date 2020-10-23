@@ -15,6 +15,8 @@ class Mtest(): OpMode() {
     }
 
     override fun loop() {
-        
+        robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble()
+        robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble()
+
     }
 }
