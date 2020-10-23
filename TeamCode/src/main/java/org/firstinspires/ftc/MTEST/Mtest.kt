@@ -11,7 +11,7 @@ class Mtest(): OpMode() {
 
     val robot = MTestHardware()
     //we need more powah I CANT DO IT CAPTAIN
-    var maxPower:Double = 0.0
+    var maxPower:Double = 0.25
 
     override fun init() {
         robot.init(hardwareMap)
