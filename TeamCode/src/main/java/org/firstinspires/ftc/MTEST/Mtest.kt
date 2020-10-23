@@ -4,6 +4,7 @@ package org.firstinspires.ftc.MTEST
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import kotlin.math.abs
 
 @TeleOp(name="Mtest", group="Aim Bot")
 class Mtest(): OpMode() {
@@ -18,11 +19,16 @@ class Mtest(): OpMode() {
 
     override fun loop() {
         
-        if (gamepad1.left_stick_y.toDouble() <= maxPower) {
+        if (abs(gamepad1.left_stick_y.toDouble()) <= maxPower) {
             robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble()
+            robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble()
         }
 
-         gamepad1.left_stick_y.toDouble()
-        robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble()
+        when {
+            gamepad1.dpad_up -> maxPower ++
+            gamepad1.dpad_down -> maxPower --
+        }
+
+
     }
 }
