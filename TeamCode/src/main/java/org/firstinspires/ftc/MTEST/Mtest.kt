@@ -1,3 +1,20 @@
 package org.firstinspires.ftc.MTEST
 
 //this was commited by gabe, who wants you to remember to set your launch speed
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+
+@TeleOp(name="Mtest", group="Aim Bot")
+class Mtest(): OpMode() {
+
+    val robot = MTestHardware()
+
+    override fun init() {
+        robot.init(hardwareMap)
+    }
+
+    override fun loop() {
+        
+    }
+}
