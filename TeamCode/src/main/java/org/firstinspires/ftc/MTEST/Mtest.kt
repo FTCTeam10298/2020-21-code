@@ -4,14 +4,13 @@ package org.firstinspires.ftc.MTEST
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import kotlin.math.abs
+import com.qualcomm.robotcore.util.Range
 
 @TeleOp(name="Mtest", group="Aim Bot")
 class Mtest(): OpMode() {
 
     val robot = MTestHardware()
-    //we need more powah I CANT DO IT CAPTAIN
-    var maxPower:Double = 0.25
+    var maxPower:Double = 0.1
 
     override fun init() {
         robot.init(hardwareMap)
@@ -19,13 +18,14 @@ class Mtest(): OpMode() {
 
     override fun loop() {
 
+        maxPower = Range.clip(maxPower, 0.0, 1.0)
         robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble() * maxPower
         robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble() * maxPower
 
         when {
-            gamepad1.dpad_up -> maxPower += 0.05
-            gamepad1.dpad_down -> maxPower -= 0.05
-            gamepad1.x ->  {robot.rFlywheel?.power = 0.0; robot.rFlywheel?.power = 0.0}
+            gamepad1.dpad_up -> maxPower += 0.01
+            gamepad1.dpad_down -> maxPower -= 0.01
+            gamepad1.x -> stop()
         }
 
 
