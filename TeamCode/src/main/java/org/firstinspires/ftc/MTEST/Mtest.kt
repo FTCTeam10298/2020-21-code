@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 class Mtest(): OpMode() {
 
     val robot = MTestHardware()
+    //we need more powah I CANT DO IT CAPTAIN
+    var maxPower:Double = 0.0
 
     override fun init() {
         robot.init(hardwareMap)
@@ -17,6 +19,5 @@ class Mtest(): OpMode() {
     override fun loop() {
         robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble()
         robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble()
-
     }
 }
