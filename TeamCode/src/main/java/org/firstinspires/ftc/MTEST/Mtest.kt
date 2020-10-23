@@ -28,6 +28,7 @@ class Mtest(): OpMode() {
         lSpeed = (prevPos - robot.rFlywheel!!.currentPosition).toDouble() / timeA
         prevPos = robot.rFlywheel!!.currentPosition
         telemetry.addLine(lSpeed.toString())
+        telemetry.addLine("Power: ${robot.rFlywheel?.power}")
 
         maxPower = Range.clip(maxPower, 0.0, 1.0)
         robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble() * maxPower
