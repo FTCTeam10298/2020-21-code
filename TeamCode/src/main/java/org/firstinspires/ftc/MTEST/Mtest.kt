@@ -18,15 +18,14 @@ class Mtest(): OpMode() {
     }
 
     override fun loop() {
-        
-        if (abs(gamepad1.left_stick_y.toDouble()) <= maxPower) {
-            robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble()
-            robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble()
-        }
+
+        robot.rFlywheel?.power = gamepad1.left_stick_y.toDouble() * maxPower
+        robot.lFlywheel?.power = gamepad1.left_stick_y.toDouble() * maxPower
 
         when {
-            gamepad1.dpad_up -> maxPower ++
-            gamepad1.dpad_down -> maxPower --
+            gamepad1.dpad_up -> maxPower += 0.05
+            gamepad1.dpad_down -> maxPower -= 0.05
+            gamepad1.x ->  {robot.rFlywheel?.power = 0.0; robot.rFlywheel?.power = 0.0}
         }
 
 
