@@ -1,4 +1,4 @@
-package teamcode
+package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -31,6 +31,9 @@ class AimBotTeleOp(): OpMode() {
                 -(y + x - r),
                 -(y - x + r)
         )
-//        fourMotors(y, y, y, y)
+        
+//        Patrick and James' goal for today:
+//        add shooter control to tele-op (right under here)
+
     }
 }
