@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range
 class Mtest(): OpMode() {
 
     val robot = MTestHardware()
-    var maxPower: Double = 0.05
+    var maxPower: Double = 1.0
     var lSpeed: Double = 0.0
     var prevPos: Int = 0
     var dt = 0.0

@@ -24,8 +24,8 @@ open class MTestHardware {
         rFlywheel?.direction = DcMotorSimple.Direction.REVERSE
         lFlywheel?.direction = DcMotorSimple.Direction.FORWARD
 
-        rFlywheel?.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lFlywheel?.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rFlywheel?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lFlywheel?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
     }
 }
