@@ -102,7 +102,7 @@ Version 5.5 requires Android Studio 4.0 or later.
 
 ### New features
 * Adds support for calling custom Java classes from Blocks OpModes (fixes [SkyStone issue #161](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/161)).
-    * Classes must be in the org.firstinspires.ftc.teamcode package.
+    * Classes must be in the teamcode package.
     * Methods must be public static and have no more than 21 parameters.
     * Parameters declared as OpMode, LinearOpMode, Telemetry, and HardwareMap are supported and the
       argument is provided automatically, regardless of the order of the parameters. On the block,

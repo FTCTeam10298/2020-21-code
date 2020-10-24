@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode
+package gabesAuto
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -6,17 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    val robot= AimBotMovement()
+    val robot= AimBotHardware()
 
     override fun runOpMode() {
-
+//        after init pressed
         robot.init(hardwareMap)
 
         waitForStart()
-//        robot.side(1.0, 300)
-//        robot.straight( 1.0, 2750)
+//        after start pressed
 
-//        robot.eStrafe(1.0, 10298)
-        robot.eStraight(1.0, 100)
     }
 }

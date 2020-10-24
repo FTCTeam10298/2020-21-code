@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.MTEST
+package MTEST
 
 //this was commited by gabe, who wants you to remember to set your launch speed
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.Range
-import kotlin.math.max
 
 @TeleOp(name="Mtest", group="Aim Bot")
 class Mtest(): OpMode() {

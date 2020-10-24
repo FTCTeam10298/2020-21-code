@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode
+package teamcode
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import java.lang.Thread.sleep
