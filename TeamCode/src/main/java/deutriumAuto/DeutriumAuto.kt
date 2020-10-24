@@ -33,6 +33,7 @@ class DeutriumAuto(): LinearOpMode() {
                 ramp /= 2
             }
             sleep(60)
+            println("Are you still there?")
             //yay you win
         }
     }
