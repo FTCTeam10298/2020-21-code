@@ -24,7 +24,7 @@ class DeutriumAuto(): LinearOpMode() {
 //        after start pressed
 
         for (i in (0 .. 6)) {
-            var ramp: Double = 1
+            var ramp: Double = 1.1
             robot.lBDrive?.power = ramp
             robot.lBDrive?.power = ramp
             robot.lBDrive?.power = ramp
@@ -32,6 +32,7 @@ class DeutriumAuto(): LinearOpMode() {
             if (2 % ramp == 0.0) {
                 ramp /= 2
             }
+
             sleep(60)
             println("Are you still there?")
             //yay you win
