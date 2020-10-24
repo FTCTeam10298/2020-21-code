@@ -44,6 +44,5 @@ open class DeutriumHardware {
 
     // this would be useful, but i'm lazy and so it lives in auto
     //fun decay(startspeed: Double, runtime: Double, decayrate: Double) {
-
-    }
+//     }
 }
