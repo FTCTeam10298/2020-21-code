@@ -1,10 +1,18 @@
-package gabesAuto
+//This package was commited by Gabe, your friendly Aperture Science Bad Code Associate!
+// AD: Join the new Aperture "Code with portals" initiative today!!
+
+//APERTURE SCIENCE INNOVATORS
+//PROJECT DEUTRIUM
+//WARNING: WE ARE NOT RESPONSIBLE FOR DAMAGE DONE TO DISPLAY, COMPUTER SYSTEM, OR THE SANITY OF
+//UNAUTHORIZED USERS
+
+package deutriumAuto
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 
-open class AimBotHardware {
+open class DeutriumHardware {
 
     //    these are the drive motors
     var rFDrive: DcMotor? = null
@@ -32,5 +40,10 @@ open class AimBotHardware {
         lFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         rBDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         lBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+    }
+
+    // this would be useful, but i'm lazy and so it lives in auto
+    //fun decay(startspeed: Double, runtime: Double, decayrate: Double) {
+
     }
 }
