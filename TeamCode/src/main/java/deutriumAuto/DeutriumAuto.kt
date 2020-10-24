@@ -24,7 +24,7 @@ class DeutriumAuto(): LinearOpMode() {
 //        after start pressed
 
         for (i in (0 .. 6)) {
-            var ramp: Double = 0.0
+            var ramp: Double = 1
             robot.lBDrive?.power = ramp
             robot.lBDrive?.power = ramp
             robot.lBDrive?.power = ramp
