@@ -35,5 +35,7 @@ class AimBotTeleOp(): OpMode() {
 //        Patrick and James' goal for today:
 //        add shooter control to tele-op (right under here)
 
+        robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
+        robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
     }
 }
