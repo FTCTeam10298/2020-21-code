@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.Range
 
-@TeleOp(name="Mtest", group="Aim Bot")
+//@TeleOp(name="Mtest", group="Aim Bot")
 class Mtest(): OpMode() {
 
     val robot = MTestHardware()
