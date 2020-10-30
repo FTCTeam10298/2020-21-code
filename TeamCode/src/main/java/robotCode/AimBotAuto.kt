@@ -1,3 +1,12 @@
+//This package was commited by Gabe, your friendly Aperture Science Bad Code Associate!
+// AD: Join the new Aperture "Code with portals" initiative today!!
+
+//APERTURE SCIENCE INNOVATORS
+//PROJECT DEUTRIUM
+//WARNING: WE ARE NOT RESPONSIBLE FOR DAMAGE DONE TO DISPLAY, COMPUTER SYSTEM, OR THE SANITY OF
+//UNAUTHORIZED USERS
+
+
 package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -13,11 +22,19 @@ class AimBotAuto(): LinearOpMode() {
         robot.init(hardwareMap)
 
         waitForStart()
-//        robot.side(1.0, 300)
-//        robot.straight( 1.0, 2750)
+         for (i in (0 .. 45)) {
+            var ramp: Double = 1.1
+            robot.lBDrive?.power = -ramp
+            robot.lFDrive?.power = -ramp
+            robot.rFDrive?.power = -ramp
+            robot.rBDrive?.power = -ramp
+            if (2 % ramp == 0.0) {
+                ramp /= 2
+            }
 
-//        robot.eStrafe(1.0, 10298)
-//        robot.eStraight(1.0, 100)
-        robot.fourMotors(1.0,1.0, 1.0, 1.0)
+            sleep(60)
+            println("Are you still there?")
+            //yay you win
+        }
     }
 }
