@@ -23,7 +23,9 @@ class AimBotAuto(): LinearOpMode() {
 
         waitForStart()
         for (i in (0 .. 45)) {
+
             var ramp: Double = 1.1
+
             robot.lBDrive?.power = -ramp
             robot.lFDrive?.power = -ramp
             robot.rFDrive?.power = -ramp
@@ -36,6 +38,6 @@ class AimBotAuto(): LinearOpMode() {
             sleep(60)
             telemetry.addLine("Are you still there?")
         }
-        
+
     }
 }
