@@ -33,8 +33,8 @@ class AimBotAuto(): LinearOpMode() {
             }
 
             sleep(60)
-            println("Are you still there?")
-            //yay you win
+            telemetry.addLine("Are you still there?")
+
         }
     }
 }
