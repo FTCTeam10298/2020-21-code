@@ -2,7 +2,7 @@
 // AD: Join the new Aperture "Code with portals" initiative today!!
 
 //APERTURE SCIENCE INNOVATORS
-//PROJECT DEUTRIUM
+//PROJECT DEUTRIUM (Branch Redacted)
 //WARNING: WE ARE NOT RESPONSIBLE FOR DAMAGE DONE TO DISPLAY, COMPUTER SYSTEM, OR THE SANITY OF
 //UNAUTHORIZED USERS
 
@@ -45,7 +45,15 @@ class AimBotAuto(): LinearOpMode() {
 
         waitForStart()
 
-        abscondTime(45,60)
+//        Wins 5 Pts.
+//        abscondTime(45,60)
+
+        robot.rFDrive?.power = 1.0
+        while (robot.rFDrive!!.currentPosition >= 20) {
+            robot.rFDrive?.power = 1.0
+
+        }
+        robot.rFDrive?.power = 0.0
 
 
     }
