@@ -21,6 +21,8 @@ class AimBotTeleOp(): OpMode() {
     }
 
     override fun loop() {
+
+//        DRONE DRIVE
         val y =gamepad1.left_stick_y.toDouble()
         val x =gamepad1.left_stick_x.toDouble()
         val r =gamepad1.right_stick_x.toDouble()
@@ -32,10 +34,12 @@ class AimBotTeleOp(): OpMode() {
                 -(y - x + r)
         )
 
-//        Patrick and James' goal for today:
-//        add shooter control to tele-op (right under here)
+//        SHOOTER
+        if (gamepad1.right_trigger.toDouble() > 0.2)
+            robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
 
-        robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
-        robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
+        if (gamepad1.left_trigger.toDouble() > 0.2)
+            robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
+
     }
 }
