@@ -22,19 +22,19 @@ class AimBotAuto(): LinearOpMode() {
         robot.init(hardwareMap)
 
         waitForStart()
-         for (i in (0 .. 45)) {
+        for (i in (0 .. 45)) {
             var ramp: Double = 1.1
             robot.lBDrive?.power = -ramp
             robot.lFDrive?.power = -ramp
             robot.rFDrive?.power = -ramp
             robot.rBDrive?.power = -ramp
+
             if (2 % ramp == 0.0) {
                 ramp /= 2
             }
 
             sleep(60)
-            telemetry.addLine("Are you still there?")
-
         }
+        
     }
 }
