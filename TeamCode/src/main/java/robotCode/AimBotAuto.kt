@@ -17,6 +17,7 @@ class AimBotAuto(): LinearOpMode() {
 //        robot.straight( 1.0, 2750)
 
 //        robot.eStrafe(1.0, 10298)
-        robot.eStraight(1.0, 100)
+//        robot.eStraight(1.0, 100)
+        robot.fourMotors(1.0,1.0, 1.0, 1.0)
     }
 }
