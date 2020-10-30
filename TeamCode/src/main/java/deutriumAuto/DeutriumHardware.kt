@@ -36,10 +36,15 @@ open class DeutriumHardware {
         rBDrive?.direction = DcMotorSimple.Direction.REVERSE
         lBDrive?.direction = DcMotorSimple.Direction.FORWARD
 
-        rFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        rBDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lFDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         lBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+        rFDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        lFDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        rBDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        rBDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }
 
     // this would be useful, but i'm lazy and so it lives in auto
