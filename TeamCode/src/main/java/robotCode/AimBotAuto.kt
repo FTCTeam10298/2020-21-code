@@ -17,12 +17,9 @@ class AimBotAuto(): LinearOpMode() {
 
     val robot= AimBotMovement()
 
-    override fun runOpMode() {
+    fun abscondTime(Interval:Int, milis:Int) {
 
-        robot.init(hardwareMap)
-
-        waitForStart()
-        for (i in (0 .. 45)) {
+        for (i in (0 .. Interval)) {
 
             var ramp: Double = 1.1
 
@@ -35,9 +32,21 @@ class AimBotAuto(): LinearOpMode() {
                 ramp /= 2
             }
 
-            sleep(60)
+            sleep(milis.toLong())
             telemetry.addLine("Are you still there?")
         }
+
+    }
+
+
+    override fun runOpMode() {
+
+        robot.init(hardwareMap)
+
+        waitForStart()
+
+        abscondTime(45,60)
+
 
     }
 }
