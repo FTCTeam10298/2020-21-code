@@ -23,10 +23,10 @@ open class AimBotHardware {
         rBDrive = hwMap?.get("rBDrive") as DcMotor
         lBDrive = hwMap?.get("lBDrive") as DcMotor
 
-        rFDrive?.direction = DcMotorSimple.Direction.FORWARD
-        lFDrive?.direction = DcMotorSimple.Direction.REVERSE
-        rBDrive?.direction = DcMotorSimple.Direction.REVERSE
-        lBDrive?.direction = DcMotorSimple.Direction.FORWARD
+        rFDrive?.direction = DcMotorSimple.Direction.REVERSE
+        lFDrive?.direction = DcMotorSimple.Direction.FORWARD
+        rBDrive?.direction = DcMotorSimple.Direction.FORWARD
+        lBDrive?.direction = DcMotorSimple.Direction.REVERSE
 
         rFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         lFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
