@@ -47,7 +47,7 @@ open class AimBotMovement(): AimBotHardware() {
         rBDrive?.targetPosition = target
         lBDrive?.targetPosition = target
 
-//        set motors to run to target encoder position and stop with brakes on.
+//        set motors to run to target encoder position and stop.
         lFDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
         rFDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION
         rBDrive?.mode = DcMotor.RunMode.RUN_TO_POSITION

@@ -32,7 +32,7 @@ open class AimBotHardware {
         lFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         rBDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         lBDrive?.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        
+
         rFDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lFDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rBDrive?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
