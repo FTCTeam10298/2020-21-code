@@ -35,11 +35,10 @@ class AimBotTeleOp(): OpMode() {
         )
 
 //        SHOOTER
-        if (gamepad1.right_trigger.toDouble() > 0.2)
-            robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
-
-        if (gamepad1.left_trigger.toDouble() > 0.2)
-            robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
+        when {
+            gamepad1.right_trigger.toDouble() > 0.2 -> robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
+            gamepad1.left_trigger.toDouble() > 0.2 -> robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
+        }
 
     }
 }
