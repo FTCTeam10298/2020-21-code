@@ -26,12 +26,12 @@ class AimBotTeleOp(): OpMode() {
         val r =gamepad1.right_stick_x.toDouble()
 
         fourMotors(
-               -(y + x + r),
+                -(y + x + r),
                 -(y - x - r),
                 -(y + x - r),
                 -(y - x + r)
         )
-        
+
 //        Patrick and James' goal for today:
 //        add shooter control to tele-op (right under here)
 
