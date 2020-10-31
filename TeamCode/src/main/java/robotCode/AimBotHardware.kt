@@ -13,8 +13,12 @@ open class AimBotHardware {
     lateinit var rBDrive: DcMotor
     lateinit var lBDrive: DcMotor
 
+//    SHOOTER
+    lateinit var shooter: DcMotor
+
 
     lateinit var hwMap: HardwareMap
+
     fun init(ahwMap: HardwareMap) {
 
         hwMap = ahwMap
@@ -39,5 +43,12 @@ open class AimBotHardware {
         lFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+//        SHOOTER
+        shooter = hwMap.get("shooter") as DcMotor
+
+        shooter.direction = DcMotorSimple.Direction.REVERSE
+        shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
     }
 }
