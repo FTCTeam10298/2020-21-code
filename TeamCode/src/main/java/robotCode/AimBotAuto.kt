@@ -23,10 +23,10 @@ class AimBotAuto(): LinearOpMode() {
 
             var ramp: Double = 1.1
 
-            robot.lBDrive?.power = -ramp
-            robot.lFDrive?.power = -ramp
-            robot.rFDrive?.power = -ramp
-            robot.rBDrive?.power = -ramp
+            robot.lBDrive?.power = ramp
+            robot.lFDrive?.power = ramp
+            robot.rFDrive?.power = ramp
+            robot.rBDrive?.power = ramp
 
             if (2 % ramp == 0.0) {
                 ramp /= 2
@@ -46,15 +46,15 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-//        abscondTime(45,60)
+//        abscondTime(50,60)
 
-        robot.rFDrive?.power = 1.0
-        while (robot.rFDrive!!.currentPosition >= 20) {
-            robot.rFDrive?.power = 1.0
-
-        }
-        robot.rFDrive?.power = 0.0
-
+//        robot.rFDrive?.power = 1.0
+//        while (robot.rFDrive!!.currentPosition >= 20) {
+//            robot.rFDrive?.power = 1.0
+//
+//        }
+//        robot.rFDrive?.power = 0.0
+//
 
     }
 }
