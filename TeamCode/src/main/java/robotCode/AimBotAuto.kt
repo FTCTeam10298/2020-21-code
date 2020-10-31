@@ -48,7 +48,7 @@ class AimBotAuto(): LinearOpMode() {
         while (motorUsed!!.currentPosition < ticks) {
             motorUsed?.power = 1.0
         }
-        telemetry.addLine("] ${motorUsed?.currentPosition} uses Spin sucessfully!")
+        telemetry.addLine("] ${motorUsed} uses Spin sucessfully!")
         telemetry.update()
         motorUsed?.power = 0.0
 
@@ -57,8 +57,10 @@ class AimBotAuto(): LinearOpMode() {
     }
 
     fun abscondCautiously(Interval:Int, milis:Int) {
-
-
+        tiptoeMotor(robot.lFDrive, 2000)
+        tiptoeMotor(robot.lBDrive, 2000)
+        tiptoeMotor(robot.rFDrive, 2000)
+        tiptoeMotor(robot.rBDrive, 2000)
     }
 
 
@@ -71,7 +73,7 @@ class AimBotAuto(): LinearOpMode() {
 //        Wins 5 Pts.
 //        abscondTime(50,60)
 
-        tiptoeMotor(robot.rFDrive, 2000)
+        abscondCautiously(10298,10298)
 
     }
 }
