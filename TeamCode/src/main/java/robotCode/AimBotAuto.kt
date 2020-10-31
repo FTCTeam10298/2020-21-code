@@ -12,10 +12,12 @@ package robotCode
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
+import jamesTelemetryMenu.TelemetryMenu
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
+    val menu = TelemetryMenu(telemetry)
     val robot= AimBotMovement()
 
     fun abscondTime(Interval:Int, milis:Int) {
@@ -34,7 +36,7 @@ class AimBotAuto(): LinearOpMode() {
             }
 
             sleep(milis.toLong())
-            telemetry.addLine("Are you still there?")
+            menu.display(1, "Are you still there?")
         }
 
     }
