@@ -39,6 +39,28 @@ class AimBotAuto(): LinearOpMode() {
 
     }
 
+    fun tiptoeMotor(motorUsed:DcMotor?, ticks:Int) {
+
+        motorUsed?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed?.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        telemetry.addLine("] ${motorUsed?.currentPosition} JOINS THE FIGHT!")
+        telemetry.update()
+        while (motorUsed!!.currentPosition < ticks) {
+            motorUsed?.power = 1.0
+        }
+        telemetry.addLine("] ${motorUsed?.currentPosition} uses Spin sucessfully!")
+        telemetry.update()
+        motorUsed?.power = 0.0
+
+
+
+    }
+
+    fun abscondCautiously(Interval:Int, milis:Int) {
+
+
+    }
+
 
     override fun runOpMode() {
 
@@ -49,17 +71,7 @@ class AimBotAuto(): LinearOpMode() {
 //        Wins 5 Pts.
 //        abscondTime(50,60)
 
-        robot.rFDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        robot.rFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        telemetry.addLine("Combat position: ${robot.rFDrive?.currentPosition}")
-        telemetry.update()
-        sleep(1000)
-        while (robot.rFDrive!!.currentPosition < 2000) {
-            telemetry.addLine("Current position: ${robot.rFDrive?.currentPosition}")
-            robot.rFDrive?.power = 1.0
-            telemetry.update()
-        }
-        robot.rFDrive?.power = 0.0
+        tiptoeMotor(robot.rFDrive, 2000)
 
     }
 }
