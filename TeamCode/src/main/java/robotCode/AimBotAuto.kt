@@ -49,10 +49,13 @@ class AimBotAuto(): LinearOpMode() {
 //        abscondTime(50,60)
 
 //        robot.rFDrive?.power = 1.0
-        telemetry.addLine("Current position: ${robot.rFDrive?.currentPosition}")
-        while (robot.rFDrive!!.currentPosition >= 20) {
+        telemetry.addLine("Combat position: ${robot.rFDrive?.currentPosition}")
+        telemetry.update()
+        sleep(1000)
+        while (robot.rFDrive!!.currentPosition >= 2000) {
             telemetry.addLine("Current position: ${robot.rFDrive?.currentPosition}")
             robot.rFDrive?.power = 1.0
+            telemetry.update()
         }
         robot.rFDrive?.power = 0.0
 
