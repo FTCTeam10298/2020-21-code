@@ -11,6 +11,7 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.DcMotor
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
@@ -48,11 +49,12 @@ class AimBotAuto(): LinearOpMode() {
 //        Wins 5 Pts.
 //        abscondTime(50,60)
 
-//        robot.rFDrive?.power = 1.0
+        robot.rFDrive?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        robot.rFDrive?.mode = DcMotor.RunMode.RUN_USING_ENCODER
         telemetry.addLine("Combat position: ${robot.rFDrive?.currentPosition}")
         telemetry.update()
         sleep(1000)
-        while (robot.rFDrive!!.currentPosition >= 2000) {
+        while (robot.rFDrive!!.currentPosition < 2000) {
             telemetry.addLine("Current position: ${robot.rFDrive?.currentPosition}")
             robot.rFDrive?.power = 1.0
             telemetry.update()

@@ -11,7 +11,7 @@ package deutriumAuto
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 
-@Autonomous(name="Aim Bot Auto: Plan Deutrium", group="Aim Bot")
+//@Autonomous(name="Aim Bot Auto: Plan Deutrium", group="Aim Bot")
 class DeutriumAuto(): LinearOpMode() {
 
     val robot= DeutriumHardware()
