@@ -10,10 +10,10 @@ class AimBotTeleOp(): OpMode() {
 
 
     fun fourMotors(rFpower: Double, lFpower: Double, lBpower: Double, rBpower: Double) {
-        robot.rFDrive?.power = rFpower
-        robot.lFDrive?.power = lFpower
-        robot.lBDrive?.power = lBpower
-        robot.rBDrive?.power = rBpower
+        robot.rFDrive.power = rFpower
+        robot.lFDrive.power = lFpower
+        robot.lBDrive.power = lBpower
+        robot.rBDrive.power = rBpower
     }
 
     override fun init() {
@@ -27,14 +27,19 @@ class AimBotTeleOp(): OpMode() {
         val x =gamepad1.left_stick_x.toDouble()
         val r =gamepad1.right_stick_x.toDouble()
 
-        fourMotors(
-                -(y + x + r),
-                -(y - x - r),
-                -(y + x - r),
-                -(y - x + r)
-        )
+//        fourMotors(
+//                -(y + x + r),
+//                -(y - x - r),
+//                -(y + x - r),
+//                -(y - x + r)
+//        )
 
 //        SHOOTER
+//        when {
+//            gamepad1.right_trigger.toDouble() > 0.2 -> robot.rFDrive.power = gamepad1.right_trigger.toDouble()
+//            gamepad1.left_trigger.toDouble() > 0.2 -> robot.rFDrive.power = gamepad1.left_trigger.toDouble()
+//            else -> robot.rFDrive.power = 0.0
+//        }
         when {
             gamepad1.right_trigger.toDouble() > 0.2 -> robot.rFDrive!!.power = gamepad1.right_trigger.toDouble()
             gamepad1.left_trigger.toDouble() > 0.2 -> robot.rFDrive!!.power = gamepad1.left_trigger.toDouble()
