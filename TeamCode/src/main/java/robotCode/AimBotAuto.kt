@@ -43,7 +43,7 @@ class AimBotAuto(): LinearOpMode() {
 
         motorUsed?.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motorUsed?.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        telemetry.addLine("] ${motorUsed?.currentPosition} JOINS THE FIGHT!")
+        telemetry.addLine("] ${motorUsed} JOINS THE FIGHT!")
         telemetry.update()
         while (motorUsed!!.currentPosition < ticks) {
             motorUsed?.power = 1.0
