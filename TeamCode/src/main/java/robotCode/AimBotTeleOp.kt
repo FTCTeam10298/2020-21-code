@@ -17,6 +17,12 @@ class AimBotTeleOp(): OpMode() {
         robot.rBDrive.power = rBpower
     }
 
+    fun rampShooterPower(targetPower: Double) {
+        while (robot.shooter.power < targetPower) {
+            robot.shooter.power = targetPower - robot.shooter.power
+        }
+    }
+
     override fun init() {
         robot.init(hardwareMap)
     }
@@ -28,31 +34,24 @@ class AimBotTeleOp(): OpMode() {
         val x =gamepad1.left_stick_x.toDouble()
         val r =gamepad1.right_stick_x.toDouble()
 
-//        fourMotors(
-//                -(y + x + r),
-//                -(y - x - r),
-//                -(y + x - r),
-//                -(y - x + r)
-//        )
+        fourMotors(
+                -(y + x + r),
+                -(y - x - r),
+                -(y + x - r),
+                -(y - x + r)
+        )
 
 //        SHOOTER
-//        when {
-//            gamepad1.right_trigger.toDouble() > 0.2 -> robot.rFDrive.power = gamepad1.right_trigger.toDouble()
-//            gamepad1.left_trigger.toDouble() > 0.2 -> robot.rFDrive.power = gamepad1.left_trigger.toDouble()
-//            else -> robot.rFDrive.power = 0.0
-//        }
-
-
-        val shooterSpeedIncrement: Double = 0.008
+        val shooterPowerIncrement: Double = 0.008
+        val shooterPower: Double = robot.shooter.power
 
         when {
-            gamepad1.dpad_up && robot.shooter.power < 1.0 - shooterSpeedIncrement -> robot.shooter.power += shooterSpeedIncrement
-//            gamepad1.dpad_down && robot.shooter!!.power > shooterSpeedIncrement     -> robot.shooter!!.power -= shooterSpeedIncrement
-//            gamepad1.dpad_down && robot.shooter!!.power < shooterSpeedIncrement -> robot.shooter!!.power = 0.0
-//            gamepad1.dpad_left -> robot.shooter!!.power = 0.0
+            gamepad1.dpad_up && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
+            gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -+ shooterPowerIncrement
+            gamepad1.dpad_left -> robot.shooter.power = 0.0
+            gamepad1.dpad_right -> rampShooterPower(1.0)
         }
         menu.display(1, "${robot.shooter.power}")
-
 
     }
 }

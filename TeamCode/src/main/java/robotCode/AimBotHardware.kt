@@ -16,7 +16,7 @@ open class AimBotHardware {
 //    SHOOTER
     lateinit var shooter: DcMotor
 
-
+//    HARDWARE MAP
     lateinit var hwMap: HardwareMap
 
     fun init(ahwMap: HardwareMap) {
