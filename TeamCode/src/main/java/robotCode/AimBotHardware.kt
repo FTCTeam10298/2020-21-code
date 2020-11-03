@@ -4,8 +4,18 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 
-open class AimBotHardware {
+/*  CURRENT HARDWARE MAP:
+*    Expansion hub 2:
+*     lFDrive
+*     rFDrive
+*     lBDrive
+*     rBDrive
+*    Expansion hub 3:
+*     none
+* */
 
+
+open class AimBotHardware {
 
 //    DRIVE TRAIN
     lateinit var rFDrive: DcMotor
@@ -24,10 +34,10 @@ open class AimBotHardware {
         hwMap = ahwMap
 
 //        DRIVE TRAIN
-        rFDrive = hwMap.get("rFDrive") as DcMotor
         lFDrive = hwMap.get("lFDrive") as DcMotor
-        rBDrive = hwMap.get("rBDrive") as DcMotor
+        rFDrive = hwMap.get("rFDrive") as DcMotor
         lBDrive = hwMap.get("lBDrive") as DcMotor
+        rBDrive = hwMap.get("rBDrive") as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.REVERSE
         lFDrive.direction = DcMotorSimple.Direction.FORWARD
@@ -35,7 +45,7 @@ open class AimBotHardware {
         lBDrive.direction = DcMotorSimple.Direction.REVERSE
 
         rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        lFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
@@ -45,7 +55,7 @@ open class AimBotHardware {
         rBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
 //        SHOOTER
-        shooter = hwMap.get("shooter") as DcMotor
+        shooter = hwMap.get("lFDrive") as DcMotor
 
         shooter.direction = DcMotorSimple.Direction.REVERSE
         shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER

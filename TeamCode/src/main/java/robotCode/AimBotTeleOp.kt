@@ -34,12 +34,21 @@ class AimBotTeleOp(): OpMode() {
         val x =gamepad1.left_stick_x.toDouble()
         val r =gamepad1.right_stick_x.toDouble()
 
+        menu.display(3, "Y: $y")
+        menu.display(4, "X: $x")
+        menu.display(5, "X: $r")
+
         fourMotors(
                 -(y + x + r),
                 -(y - x - r),
                 -(y + x - r),
                 -(y - x + r)
         )
+
+        menu.display(7, "LF: ${robot.lFDrive.power}")
+        menu.display(8, "RF: ${robot.rFDrive.power}")
+        menu.display(9, "LB: ${robot.lBDrive.power}")
+        menu.display(10, "RB: ${robot.rBDrive.power}")
 
 //        SHOOTER
         val shooterPowerIncrement: Double = 0.008
@@ -51,7 +60,8 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_left -> robot.shooter.power = 0.0
             gamepad1.dpad_right -> rampShooterPower(1.0)
         }
-        menu.display(1, "${robot.shooter.power}")
+
+        menu.display(1, "Shooter Power: ${robot.shooter.power}")
 
     }
 }
