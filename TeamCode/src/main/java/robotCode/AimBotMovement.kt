@@ -17,12 +17,12 @@ open class AimBotMovement(): AimBotHardwarePlus() {
     val menu = TelemetryMenu(telemetry)
 
     val COUNTS_PER_MOTOR_REV = 28.0 // Rev HD Hex v2.1 Motor encoder
-    val GEARBOX_RATIO = 20.0 // 40 for 40:1, 20 for 20:1
-    val DRIVE_GEAR_REDUCTION = 24.0 / 15.0 // This is > 1.0 if geared for torque
-    val WHEEL_DIAMETER_INCHES = 3.937007874015748 // For figuring circumference
-    val DRIVETRAIN_ERROR = 1.04 // Error determined from testing
+    val GEARBOX_RATIO = 19.2 // 40 for 40:1, 20 for 20:1
+    val DRIVE_GEAR_REDUCTION = 1 / 1 // This is > 1.0 if geared for torque
+    val WHEEL_DIAMETER_INCHES = 3.77953 // For figuring circumference
+    val DRIVETRAIN_ERROR = 1.0 // Error determined from testing
     val COUNTS_PER_INCH = COUNTS_PER_MOTOR_REV * GEARBOX_RATIO * DRIVE_GEAR_REDUCTION / (WHEEL_DIAMETER_INCHES * PI) / DRIVETRAIN_ERROR
-    val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.20672 + 0.003703704 // Was 0.20672; // Found by testing
+    val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.225 + 0.0 // Found by testing
 
 
     /**
