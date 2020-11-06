@@ -106,6 +106,7 @@ class AimBotAuto(): LinearOpMode() {
 //        Wins 5 Pts.
 //        abscondTime(50,60)
 
+//        robot.
         abscondCautiously(robot.lFDrive, robot.rFDrive, robot.lBDrive, robot.rBDrive, 9000)
 
     }
