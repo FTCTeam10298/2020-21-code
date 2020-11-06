@@ -108,7 +108,7 @@ class AimBotAuto(): LinearOpMode() {
         //robot.driveRobotPosition(1.0,100.0,false)
 //        abscondCautiously(robot.lFDrive, robot.rFDrive, robot.lBDrive, robot.rBDrive, 9000)
 
-        robot.driveRobotTurn(1.0, 360 * 1)
+        robot.driveRobotTurn(1.0, 360 * 1.0)
 
     }
 }
