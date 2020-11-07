@@ -27,6 +27,9 @@ open class AimBotHardware {
 //    SHOOTER
     lateinit var shooter: DcMotor
 
+//    BELT
+    lateinit var belt: DcMotor
+
 //    HARDWARE MAP
     lateinit var hwMap: HardwareMap
 
@@ -35,11 +38,18 @@ open class AimBotHardware {
         hwMap = ahwMap
 
 //        SHOOTER
-        shooter = hwMap.get("lFDrive") as DcMotor
+        shooter = hwMap.get("shooter") as DcMotor
 
         shooter.direction = DcMotorSimple.Direction.REVERSE
         shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
+
+//        BELT
+        belt = hwMap.get("belt") as DcMotor
+
+        belt.direction = DcMotorSimple.Direction.REVERSE
+        belt.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        belt.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
 //        DRIVE TRAIN
         lFDrive = hwMap.get("lFDrive") as DcMotor
