@@ -4,9 +4,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
-import jamesTelemetryMenu.TelemetryMenu
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import java.lang.Thread.sleep
 import kotlin.math.PI
@@ -33,9 +30,9 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
      */
     fun driveRobotTime(ms: Int, power: Double) {
         driveSetMode(DcMotor.RunMode.RUN_USING_ENCODER)
-        DrivePowerAll(power)
+        drivePowerAll(power)
         sleep(ms.toLong())
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
         driveSetTargetPosition(0, 0, 0, 0)
     }
 
@@ -63,23 +60,23 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
 
         driveSetRunToPosition()
         if (smart_accel && power > 0.25) {
-            DrivePowerAll(0.25) // Use abs() to make sure power is positive
+            drivePowerAll(0.25) // Use abs() to make sure power is positive
             state = 1 // ACCEL
         } else {
-            DrivePowerAll(abs(power)) // Use abs() to make sure power is positive
+            drivePowerAll(abs(power)) // Use abs() to make sure power is positive
         }
-        val flOrigTarget: Int = robot.lFDrive.targetPosition
-        val frOrigTarget: Int = robot.rFDrive.targetPosition
-        val blOrigTarget: Int = robot.lBDrive.targetPosition
-        val brOrigTarget: Int = robot.rBDrive.targetPosition
+        val flOrigTarget: Int = lFDrive.targetPosition
+        val frOrigTarget: Int = rFDrive.targetPosition
+        val blOrigTarget: Int = lBDrive.targetPosition
+        val brOrigTarget: Int = rBDrive.targetPosition
         driveAddTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-                val flDrive: Int = robot.lFDrive.currentPosition
-                val frDrive: Int = robot.rFDrive.currentPosition
-                val blDrive: Int = robot.lBDrive.currentPosition
-                val brDrive: Int = robot.rBDrive.currentPosition
+                val flDrive: Int = lFDrive.currentPosition
+                val frDrive: Int = rFDrive.currentPosition
+                val blDrive: Int = lBDrive.currentPosition
+                val brDrive: Int = rBDrive.currentPosition
 //                menu.display(3, "Front left encoder: $flDrive")
 //                menu.display(4, "Front right encoder: $frDrive")
 //                menu.display(5, "Back left encoder: $blDrive")
@@ -89,19 +86,19 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 if (state == 1 &&
                         (abs(flDrive - flOrigTarget) > 2 * COUNTS_PER_INCH || abs(frDrive - frOrigTarget) > 2 * COUNTS_PER_INCH || abs(blDrive - blOrigTarget) > 2 * COUNTS_PER_INCH || abs(brDrive - brOrigTarget) > 2 * COUNTS_PER_INCH)) {
                     // We have gone 2 inches, go to full power
-                    DrivePowerAll(abs(power)) // Use abs() to make sure power is positive
+                    drivePowerAll(abs(power)) // Use abs() to make sure power is positive
                     state = 2
                 } else if (state == 2 &&
                         (abs(flDrive - flOrigTarget) > COUNTS_PER_INCH * (abs(inches) - 2) || abs(frDrive - frOrigTarget) > COUNTS_PER_INCH * (abs(inches) - 2) || abs(blDrive - blOrigTarget) > COUNTS_PER_INCH * (abs(inches) - 2) || abs(brDrive - brOrigTarget) > COUNTS_PER_INCH * (abs(inches) - 2))) {
                     // Cut power by half to DECEL
-                    DrivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
+                    drivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
                     state = 3 // We are DECELing now
                 }
 //                menu.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
             sleep(10)
         }
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
         // Clear used section of dashboard
 //        menu.display(3, "")
 //        menu.display(4, "")
@@ -122,18 +119,18 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
         } else {
             driveSetPower(power, -power, power, -power)
         }
-        val flOrigTarget: Int = robot.lFDrive.targetPosition
-        val frOrigTarget: Int = robot.rFDrive.targetPosition
-        val blOrigTarget: Int = robot.lBDrive.targetPosition
-        val brOrigTarget: Int = robot.rBDrive.targetPosition
+        val flOrigTarget: Int = lFDrive.targetPosition
+        val frOrigTarget: Int = rFDrive.targetPosition
+        val blOrigTarget: Int = lBDrive.targetPosition
+        val brOrigTarget: Int = rBDrive.targetPosition
         driveAddTargetPosition(position.toInt(), -position.toInt(), position.toInt(), -position.toInt())
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-                val flDrive: Int = robot.lFDrive.currentPosition
-                val frDrive: Int = robot.rFDrive.currentPosition
-                val blDrive: Int = robot.lBDrive.currentPosition
-                val brDrive: Int = robot.rBDrive.currentPosition
+                val flDrive: Int = lFDrive.currentPosition
+                val frDrive: Int = rFDrive.currentPosition
+                val blDrive: Int = lBDrive.currentPosition
+                val brDrive: Int = rBDrive.currentPosition
 //                menu.display(3, "Front left encoder: $flDrive")
 //                menu.display(4, "Front right encoder: $frDrive")
 //                menu.display(5, "Back left encoder: $blDrive")
@@ -143,19 +140,19 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 if (state == 1 &&
                         (abs(flDrive - flOrigTarget) > COUNTS_PER_DEGREE * 10 || abs(frDrive - frOrigTarget) > COUNTS_PER_DEGREE * 10 || abs(blDrive - blOrigTarget) > COUNTS_PER_DEGREE * 10 || abs(brDrive - brOrigTarget) > COUNTS_PER_DEGREE * 10)) {
                     // We have rotated 10 degrees, go to full power
-                    DrivePowerAll(abs(power)) // Use abs() to make sure power is positive
+                    drivePowerAll(abs(power)) // Use abs() to make sure power is positive
                     state = 2
                 } else if (state == 2 &&
                         (abs(flDrive - flOrigTarget) > COUNTS_PER_DEGREE * (abs(degree) - 10) || abs(frDrive - frOrigTarget) > COUNTS_PER_DEGREE * (abs(degree) - 10) || abs(blDrive - blOrigTarget) > COUNTS_PER_DEGREE * (abs(degree) - 10) || abs(brDrive - brOrigTarget) > COUNTS_PER_DEGREE * (abs(degree) - 10))) {
                     // We are within 10 degrees of our destination, cut power by half to DECEL
-                    DrivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
+                    drivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
                     state = 3 // We are DECELing now
                 }
 //                menu.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
             sleep(10)
         }
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
         // Clear used section of dashboard
 //        menu.display(3, "")
 //        menu.display(4, "")
@@ -182,7 +179,7 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
         // Continue driving for the specified amount of time, then stop
         val ms = time * 1000
         sleep(ms.toLong())
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
         driveSetRunToPosition()
         driveSetTargetPosition(0, 0, 0, 0)
     }
@@ -217,7 +214,7 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
             }
             sleep(10)
         }
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
     }
 
     fun driveRobotArc(power: Double, inches: Double, difference: Double) {
@@ -229,44 +226,44 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
         //power 1, inches -48, difference -.5
         driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
         if (difference > 0) {
-            robot.rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            robot.rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            robot.lFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            robot.lBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            lFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            lBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
         } else {
-            robot.rFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            robot.rBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            robot.lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            robot.lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            rFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            rBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         }
         if (difference > 0 && inches > 0) driveSetPower(abs(power), abs(power * difference), abs(power), abs(power * difference)) else if (difference > 0 && inches < 0) driveSetPower(abs(power), -abs(power * difference), abs(power), -abs(power * difference)) else if (difference < 0 && inches > 0) driveSetPower(abs(power * difference), abs(power), abs(power * difference), abs(power)) else if (difference < 0 && inches < 0) driveSetPower(-abs(power * difference), abs(power), -abs(power * difference), abs(power))
         if (difference > 0) {
-            robot.lFDrive.targetPosition = position.toInt()
-            robot.lBDrive.targetPosition = position.toInt()
+            lFDrive.targetPosition = position.toInt()
+            lBDrive.targetPosition = position.toInt()
         } else {
-            robot.rFDrive.targetPosition = position.toInt()
-            robot.rBDrive.targetPosition = position.toInt()
+            rFDrive.targetPosition = position.toInt()
+            rBDrive.targetPosition = position.toInt()
         }
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             if (difference > 0) {
-                while (robot.lFDrive.isBusy && robot.lBDrive.isBusy) {
-                    val flDrive: Int = robot.lFDrive.currentPosition
-                    val blDrive: Int = robot.lBDrive.currentPosition
+                while (lFDrive.isBusy && lBDrive.isBusy) {
+                    val flDrive: Int = lFDrive.currentPosition
+                    val blDrive: Int = lBDrive.currentPosition
 //                    menu.display(3, "Front left encoder: $flDrive")
 //                    menu.display(4, "Back left encoder: $blDrive")
                 }
             } else {
-                while (robot.rFDrive.isBusy && robot.rBDrive.isBusy) {
-                    val frDrive: Int = robot.rFDrive.currentPosition
-                    val brDrive: Int = robot.rBDrive.currentPosition
+                while (rFDrive.isBusy && rBDrive.isBusy) {
+                    val frDrive: Int = rFDrive.currentPosition
+                    val brDrive: Int = rBDrive.currentPosition
 //                    menu.display(3, "Front left encoder: $frDrive")
 //                    menu.display(4, "Back left encoder: $brDrive")
                 }
             }
             sleep(10)
         }
-        DrivePowerAll(0.0)
+        drivePowerAll(0.0)
     }
 
 //    New funs

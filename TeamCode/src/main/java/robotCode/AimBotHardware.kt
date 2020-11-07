@@ -18,10 +18,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 open class AimBotHardware {
 
 //    DRIVE TRAIN
-    lateinit var rFDrive: DcMotor
     lateinit var lFDrive: DcMotor
-    lateinit var rBDrive: DcMotor
+    lateinit var rFDrive: DcMotor
     lateinit var lBDrive: DcMotor
+    lateinit var rBDrive: DcMotor
 
 //    SHOOTER
     lateinit var shooter: DcMotor

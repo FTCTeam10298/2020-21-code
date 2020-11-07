@@ -19,9 +19,9 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-        robot.drive.driveRobotPosition(1.0,100.0, false)
+        robot.driveRobotPosition(1.0,100.0, false)
 
-//        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
+//        robot.driveRobotTurn(1.0, 360 * 1.0)
 1
     }
 
