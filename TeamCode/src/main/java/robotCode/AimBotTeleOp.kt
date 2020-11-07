@@ -2,13 +2,13 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import jamesTelemetryMenu.TelemetryMenu
+import jamesTelemetryMenu.TelemetryConsole
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp(): OpMode() {
 
     val robot = AimBotHardware()
-    val menu = TelemetryMenu(telemetry)
+    val console = TelemetryConsole(telemetry)
 
     fun fourMotors(rFpower: Double, lFpower: Double, lBpower: Double, rBpower: Double) {
         robot.rFDrive.power = rFpower
@@ -34,9 +34,9 @@ class AimBotTeleOp(): OpMode() {
         val x =gamepad1.left_stick_x.toDouble()
         val r =gamepad1.right_stick_x.toDouble()
 
-        menu.display(3, "Y: $y")
-        menu.display(4, "X: $x")
-        menu.display(5, "X: $r")
+        console.display(3, "Y: $y")
+        console.display(4, "X: $x")
+        console.display(5, "X: $r")
 
         fourMotors(
                 -(y + x + r),
@@ -45,10 +45,10 @@ class AimBotTeleOp(): OpMode() {
                 -(y - x + r)
         )
 
-        menu.display(7, "LF: ${robot.lFDrive.power}")
-        menu.display(8, "RF: ${robot.rFDrive.power}")
-        menu.display(9, "LB: ${robot.lBDrive.power}")
-        menu.display(10, "RB: ${robot.rBDrive.power}")
+        console.display(7, "LF: ${robot.lFDrive.power}")
+        console.display(8, "RF: ${robot.rFDrive.power}")
+        console.display(9, "LB: ${robot.lBDrive.power}")
+        console.display(10, "RB: ${robot.rBDrive.power}")
 
 //        SHOOTER
         val shooterPowerIncrement: Double = 0.008
@@ -60,7 +60,7 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_left -> robot.shooter.power = 0.0
             gamepad1.dpad_right -> rampShooterPower(1.0)
         }
-        menu.display(1, "Shooter Power: ${robot.shooter.power}")
+        console.display(1, "Shooter Power: ${robot.shooter.power}")
         
 //        BELT
         if (gamepad1.right_trigger > 0)

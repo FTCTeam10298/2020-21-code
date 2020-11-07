@@ -18,8 +18,8 @@ import robotCode.aimBotRobot.AimBotRobot
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    val menu = TelemetryMenu(telemetry)
     val robot= AimBotRobot()
+    val menu = TelemetryMenu(telemetry, gamepad1)
 
     fun abscondTime(Interval:Int, milis:Int) {
 

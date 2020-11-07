@@ -2,13 +2,18 @@ package jamesTelemetryMenu
 
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-open class Dashboard(telemetry: Telemetry) {
+open class TelemetryConsole(telemetry: Telemetry) {
 
     var queue: MutableList<String> = mutableListOf()
-    private val telemetry = telemetry
+    val telemetry = telemetry
+    var lastUserLine= 0
 
-    open fun display(line: Int, text: String) {
+    fun display(line: Int, text: String) {
         replaceLine(line, text)
+
+        if (line > lastUserLine)
+            lastUserLine = line
+
         queueToTelemetry()
     }
 
@@ -18,9 +23,8 @@ open class Dashboard(telemetry: Telemetry) {
         while (queue.size <= line)
             queue.add(" ")
 
-//        Adds or subtracts cursor
-        if (queue[line].startsWith("-"))
-            queue[line] = queue[line].replaceFirst("-", " ")
+//        Add content
+        queue[line] = text
     }
 
     open fun queueToTelemetry() {
