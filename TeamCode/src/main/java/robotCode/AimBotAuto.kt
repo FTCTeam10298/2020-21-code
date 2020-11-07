@@ -1,20 +1,10 @@
-//This package was commited by Gabe, your friendly Aperture Science Bad Code Associate!
-// AD: Join the new Aperture "Code with portals" initiative today!!
-
-//APERTURE SCIENCE INNOVATORS
-//PROJECT DEUTRIUM (Branch Redacted)
-//WARNING: WE ARE NOT RESPONSIBLE FOR DAMAGE DONE TO DISPLAY, COMPUTER SYSTEM, OR THE SANITY OF
-//UNAUTHORIZED USERS
-
-
 package robotCode
 
-import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import jamesTelemetryMenu.TelemetryMenu
 import robotCode.aimBotRobot.AimBotRobot
-
+import jamesTelemetryMenu.TelemetryMenu
+import buttonHelper.ButtonHelper
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
