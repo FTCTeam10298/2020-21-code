@@ -1,25 +1,40 @@
 package jamesTelemetryMenu
 
-//import com.qualcomm.robotcore.hardware.Gamepad
-//import bstormz.hal.sim.IGamePad
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-open class TelemetryMenu(telemetry: Telemetry): ChoiceManager() {
-    /*What this menu system asserts:
-        The cursor starts on line 1
-        */
+open class TelemetryMenu(telemetry: Telemetry): Dashboard(telemetry) {
 
-//    Declare variables
     private var cursorLine= 4
     private var lastUserLine= 0
     private var telemetry: Telemetry = telemetry
-    private var queue: MutableList<String> = mutableListOf()
     private var menuDone= false
     private var keyDown= true
-
+    val firstOption= "First Option"
+    var currentChoice= "Choices"
+    var cursorContent= "Options"
 
 //    Choice related-------------------------------------
+
+    data class option(var choice: String, var option: String)
+    var options: MutableList<option> = mutableListOf(option("The Choicest", "Of Memes"))
+
+    data class link(var option: String, var choice: String)
+    var links: MutableList<link> = mutableListOf(link("The Choicest", "Of Memes"))
+
+//    User functions-------------------------------------
+
+    fun addOption(choice: String,  option: String) {
+        options.add(option(choice, option))
+    }
+
+    fun optionChosen(option: String): Boolean {
+        return cursorContent == option
+    }
+
+    fun linkOption(option: String, choice: String) {
+//        links.add(link(option, choice))
+    }
 
     private fun find(options:List<option>, valueToFind: String) = options.filter{option-> option.choice == valueToFind}
 
@@ -29,7 +44,6 @@ open class TelemetryMenu(telemetry: Telemetry): ChoiceManager() {
 
         var hi = getMenu(links, currentChoice)
         replaceLine( lastUserLine + 2, "$hi:")
-
 
         var currentOption = find(options, currentChoice)
         for (i in (currentOption.indices))
@@ -58,14 +72,14 @@ open class TelemetryMenu(telemetry: Telemetry): ChoiceManager() {
 //    Telemetry/Queue related----------------------------
 
 //    User function
-    fun display(line: Int, text: String) {
+    override fun display(line: Int, text: String) {
         replaceLine(line, text)
         if (line > lastUserLine)
             lastUserLine = line
         queueToTelemetry()
     }
 
-    private fun replaceLine(line: Int, text: String) {
+    override fun replaceLine(line: Int, text: String) {
 
 //        Adds empty lines into the list if necessary
         while (queue.size <= line)
@@ -80,7 +94,7 @@ open class TelemetryMenu(telemetry: Telemetry): ChoiceManager() {
             queue[line] = text
     }
 
-    private fun queueToTelemetry() {
+    override fun queueToTelemetry() {
         telemetry.clearAll()
         for (i in (1 until queue.size)) {
             telemetry.addLine(queue[i])
