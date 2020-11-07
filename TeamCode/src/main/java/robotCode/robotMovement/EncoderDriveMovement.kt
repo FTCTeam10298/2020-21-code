@@ -1,4 +1,4 @@
-package robotCode
+package robotCode.robotMovement
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -11,10 +11,10 @@ import java.lang.Thread.sleep
 import kotlin.math.PI
 import kotlin.math.abs
 
-open class AimBotMovement(): AimBotHardwarePlus() {
+open class EncoderDriveMovement(): MecanumDriveTrain() {
 
-    lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
     val menu = TelemetryMenu(telemetry)
+    lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
     val COUNTS_PER_MOTOR_REV = 28.0 // Rev HD Hex v2.1 Motor encoder
     val GEARBOX_RATIO = 19.2 // 40 for 40:1, 20 for 20:1
@@ -267,4 +267,59 @@ open class AimBotMovement(): AimBotHardwarePlus() {
         }
         DrivePowerAll(0.0)
     }
+
+//    New funs
+
+    fun tiptoeMotor(motorUsed:DcMotor, ticks:Int) {
+
+        motorUsed.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed.mode = DcMotor.RunMode.RUN_TO_POSITION
+        telemetry.addLine("] ${motorUsed} JOINS THE FIGHT!")
+        telemetry.update()
+
+        motorUsed.targetPosition = ticks
+        while (motorUsed.isBusy) {
+            motorUsed.power = 1.0
+        }
+        telemetry.addLine("] ${motorUsed} uses Spin sucessfully!")
+        telemetry.update()
+        motorUsed.power = 0.0
+
+
+
+    }
+
+    fun abscondCautiously(motorUsed1:DcMotor, motorUsed2:DcMotor, motorUsed3:DcMotor, motorUsed4:DcMotor,  ticks:Int) {
+
+        motorUsed1.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed1.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motorUsed2.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed2.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motorUsed3.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed3.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motorUsed4.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motorUsed4.mode = DcMotor.RunMode.RUN_TO_POSITION
+        telemetry.addLine("] ${motorUsed1} JOINS THE FIGHT!")
+        telemetry.update()
+
+        motorUsed1.targetPosition = ticks
+        motorUsed2.targetPosition = ticks
+        motorUsed3.targetPosition = ticks
+        motorUsed4.targetPosition = ticks
+
+        while (motorUsed1.isBusy && motorUsed2.isBusy && motorUsed3.isBusy && motorUsed4.isBusy) {
+            motorUsed1.power = 1.0
+            motorUsed2.power = 1.0
+            motorUsed3.power = 1.0
+            motorUsed4.power = 1.0
+        }
+        telemetry.addLine("] ${motorUsed1} uses creepBeast sucessfully!")
+        telemetry.update()
+        motorUsed1.power = 0.0
+        motorUsed2.power = 0.0
+        motorUsed3.power = 0.0
+        motorUsed4.power = 0.0
+
+    }
+
 }

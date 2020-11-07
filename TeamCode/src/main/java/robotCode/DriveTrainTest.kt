@@ -37,7 +37,7 @@ open class DTTHardware {
     }
 }
 
-@TeleOp(name="Drive Train Test", group="Aim Bot")
+//@TeleOp(name="Drive Train Test", group="Aim Bot")
 class DriveTrainTest: OpMode()  {
 
     val robot = DTTHardware()
