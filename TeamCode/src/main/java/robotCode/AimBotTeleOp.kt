@@ -56,12 +56,14 @@ class AimBotTeleOp(): OpMode() {
 
         when {
             gamepad1.dpad_up && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
-            gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -+ shooterPowerIncrement
+            gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
             gamepad1.dpad_left -> robot.shooter.power = 0.0
             gamepad1.dpad_right -> rampShooterPower(1.0)
         }
-
         menu.display(1, "Shooter Power: ${robot.shooter.power}")
-
+//        BELT
+        if (gamepad1.right_trigger > 0){
+            robot.belt.power = 1.0
+        }
     }
 }
