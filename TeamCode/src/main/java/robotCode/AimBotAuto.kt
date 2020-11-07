@@ -9,6 +9,7 @@
 
 package robotCode
 
+import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import jamesTelemetryMenu.TelemetryMenu
@@ -20,6 +21,19 @@ class AimBotAuto(): LinearOpMode() {
 
     val robot= AimBotRobot()
     val menu = TelemetryMenu(telemetry, gamepad1)
+
+    override fun runOpMode() {
+
+        robot.init(hardwareMap)
+
+        waitForStart()
+
+//        Wins 5 Pts.
+//        robot.drive.driveRobotPosition(1.0,100.0, false)
+
+        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
+
+    }
 
     fun abscondTime(Interval:Int, milis:Int) {
 
@@ -37,23 +51,11 @@ class AimBotAuto(): LinearOpMode() {
             }
 
             Thread.sleep(milis.toLong())
-            menu.display(1, "Are you still there?")
         }
 
     }
 
-    override fun runOpMode() {
 
-        robot.init(hardwareMap)
-
-        waitForStart()
-
-//        Wins 5 Pts.
-//        robot.drive.driveRobotPosition(1.0,100.0, false)
-
-        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
-
-    }
 }
 
 

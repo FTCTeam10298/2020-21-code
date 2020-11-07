@@ -35,7 +35,7 @@ open class TelemetryMenu(telemetry: Telemetry, gamepad1: Gamepad): TelemetryCons
         addcursor(cursorLine)
     }
 
-    fun addcursor(line: Int) {
+    private fun addcursor(line: Int) {
 
         if (queue[line].startsWith("-"))
             queue[line] = queue[line].replaceFirst("-", " ")
