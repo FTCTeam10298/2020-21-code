@@ -10,7 +10,7 @@ import buttonHelper.ButtonHelper
 class AimBotAuto(): LinearOpMode() {
 
     val robot= AimBotRobot()
-    val menu = TelemetryMenu(telemetry, gamepad1)
+//    val menu = TelemetryMenu(telemetry, gamepad1)
 
     override fun runOpMode() {
 
@@ -19,10 +19,10 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-//        robot.drive.driveRobotPosition(1.0,100.0, false)
+        robot.drive.driveRobotPosition(1.0,100.0, false)
 
-        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
-
+//        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
+1
     }
 
     fun abscondTime(Interval:Int, milis:Int) {

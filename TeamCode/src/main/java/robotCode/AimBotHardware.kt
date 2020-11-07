@@ -11,8 +11,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 *     lBDrive
 *     rBDrive
 *    Expansion hub 3:
-*     none
-* */
+*     shooter
+*     belt
+*/
 
 open class AimBotHardware {
 
