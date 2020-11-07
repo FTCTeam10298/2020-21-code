@@ -12,7 +12,7 @@ package robotCode
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import jamesTelemetryMenu.TelemetryMenu
-import robotCode.robotMovement.AimBotRobot
+import robotCode.aimBotRobot.AimBotRobot
 
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
@@ -49,9 +49,9 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-//        robot.driveRobotPosition(1.0,100.0,false)
+//        robot.drive.driveRobotPosition(1.0,100.0, false)
 
-        robot.driveRobotTurn(1.0, 360 * 1.0)
+        robot.drive.driveRobotTurn(1.0, 360 * 1.0)
 
     }
 }

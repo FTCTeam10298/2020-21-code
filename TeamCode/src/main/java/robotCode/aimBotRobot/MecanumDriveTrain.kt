@@ -1,4 +1,4 @@
-package robotCode.robotMovement
+package robotCode.aimBotRobot
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import robotCode.AimBotHardware
