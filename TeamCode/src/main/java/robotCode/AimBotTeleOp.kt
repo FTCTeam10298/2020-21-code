@@ -61,9 +61,11 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_right -> rampShooterPower(1.0)
         }
         menu.display(1, "Shooter Power: ${robot.shooter.power}")
+        
 //        BELT
-        if (gamepad1.right_trigger > 0){
-            robot.belt.power = 1.0
-        }
+        if (gamepad1.right_trigger > 0)
+            robot.belt.power = 0.8
+        else
+            robot.belt.power = 0.0
     }
 }

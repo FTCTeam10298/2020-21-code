@@ -47,7 +47,7 @@ open class AimBotHardware {
 //        BELT
         belt = hwMap.get("belt") as DcMotor
 
-        belt.direction = DcMotorSimple.Direction.REVERSE
+        belt.direction = DcMotorSimple.Direction.FORWARD
         belt.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         belt.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
@@ -76,9 +76,6 @@ open class AimBotHardware {
 }
 
 open class AimBotHardwarePlus(): AimBotHardware() {
-
-
-
 
     /**
      * DrivePowerAll sets all of the drive train motors to the specified power level.
