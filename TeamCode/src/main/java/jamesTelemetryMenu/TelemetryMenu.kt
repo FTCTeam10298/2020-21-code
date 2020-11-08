@@ -3,9 +3,8 @@ package jamesTelemetryMenu
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-open class TelemetryMenu(telemetry: Telemetry, gamepad1: Gamepad): TelemetryConsole(telemetry) {
+open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
-    private val gamepad = gamepad1
     private var cursorLine= 4
     private var menuDone= false
     private var keyDown= true
@@ -16,7 +15,7 @@ open class TelemetryMenu(telemetry: Telemetry, gamepad1: Gamepad): TelemetryCons
 
 //    Input & Cursor--------------------------------------
 
-    private fun updateCursorLine() {
+    private fun updateCursorLine(gamepad: Gamepad) {
 //        Pushes the cursor beyond the user lines
         while (cursorLine <= lastUserLine + 1)
             cursorLine += 1
@@ -87,11 +86,11 @@ open class TelemetryMenu(telemetry: Telemetry, gamepad1: Gamepad): TelemetryCons
 
 //    DO MENUS
 
-    fun doMenus() {
+    fun doMenus(gamepad: Gamepad) {
         while (!menuDone) {
 
 //            Cursor&dpad
-            updateCursorLine()
+            updateCursorLine(gamepad)
 
 //            Update queue
             addChoiceToQueue()

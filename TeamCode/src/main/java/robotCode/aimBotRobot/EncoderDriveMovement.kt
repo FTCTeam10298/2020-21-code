@@ -4,15 +4,15 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
-import jamesTelemetryMenu.TelemetryQueue
+import jamesTelemetryMenu.TelemetryConsole
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import java.lang.Thread.sleep
 import kotlin.math.PI
 import kotlin.math.abs
 
-open class EncoderDriveMovement(): MecanumDriveTrain() {
+open class EncoderDriveMovement(val console: TelemetryConsole): MecanumDriveTrain() {
 
-    val telemetry = TelemetryQueue()
     lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
     val COUNTS_PER_MOTOR_REV = 28.0 // Rev HD Hex v2.1 Motor encoder
@@ -45,7 +45,7 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
      */
     fun driveRobotDistanceToObject(power: Double, inches: Double, smart_accel: Boolean) {
         val target = rangeSensor.getDistance(DistanceUnit.INCH) as Float - inches // FIXME: how accurate is sensor?
-        telemetry.addToQueue(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
+        console.display(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
         driveRobotPosition(abs(power), target, smart_accel) // Use abs() to make sure power is positive
     }
 
@@ -78,10 +78,10 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 val frDrive: Int = rFDrive.currentPosition
                 val blDrive: Int = lBDrive.currentPosition
                 val brDrive: Int = rBDrive.currentPosition
-                telemetry.addToQueue(3, "Front left encoder: $flDrive")
-                telemetry.addToQueue(4, "Front right encoder: $frDrive")
-                telemetry.addToQueue(5, "Back left encoder: $blDrive")
-                telemetry.addToQueue(6, "Back right encoder $brDrive")
+                console.display(3, "Front left encoder: $flDrive")
+                console.display(4, "Front right encoder: $frDrive")
+                console.display(5, "Back left encoder: $blDrive")
+                console.display(6, "Back right encoder $brDrive")
 
                 // State magic
                 if (state == 1 &&
@@ -95,17 +95,17 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                     drivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
                     state = 3 // We are DECELing now
                 }
-//                menu.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
+                console.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
             sleep(10)
         }
         drivePowerAll(0.0)
         // Clear used section of dashboard
-//        menu.display(3, "")
-//        menu.display(4, "")
-//        menu.display(5, "")
-//        menu.display(6, "")
-//        menu.display(7, "")
+        console.display(3, "")
+        console.display(4, "")
+        console.display(5, "")
+        console.display(6, "")
+        console.display(7, "")
     }
 
     fun driveRobotTurn(power: Double, degree: Double, smart_accel: Boolean) {
@@ -132,10 +132,10 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 val frDrive: Int = rFDrive.currentPosition
                 val blDrive: Int = lBDrive.currentPosition
                 val brDrive: Int = rBDrive.currentPosition
-//                menu.display(3, "Front left encoder: $flDrive")
-//                menu.display(4, "Front right encoder: $frDrive")
-//                menu.display(5, "Back left encoder: $blDrive")
-//                menu.display(6, "Back right encoder: $brDrive")
+                console.display(3, "Front left encoder: $flDrive")
+                console.display(4, "Front right encoder: $frDrive")
+                console.display(5, "Back left encoder: $blDrive")
+                console.display(6, "Back right encoder: $brDrive")
 
                 // State magic
                 if (state == 1 &&
@@ -149,17 +149,17 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                     drivePowerAll(abs(power) / 2) // Use abs() to make sure power is positive
                     state = 3 // We are DECELing now
                 }
-//                menu.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
+                console.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
             sleep(10)
         }
         drivePowerAll(0.0)
         // Clear used section of dashboard
-//        menu.display(3, "")
-//        menu.display(4, "")
-//        menu.display(5, "")
-//        menu.display(6, "")
-//        menu.display(7, "")
+        console.display(3, "")
+        console.display(4, "")
+        console.display(5, "")
+        console.display(6, "")
+        console.display(7, "")
     }
 
     /** For compatibility  */
@@ -208,10 +208,10 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-//                menu.display(3, "Left front encoder: ${lFDrive.currentPosition}")
-//                menu.display(4, "Right front encoder: ${rFDrive.currentPosition}")
-//                menu.display(5, "Left back encoder: ${lBDrive.currentPosition}")
-//                menu.display(6, "Right back encoder: ${rBDrive.currentPosition}")
+                console.display(3, "Left front encoder: ${lFDrive.currentPosition}")
+                console.display(4, "Right front encoder: ${rFDrive.currentPosition}")
+                console.display(5, "Left back encoder: ${lBDrive.currentPosition}")
+                console.display(6, "Right back encoder: ${rBDrive.currentPosition}")
             }
             sleep(10)
         }
@@ -251,15 +251,15 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 while (lFDrive.isBusy && lBDrive.isBusy) {
                     val flDrive: Int = lFDrive.currentPosition
                     val blDrive: Int = lBDrive.currentPosition
-//                    menu.display(3, "Front left encoder: $flDrive")
-//                    menu.display(4, "Back left encoder: $blDrive")
+                    console.display(3, "Front left encoder: $flDrive")
+                    console.display(4, "Back left encoder: $blDrive")
                 }
             } else {
                 while (rFDrive.isBusy && rBDrive.isBusy) {
                     val frDrive: Int = rFDrive.currentPosition
                     val brDrive: Int = rBDrive.currentPosition
-//                    menu.display(3, "Front left encoder: $frDrive")
-//                    menu.display(4, "Back left encoder: $brDrive")
+                    console.display(3, "Front left encoder: $frDrive")
+                    console.display(4, "Back left encoder: $brDrive")
                 }
             }
             sleep(10)
@@ -273,19 +273,13 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
 
         motorUsed.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motorUsed.mode = DcMotor.RunMode.RUN_TO_POSITION
-//        telemetry.addLine("] ${motorUsed} JOINS THE FIGHT!")
-//        telemetry.update()
 
         motorUsed.targetPosition = ticks
         while (motorUsed.isBusy) {
             motorUsed.power = 1.0
         }
-//        telemetry.addLine("] ${motorUsed} uses Spin sucessfully!")
-//        telemetry.update()
+
         motorUsed.power = 0.0
-
-
-
     }
 
     fun abscondCautiously(motorUsed1:DcMotor, motorUsed2:DcMotor, motorUsed3:DcMotor, motorUsed4:DcMotor,  ticks:Int) {
@@ -298,8 +292,6 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
         motorUsed3.mode = DcMotor.RunMode.RUN_TO_POSITION
         motorUsed4.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motorUsed4.mode = DcMotor.RunMode.RUN_TO_POSITION
-//        telemetry.addLine("] ${motorUsed1} JOINS THE FIGHT!")
-//        telemetry.update()
 
         motorUsed1.targetPosition = ticks
         motorUsed2.targetPosition = ticks
@@ -312,8 +304,7 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
             motorUsed3.power = 1.0
             motorUsed4.power = 1.0
         }
-//        telemetry.addLine("] ${motorUsed1} uses creepBeast sucessfully!")
-//        telemetry.update()
+
         motorUsed1.power = 0.0
         motorUsed2.power = 0.0
         motorUsed3.power = 0.0

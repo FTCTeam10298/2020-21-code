@@ -8,8 +8,8 @@ import robotCode.aimBotRobot.EncoderDriveMovement
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    val robot= EncoderDriveMovement()
-    val menu = TelemetryMenu(telemetry, gamepad1)
+    var menu: TelemetryMenu = TelemetryMenu(telemetry)
+    val robot= EncoderDriveMovement(menu)
 
     override fun runOpMode() {
 
@@ -18,10 +18,9 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-        robot.driveRobotPosition(0.5,50.0, false)
-
+//        robot.driveRobotPosition(0.5,50.0, false)
 //        robot.driveRobotTurn(1.0, 360 * 1.0)
-1
+
     }
 
     fun abscondTime(Interval:Int, milis:Int) {
