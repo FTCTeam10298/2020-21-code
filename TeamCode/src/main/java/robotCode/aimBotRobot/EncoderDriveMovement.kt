@@ -4,6 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
+import jamesTelemetryMenu.TelemetryQueue
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import java.lang.Thread.sleep
 import kotlin.math.PI
@@ -11,14 +12,14 @@ import kotlin.math.abs
 
 open class EncoderDriveMovement(): MecanumDriveTrain() {
 
-//    val menu = TelemetryMenu(telemetry, gamepad1)
+    val telemetry = TelemetryQueue()
     lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
     val COUNTS_PER_MOTOR_REV = 28.0 // Rev HD Hex v2.1 Motor encoder
     val GEARBOX_RATIO = 19.2 // 40 for 40:1, 20 for 20:1
     val DRIVE_GEAR_REDUCTION = 1 / 1 // This is > 1.0 if geared for torque
     val WHEEL_DIAMETER_INCHES = 3.77953 // For figuring circumference
-    val DRIVETRAIN_ERROR = 1.0 // Error determined from testing
+    val DRIVETRAIN_ERROR = 0.0 // Error determined from testing
     val COUNTS_PER_INCH = COUNTS_PER_MOTOR_REV * GEARBOX_RATIO * DRIVE_GEAR_REDUCTION / (WHEEL_DIAMETER_INCHES * PI) / DRIVETRAIN_ERROR
     val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.225 + 0.0 // Found by testing
 
@@ -44,7 +45,7 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
      */
     fun driveRobotDistanceToObject(power: Double, inches: Double, smart_accel: Boolean) {
         val target = rangeSensor.getDistance(DistanceUnit.INCH) as Float - inches // FIXME: how accurate is sensor?
-//        menu.display(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
+        telemetry.addToQueue(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
         driveRobotPosition(abs(power), target, smart_accel) // Use abs() to make sure power is positive
     }
 
@@ -77,10 +78,10 @@ open class EncoderDriveMovement(): MecanumDriveTrain() {
                 val frDrive: Int = rFDrive.currentPosition
                 val blDrive: Int = lBDrive.currentPosition
                 val brDrive: Int = rBDrive.currentPosition
-//                menu.display(3, "Front left encoder: $flDrive")
-//                menu.display(4, "Front right encoder: $frDrive")
-//                menu.display(5, "Back left encoder: $blDrive")
-//                menu.display(6, "Back right encoder $brDrive")
+                telemetry.addToQueue(3, "Front left encoder: $flDrive")
+                telemetry.addToQueue(4, "Front right encoder: $frDrive")
+                telemetry.addToQueue(5, "Back left encoder: $blDrive")
+                telemetry.addToQueue(6, "Back right encoder $brDrive")
 
                 // State magic
                 if (state == 1 &&

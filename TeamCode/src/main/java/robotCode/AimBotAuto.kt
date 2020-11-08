@@ -2,15 +2,14 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import robotCode.aimBotRobot.AimBotRobot
 import jamesTelemetryMenu.TelemetryMenu
-import buttonHelper.ButtonHelper
+import robotCode.aimBotRobot.EncoderDriveMovement
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    val robot= AimBotRobot()
-//    val menu = TelemetryMenu(telemetry, gamepad1)
+    val robot= EncoderDriveMovement()
+    val menu = TelemetryMenu(telemetry, gamepad1)
 
     override fun runOpMode() {
 
@@ -19,7 +18,7 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-        robot.driveRobotPosition(1.0,100.0, false)
+        robot.driveRobotPosition(0.5,50.0, false)
 
 //        robot.driveRobotTurn(1.0, 360 * 1.0)
 1

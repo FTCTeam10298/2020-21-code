@@ -3,52 +3,35 @@ package robotCode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
+import robotCode.aimBotRobot.MecanumDriveTrain
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp(): OpMode() {
 
-    val robot = AimBotHardware()
+    val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
 
-    fun fourMotors(rFpower: Double, lFpower: Double, lBpower: Double, rBpower: Double) {
-        robot.rFDrive.power = rFpower
-        robot.lFDrive.power = lFpower
-        robot.lBDrive.power = lBpower
-        robot.rBDrive.power = rBpower
-    }
-
-    fun rampShooterPower(targetPower: Double) {
-        while (robot.shooter.power < targetPower) {
-            robot.shooter.power = targetPower - robot.shooter.power
-        }
-    }
-
     override fun init() {
+        console.display(1, "Initializing...")
         robot.init(hardwareMap)
+        console.display(1, "Initialized")
     }
 
     override fun loop() {
 
+        console.display(1, "Robot Running")
+
 //        DRONE DRIVE
-        val y =gamepad1.left_stick_y.toDouble()
-        val x =gamepad1.left_stick_x.toDouble()
-        val r =gamepad1.right_stick_x.toDouble()
+        val y = curveVal(gamepad1.left_stick_y.toDouble(), 0.3, -0.3, 0.5)
+        val x = curveVal(gamepad1.left_stick_x.toDouble(), 0.3, -0.3, 0.5)
+        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.3, -0.3, 0.5)
 
-        console.display(3, "Y: $y")
-        console.display(4, "X: $x")
-        console.display(5, "X: $r")
-
-        fourMotors(
-                -(y + x + r),
+        robot.driveSetPower(
                 -(y - x - r),
+                -(y + x + r),
                 -(y + x - r),
                 -(y - x + r)
         )
-
-        console.display(7, "LF: ${robot.lFDrive.power}")
-        console.display(8, "RF: ${robot.rFDrive.power}")
-        console.display(9, "LB: ${robot.lBDrive.power}")
-        console.display(10, "RB: ${robot.rBDrive.power}")
 
 //        SHOOTER
         val shooterPowerIncrement: Double = 0.008
@@ -58,14 +41,33 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_up && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
             gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
             gamepad1.dpad_left -> robot.shooter.power = 0.0
-            gamepad1.dpad_right -> rampShooterPower(1.0)
+            gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
-        console.display(1, "Shooter Power: ${robot.shooter.power}")
         
 //        BELT
         if (gamepad1.right_trigger > 0)
             robot.belt.power = 0.8
         else
             robot.belt.power = 0.0
+
+
+        console.display(2, "Collector: ")
+        console.display(3, "Belt: ${robot.belt.power}")
+        console.display(4, "Shooter: ${robot.shooter.power}")
+
+        console.display(6, "LF: ${robot.lFDrive.power}")
+        console.display(7, "RF: ${robot.rFDrive.power}")
+        console.display(8, "LB: ${robot.lBDrive.power}")
+        console.display(9, "RB: ${robot.rBDrive.power}")
     }
+
+    fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
+
+        return if (subject < range1 && subject > range2) {
+            subject * amp
+        }else{
+            subject
+        }
+    }
+
 }
