@@ -11,6 +11,8 @@ class AimBotTeleOp(): OpMode() {
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
 
+    var driveDirection = 1
+
     override fun init() {
         console.display(1, "Initializing...")
         robot.init(hardwareMap)
@@ -21,9 +23,15 @@ class AimBotTeleOp(): OpMode() {
 
         console.display(1, "Robot Running")
 
+
 //        DRONE DRIVE
-        val y = curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
-        val x = curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
+//        Invert
+        if (gamepad1.left_stick_button && stateChanged(gamepad1.left_stick_button)) { // only fire event on button down
+            driveDirection = -driveDirection //invert
+        }
+
+        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
         val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
         robot.driveSetPower(
@@ -54,7 +62,10 @@ class AimBotTeleOp(): OpMode() {
         console.display(2, "Collector: ")
         console.display(3, "Belt: ${robot.belt.power}")
         console.display(4, "Shooter: ${robot.shooter.power}")
-
+        if (driveDirection > 0)
+            console.display(5, "Collector first")
+        else
+            console.display(5, "Shooter first")
         console.display(6, "LF: ${robot.lFDrive.power}")
         console.display(7, "RF: ${robot.rFDrive.power}")
         console.display(8, "LB: ${robot.lBDrive.power}")
@@ -68,6 +79,17 @@ class AimBotTeleOp(): OpMode() {
         }else{
             subject
         }
+    }
+
+    var buttonPreviousValue = false
+    fun stateChanged(button: Boolean): Boolean {
+
+        return if (buttonPreviousValue != button) {
+            /*state has changed*/
+            buttonPreviousValue = button
+            true
+        }else
+            false
     }
 
 }

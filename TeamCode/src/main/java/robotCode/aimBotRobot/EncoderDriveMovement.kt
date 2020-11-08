@@ -23,7 +23,6 @@ open class EncoderDriveMovement(val console: TelemetryConsole): MecanumDriveTrai
     val COUNTS_PER_INCH = COUNTS_PER_MOTOR_REV * GEARBOX_RATIO * DRIVE_GEAR_REDUCTION / (WHEEL_DIAMETER_INCHES * PI) / DRIVETRAIN_ERROR
     val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.225 + 0.0 // Found by testing
 
-
     /**
      * DriveRobotTime drives the robot the set number of inches at the given power level.
      * @param ms How long to drive
