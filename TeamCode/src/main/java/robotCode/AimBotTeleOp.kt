@@ -22,9 +22,9 @@ class AimBotTeleOp(): OpMode() {
         console.display(1, "Robot Running")
 
 //        DRONE DRIVE
-        val y = curveVal(gamepad1.left_stick_y.toDouble(), 0.3, -0.3, 0.5)
-        val x = curveVal(gamepad1.left_stick_x.toDouble(), 0.3, -0.3, 0.5)
-        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.3, -0.3, 0.5)
+        val y = curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+        val x = curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
+        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
         robot.driveSetPower(
                 -(y - x - r),
