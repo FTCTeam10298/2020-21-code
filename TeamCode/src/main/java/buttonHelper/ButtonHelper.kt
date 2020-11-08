@@ -5,7 +5,7 @@ class ButtonHelper() {
 //    val gamepad: Gamepad = Gamepad()
 
     var buttonPreviousValue = false
-    fun isStateChanged(button: Boolean): Boolean {
+    fun stateChanged(button: Boolean): Boolean {
 
         if (buttonPreviousValue != button) {
             /*state has changed*/
@@ -15,25 +15,16 @@ class ButtonHelper() {
         return false
     }
 
-    var buttonDown = false
     fun loopButton(button: Boolean): Boolean {
-
-        if (isStateChanged(button)) /* button state has changed */ {
-            if (button) /* only fire event on button press, not release */
-                buttonDown = !buttonDown /*invert*/
-        }
-
-        return buttonDown
+        return button
     }
 
     var toggleState: Boolean = false
     fun toggleButton(button: Boolean): Boolean {
 
+        if (button && stateChanged(button)) // only fire event on button down
+            toggleState = !toggleState //invert
 
-        if (isStateChanged(button)) { // button state has changed
-            if (button) // only fire event on button down
-                toggleState = !toggleState //invert
-        }
 
         return toggleState
     }
