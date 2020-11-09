@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 import robotCode.aimBotRobot.MecanumDriveTrain
+import kotlin.math.pow
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp(): OpMode() {
@@ -11,7 +12,8 @@ class AimBotTeleOp(): OpMode() {
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
 
-    var driveDirection = 1
+    var driveDirection = -1
+    var buttonPreviousValue = false
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -23,14 +25,15 @@ class AimBotTeleOp(): OpMode() {
 
         console.display(1, "Robot Running")
 
-
 //        DRONE DRIVE
 //        Invert
-        if (gamepad1.left_stick_button && stateChanged(gamepad1.left_stick_button)) { // only fire event on button down
+        if (gamepad1.left_stick_button && (buttonPreviousValue != gamepad1.left_stick_button)) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
+        buttonPreviousValue = gamepad1.left_stick_button
 
-        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+//        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+        val y = driveDirection * gamepad1.left_stick_y.toDouble().pow(3)
         val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
         val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
@@ -80,16 +83,4 @@ class AimBotTeleOp(): OpMode() {
             subject
         }
     }
-
-    var buttonPreviousValue = false
-    fun stateChanged(button: Boolean): Boolean {
-
-        return if (buttonPreviousValue != button) {
-            /*state has changed*/
-            buttonPreviousValue = button
-            true
-        }else
-            false
-    }
-
 }
