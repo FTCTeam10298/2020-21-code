@@ -13,7 +13,6 @@ class AimBotTeleOp(): OpMode() {
     val console = TelemetryConsole(telemetry)
 
     var driveDirection = -1
-    var buttonPreviousValue = false
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -21,16 +20,17 @@ class AimBotTeleOp(): OpMode() {
         console.display(1, "Initialized")
     }
 
+
     override fun loop() {
 
         console.display(1, "Robot Running")
 
 //        DRONE DRIVE
 //        Invert
-        if (gamepad1.left_stick_button && (buttonPreviousValue != gamepad1.left_stick_button)) { // only fire event on button down
+//        bothGamepads.mode = DualGamePads.Mode.ReturnHigher
+        if (gamepad1.left_stick_button && stateChanged()) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
-        buttonPreviousValue = gamepad1.left_stick_button
 
 //        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
 //        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
@@ -76,6 +76,12 @@ class AimBotTeleOp(): OpMode() {
         console.display(7, "RF: ${robot.rFDrive.power}")
         console.display(8, "LB: ${robot.lBDrive.power}")
         console.display(9, "RB: ${robot.rBDrive.power}")
+    }
+
+    var buttonPreviousValue = false
+    fun stateChanged():Boolean {
+        buttonPreviousValue = gamepad1.left_stick_button
+        return (buttonPreviousValue != gamepad1.left_stick_button)
     }
 
     fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
