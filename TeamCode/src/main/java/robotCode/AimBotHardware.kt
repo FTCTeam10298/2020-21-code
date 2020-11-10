@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 
@@ -37,7 +38,7 @@ open class AimBotHardware {
         hwMap = ahwMap
 
 //        SHOOTER
-        shooter = hwMap.get("shooter") as DcMotor
+        shooter = hwMap.get("shooter") as DcMotorEx
 
         shooter.direction = DcMotorSimple.Direction.REVERSE
         shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
