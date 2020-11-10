@@ -67,7 +67,7 @@ open class DualGamePads(private val gamepad1: Gamepad, private val gamepad2: Gam
     fun returnAvg(gamepad1: Double, gamepad2: Double): Double = (gamepad1 / gamepad2) * 2
 
 //    Int returns
-    fun returnHigher(gamepad1: Int, gamepad2: Int): Int {
-
-    }
+//    fun returnHigher(gamepad1: Int, gamepad2: Int): Int {
+//
+//    }
 }
