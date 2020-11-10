@@ -1,5 +1,6 @@
 package robotCode
 
+import buttonHelper.Gamepad1
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
@@ -12,6 +13,7 @@ class AimBotTeleOp(): OpMode() {
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
     val gamepads = Gamepad1()
+    val bothGamepads = DualGamePads(gamepad1, gamepad2)
 
     var driveDirection = -1
 
