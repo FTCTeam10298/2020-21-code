@@ -11,6 +11,7 @@ class AimBotTeleOp(): OpMode() {
 
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
+    val gamepads = Gamepad1()
 
     var driveDirection = -1
 
