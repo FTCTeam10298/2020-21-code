@@ -18,7 +18,15 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
 //        Wins 5 Pts.
-//        robot.driveRobotPosition(0.5,50.0, true)
+
+//        robot.driveSetRunToPosition()
+//        robot.lFDrive.targetPosition = 5000
+//        robot.lFDrive.power = 1.0
+//        while (robot.lFDrive.isBusy) {
+//            sleep(10)
+//            menu.display(2, robot.lFDrive.power.toString())
+//        }
+        robot.driveRobotPosition(0.5,50.0, true)
 //        robot.driveRobotTurn(1.0, 360 * 1.0)
 
     }
