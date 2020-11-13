@@ -14,7 +14,7 @@ class AimBotTeleOp(): OpMode() {
 //    val gamepads = Gamepad1()
 //    val bothGamepads = DualGamePads(gamepad1, gamepad2)
 
-    var driveDirection: Int = -1
+    var driveDirection: Int = 1
 
     override fun init() {
         console.display(1, "Initializing...")
