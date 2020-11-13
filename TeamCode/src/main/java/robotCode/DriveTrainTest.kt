@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -32,10 +33,15 @@ open class DTTHardware {
         rBDrive.direction = DcMotorSimple.Direction.FORWARD
         lBDrive.direction = DcMotorSimple.Direction.FORWARD
 
-        rFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        lFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        rBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        lBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lFDrive.targetPosition = 0
+        rFDrive.targetPosition = 0
+        lBDrive.targetPosition = 0
+        rBDrive.targetPosition = 0
+
+        rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
         rFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
@@ -44,7 +50,7 @@ open class DTTHardware {
     }
 }
 
-//@TeleOp(name="Drive Train Test", group="Aim Bot")
+@TeleOp(name="Drive Train Test", group="Aim Bot")
 class DriveTrainTest: OpMode()  {
 
     val robot = DTTHardware()
@@ -55,19 +61,35 @@ class DriveTrainTest: OpMode()  {
     }
 
     override fun loop() {
-        robot.rFDrive.power = 1.0
         robot.lFDrive.power = 1.0
+        robot.rFDrive.power = 1.0
         robot.lBDrive.power = 1.0
         robot.rBDrive.power = 1.0
 
-        console.display(1, robot.rFDrive.power.toString())
-        console.display(2, robot.lFDrive.power.toString())
-        console.display(3, robot.rBDrive.power.toString())
-        console.display(4, robot.lBDrive.power.toString())
+        robot.lFDrive.targetPosition = 100
+        robot.rFDrive.targetPosition = 100
+        robot.lBDrive.targetPosition = 100
+        robot.rBDrive.targetPosition = 100
 
-        console.display(5, robot.rFDrive.currentPosition.toString())
-        console.display(6, robot.lFDrive.currentPosition.toString())
-        console.display(7, robot.rBDrive.currentPosition.toString())
-        console.display(8, robot.lBDrive.currentPosition.toString())
+        if (robot.lFDrive.currentPosition > robot.lFDrive.targetPosition)
+            console.display(3, "LF+")
+        else
+            console.display(3, "LF-")
+
+        if (robot.rFDrive.currentPosition > robot.rFDrive.targetPosition)
+            console.display(4, "RF+")
+        else
+            console.display(4, "RF-")
+
+        if (robot.lBDrive.currentPosition > robot.lBDrive.targetPosition)
+            console.display(5, "LB+")
+        else
+            console.display(5, "LB-")
+
+        if (robot.rBDrive.currentPosition > robot.rBDrive.targetPosition)
+            console.display(6, "RB+")
+        else
+            console.display(6, "RB-")
+
     }
 }
