@@ -11,8 +11,6 @@ class AimBotTeleOp(): OpMode() {
 
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
-//    val gamepads = Gamepad1()
-//    val bothGamepads = DualGamePads(gamepad1, gamepad2)
 
     var driveDirection: Int = 1
 
@@ -29,17 +27,17 @@ class AimBotTeleOp(): OpMode() {
 
 //        DRONE DRIVE
 //        Invert
-        if (gamepad1.left_stick_button && stateChanged()) { // only fire event on button down
+        if (stateChanged() && gamepad1.left_stick_button) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
 
-//        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
-//        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
-//        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
+        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
+        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
-        val y: Double = pow(gamepad1.left_stick_y.toDouble(), 2.2) * driveDirection
-        val x: Double = pow(gamepad1.left_stick_x.toDouble(), 2.2) * driveDirection
-        val r: Double = pow(gamepad1.right_stick_x.toDouble(), 2.2)
+//        val y: Double = pow(gamepad1.left_stick_y.toDouble(), 2.2) * driveDirection
+//        val x: Double = pow(gamepad1.left_stick_x.toDouble(), 2.2) * driveDirection
+//        val r: Double = pow(gamepad1.right_stick_x.toDouble(), 2.2)
 
 //        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
 //        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
@@ -85,8 +83,9 @@ class AimBotTeleOp(): OpMode() {
 
     var buttonPreviousValue = false
     fun stateChanged():Boolean {
+        val re: Boolean = buttonPreviousValue != gamepad1.left_stick_button
         buttonPreviousValue = gamepad1.left_stick_button
-        return (buttonPreviousValue != gamepad1.left_stick_button)
+        return re
     }
 
 //    fun exponent(n: Double): Double {
