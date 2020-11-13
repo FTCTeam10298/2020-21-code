@@ -41,10 +41,10 @@ open class MecanumDriveTrain(): AimBotHardware() {
     open fun driveSetRunToPosition() {
         if (lFDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || rFDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || lBDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || rBDrive.mode != DcMotor.RunMode.RUN_TO_POSITION) {
             driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
-            driveSetMode(DcMotor.RunMode.RUN_TO_POSITION)
             // When the encoder is reset, also reset the target position, so it doesn't add an old
             // target position when using driveAddTargetPosition().
             driveSetTargetPosition(0, 0, 0, 0)
+            driveSetMode(DcMotor.RunMode.RUN_TO_POSITION)
         }
     }
 

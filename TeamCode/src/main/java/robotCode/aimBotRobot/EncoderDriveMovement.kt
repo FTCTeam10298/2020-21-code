@@ -11,7 +11,7 @@ import java.lang.Thread.sleep
 import kotlin.math.PI
 import kotlin.math.abs
 
-open class EncoderDriveMovement(val console: TelemetryConsole): MecanumDriveTrain() {
+open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumDriveTrain() {
 
     lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
@@ -19,7 +19,7 @@ open class EncoderDriveMovement(val console: TelemetryConsole): MecanumDriveTrai
     val GEARBOX_RATIO = 19.2 // 40 for 40:1, 20 for 20:1
     val DRIVE_GEAR_REDUCTION = 1 / 1 // This is > 1.0 if geared for torque
     val WHEEL_DIAMETER_INCHES = 3.77953 // For figuring circumference
-    val DRIVETRAIN_ERROR = 0.0 // Error determined from testing
+    val DRIVETRAIN_ERROR = 1.0 // Error determined from testing
     val COUNTS_PER_INCH = COUNTS_PER_MOTOR_REV * GEARBOX_RATIO * DRIVE_GEAR_REDUCTION / (WHEEL_DIAMETER_INCHES * PI) / DRIVETRAIN_ERROR
     val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.225 + 0.0 // Found by testing
 
@@ -81,6 +81,10 @@ open class EncoderDriveMovement(val console: TelemetryConsole): MecanumDriveTrai
                 console.display(4, "Front right encoder: $frDrive")
                 console.display(5, "Back left encoder: $blDrive")
                 console.display(6, "Back right encoder $brDrive")
+                console.display(7, "Front left target: ${lFDrive.targetPosition}")
+                console.display(8, "Front right target: ${rFDrive.targetPosition}")
+                console.display(9, "Back left target: ${lBDrive.targetPosition}")
+                console.display(10, "Back right target ${rBDrive.targetPosition}")
 
                 // State magic
                 if (state == 1 &&
