@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 import robotCode.aimBotRobot.MecanumDriveTrain
-import kotlin.math.pow
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp(): OpMode() {
@@ -13,9 +12,9 @@ class AimBotTeleOp(): OpMode() {
     val robot = MecanumDriveTrain()
     val console = TelemetryConsole(telemetry)
 //    val gamepads = Gamepad1()
-    val bothGamepads = DualGamePads(gamepad1, gamepad2)
+//    val bothGamepads = DualGamePads(gamepad1, gamepad2)
 
-    var driveDirection = -1
+    var driveDirection: Int = -1
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -30,7 +29,6 @@ class AimBotTeleOp(): OpMode() {
 
 //        DRONE DRIVE
 //        Invert
-//        bothGamepads.mode = DualGamePads.Mode.ReturnHigher
         if (gamepad1.left_stick_button && stateChanged()) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
@@ -39,9 +37,13 @@ class AimBotTeleOp(): OpMode() {
 //        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
 //        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
-        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
-        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
-        val r = gamepad1.right_stick_x.toDouble().pow(3)
+        val y: Double = pow(gamepad1.left_stick_y.toDouble(), 2.2) * driveDirection
+        val x: Double = pow(gamepad1.left_stick_x.toDouble(), 2.2) * driveDirection
+        val r: Double = pow(gamepad1.right_stick_x.toDouble(), 2.2)
+
+//        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
+//        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
+//        val r = gamepad1.right_stick_x.toDouble().pow(3)
 
         robot.driveSetPower(
                 -(y - x - r),
@@ -86,6 +88,11 @@ class AimBotTeleOp(): OpMode() {
         buttonPreviousValue = gamepad1.left_stick_button
         return (buttonPreviousValue != gamepad1.left_stick_button)
     }
+
+//    fun exponent(n: Double): Double {
+//        for (i in (0..n))
+//
+//    }
 
     fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
 
