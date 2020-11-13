@@ -1,9 +1,6 @@
 package robotCode
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.*
 
 /*  CURRENT HARDWARE MAP:
 *    Expansion hub 2:
@@ -30,12 +27,18 @@ open class AimBotHardware {
 //    BELT
     lateinit var belt: DcMotor
 
+//    SERVOS
+    lateinit var gate: Servo
+
 //    HARDWARE MAP
     lateinit var hwMap: HardwareMap
 
     fun init(ahwMap: HardwareMap) {
 
         hwMap = ahwMap
+
+//        SERVO
+        gate = hwMap.get("gate") as Servo
 
 //        SHOOTER
         shooter = hwMap.get("shooter") as DcMotorEx

@@ -35,10 +35,6 @@ class AimBotTeleOp(): OpMode() {
         val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
         val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
-//        val y: Double = pow(gamepad1.left_stick_y.toDouble(), 2.2) * driveDirection
-//        val x: Double = pow(gamepad1.left_stick_x.toDouble(), 2.2) * driveDirection
-//        val r: Double = pow(gamepad1.right_stick_x.toDouble(), 2.2)
-
 //        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
 //        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
 //        val r = gamepad1.right_stick_x.toDouble().pow(3)
@@ -61,24 +57,29 @@ class AimBotTeleOp(): OpMode() {
 //            gamepad1.dpad_right -> robot.shooter.power = 1.0
 
         }
-//        BELT
-        if (gamepad1.right_trigger > 0)
+
+//        BELT && GATE
+        if (gamepad1.right_trigger > 0) {
             robot.belt.power = 0.8
-        else
+            robot.gate.position = 1.0
+        } else {
             robot.belt.power = 0.0
-
-
-        console.display(2, "Collector: ")
-        console.display(3, "Belt: ${robot.belt.power}")
-        console.display(4, "Shooter: ${robot.shooter.power}")
-        when {
-            driveDirection > 0 -> console.display(5, "Collector first")
-            else -> console.display(5, "Shooter first")
+            robot.gate.position = 0.0
         }
-        console.display(6, "LF: ${robot.lFDrive.power}")
-        console.display(7, "RF: ${robot.rFDrive.power}")
-        console.display(8, "LB: ${robot.lBDrive.power}")
-        console.display(9, "RB: ${robot.rBDrive.power}")
+
+//        CONSOLE
+        console.display(2, "Collector: ")
+        console.display(3, "Shooter: ${robot.shooter.power}")
+        console.display(4, "Gate: ${robot.gate.position}")
+        console.display(5, "Belt: ${robot.belt.power}")
+        when {
+            driveDirection > 0 -> console.display(6, "Collector first")
+            else -> console.display(6, "Shooter first")
+        }
+        console.display(7, "LF: ${robot.lFDrive.power}")
+        console.display(8, "RF: ${robot.rFDrive.power}")
+        console.display(9, "LB: ${robot.lBDrive.power}")
+        console.display(10, "RB: ${robot.rBDrive.power}")
     }
 
     var buttonPreviousValue = false
@@ -88,16 +89,11 @@ class AimBotTeleOp(): OpMode() {
         return re
     }
 
-//    fun exponent(n: Double): Double {
-//        for (i in (0..n))
-//
-//    }
-
     fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
 
         return if (subject < range1 && subject > range2) {
             subject * amp
-        }else{
+        } else {
             subject
         }
     }
