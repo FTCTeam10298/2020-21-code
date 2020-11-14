@@ -33,14 +33,13 @@ class AimBotTeleOp(): OpMode() {
             driveDirection = -driveDirection //invert
         }
 
-//        val y = driveDirection * gamepad1.left_stick_y.toDouble()
-//        val x = driveDirection * gamepad1.left_stick_x.toDouble()
-//        val r = gamepad1.right_stick_x.toDouble()
+        val yInput = gamepad1.left_stick_y.toDouble()
+        val xInput = gamepad1.left_stick_x.toDouble()
+        val rInput = gamepad1.right_stick_x.toDouble()
 
-
-        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
-        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
-        val r = gamepad1.right_stick_x.toDouble().pow(3)
+        val y = yInput.pow(5) * driveDirection
+        val x = xInput.pow(5) * driveDirection
+        val r = rInput.pow(5) * 0.5 + 0.5 * rInput
 
         robot.driveSetPower(
                 -(y - x - r),
@@ -60,13 +59,11 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
 
-//        BELT && GATE
-        if (gamepad1.right_trigger > 0) {
-            robot.belt.power = 0.8
-            robot.gate.position = 1.0
-        } else {
-            robot.belt.power = 0.0
-            robot.gate.position = 0.0
+//        BELT & GATE
+        when {
+            gamepad1.right_trigger > 0 -> robot.belt.power = 0.8
+            gamepad1.left_trigger > 0 -> robot.belt.power = -0.8
+            else -> robot.belt.power = 0.0
         }
 
 //        CONSOLE
