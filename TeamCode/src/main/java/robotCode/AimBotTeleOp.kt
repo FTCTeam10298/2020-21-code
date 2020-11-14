@@ -92,12 +92,12 @@ class AimBotTeleOp(): OpMode() {
     }
 
     fun pow(n: Double, exponent: Double): Double {
-        var polarity: Double = return when {
+        var polarity: Double = 0.0
+        polarity = when {
             n > 0 -> 1.0
             n < 0 -> -1.0
             else -> 0.0
         }
-//        console.display(3, polarity.toString())
         return n.absoluteValue.pow(exponent) * polarity
     }
 
