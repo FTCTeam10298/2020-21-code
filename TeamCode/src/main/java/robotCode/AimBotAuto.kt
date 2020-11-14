@@ -26,7 +26,7 @@ class AimBotAuto(): LinearOpMode() {
 //            sleep(10)
 //            menu.display(2, robot.lFDrive.power.toString())
 //        }
-        robot.driveRobotPosition(0.5,100.0, true)
+        robot.driveRobotPosition(0.5,73.0, true)
 //        robot.driveRobotTurn(1.0, 360 * 1.0)
 
     }
