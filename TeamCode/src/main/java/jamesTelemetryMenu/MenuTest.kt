@@ -1,22 +1,21 @@
 package jamesTelemetryMenu
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 
-@TeleOp
-class MenuTest(): OpMode() {
+@Autonomous
+class MenuTest(): LinearOpMode() {
 
     val menu = TelemetryMenu(telemetry)
 
-    override fun init() {
+    override fun runOpMode() {
 
-        menu.addOption("Alliance", "Red")
-        menu.addOption("Alliance", "Blue")
+//        menu.addOption("Alliance", "Red")
+//        menu.addOption("Alliance", "Blue")
+        menu.display(2, "hi")
         menu.doMenus(gamepad1)
 
+        waitForStart()
     }
 
-    override fun loop() {
-        
-    }
 }

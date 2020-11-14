@@ -80,7 +80,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
         var currentOption = find(options, currentChoice)
         for (i in (currentOption.indices))
-            replaceLine(i + lastUserLine + 3, "${currentOption.elementAt(i).option}")
+            replaceLine(i + lastUserLine + 3, currentOption.elementAt(i).option)
     }
 
 
@@ -93,7 +93,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
             updateCursorLine(gamepad)
 
 //            Update queue
-            addChoiceToQueue()
+//            addChoiceToQueue()
 
 //            Telemetry
             queueToTelemetry()
