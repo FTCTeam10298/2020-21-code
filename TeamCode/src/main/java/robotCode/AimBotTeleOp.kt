@@ -38,9 +38,9 @@ class AimBotTeleOp(): OpMode() {
 //        val r = gamepad1.right_stick_x.toDouble()
 
 
-        val y = pow(gamepad1.left_stick_y.toDouble(),1.4) * driveDirection
-        val x = pow(gamepad1.left_stick_x.toDouble(),2.2) * driveDirection
-        val r = pow(gamepad1.right_stick_x.toDouble(),3.0)
+        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
+        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
+        val r = gamepad1.right_stick_x.toDouble().pow(3)
 
         robot.driveSetPower(
                 -(y - x - r),
