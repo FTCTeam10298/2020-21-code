@@ -1,6 +1,7 @@
 package robotCode
 
 //import buttonHelper.Gamepad1
+import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
@@ -15,6 +16,8 @@ class AimBotTeleOp(): OpMode() {
     val console = TelemetryConsole(telemetry)
 
     var driveDirection: Int = 1
+    val invertHelp = ButtonHelper()
+    val clawHelp = ButtonHelper()
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -29,7 +32,7 @@ class AimBotTeleOp(): OpMode() {
 
 //        DRONE DRIVE
 //        Invert
-        if (stateChanged(gamepad1.left_stick_button) && gamepad1.left_stick_button) { // only fire event on button down
+        if (invertHelp.stateChanged(gamepad1.left_stick_button) && gamepad1.left_stick_button) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
 
@@ -59,17 +62,38 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
 
-//        BELT & GATE
+//        BELT
         when {
-            gamepad1.right_trigger > 0 -> robot.belt.power = 0.8
-            gamepad1.left_trigger > 0 -> robot.belt.power = -0.8
+            gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0 -> robot.belt.power = 0.8
+            gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0 -> robot.belt.power = -0.8
             else -> robot.belt.power = 0.0
         }
 
+//        COLLECTOR
+        when {
+            gamepad1.right_bumper || gamepad2.right_bumper -> robot.collector.power = 1.0
+            gamepad1.left_bumper || gamepad2.left_bumper -> robot.collector.power = -1.0
+            else -> robot.collector.power = 0.0
+        }
+
+//        WOBBLE ARM
+        when {
+            gamepad2.dpad_up -> robot.wobbleArm.power = 0.4
+            gamepad2.dpad_down -> robot.wobbleArm.power = -0.4
+            else -> robot.wobbleArm.power = 0.0
+        }
+
+//        CLAW
+        if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x)
+            when (robot.claw.position) {
+                0.0  -> robot.claw.position = 1.0
+                else -> robot.claw.position = 0.0
+            }
+
 //        CONSOLE
-        console.display(4, "Collector: ")
-        console.display(5, "Shooter: ${robot.shooter.power}")
-        console.display(6, "Gate: ${robot.gate.position}")
+        console.display(4, "Shooter: ${robot.shooter.power}")
+        console.display(5, "Collector: ${robot.collector.power}")
+        console.display(6, "Claw: ${robot.claw.position}")
         console.display(7, "Belt: ${robot.belt.power}")
         when {
             driveDirection > 0 -> console.display(8, "Collector first")
@@ -81,12 +105,12 @@ class AimBotTeleOp(): OpMode() {
         console.display(12, "RB: ${robot.rBDrive.power}")
     }
 
-    var buttonPreviousValue = false
-    fun stateChanged(button: Boolean):Boolean {
-        val re: Boolean = buttonPreviousValue != button
-        buttonPreviousValue = button
-        return re
-    }
+//    var buttonPreviousValue = false
+//    fun stateChanged(button: Boolean):Boolean {
+//        val re: Boolean = buttonPreviousValue != button
+//        buttonPreviousValue = button
+//        return re
+//    }
 
     fun pow(n: Double, exponent: Double): Double {
         var polarity: Double = 0.0
