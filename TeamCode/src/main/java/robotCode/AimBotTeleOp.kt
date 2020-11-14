@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 import robotCode.aimBotRobot.MecanumDriveTrain
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp(): OpMode() {
@@ -31,13 +33,13 @@ class AimBotTeleOp(): OpMode() {
             driveDirection = -driveDirection //invert
         }
 
-        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
-        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
-        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
+//        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
+//        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
+//        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
 
-//        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
-//        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
-//        val r = gamepad1.right_stick_x.toDouble().pow(3)
+        val y = pow(gamepad1.left_stick_y.toDouble(),2.2) * driveDirection
+        val x = gamepad1.left_stick_x.toDouble() * driveDirection
+        val r = pow(gamepad1.right_stick_x.toDouble(),2.2)
 
         robot.driveSetPower(
                 -(y - x - r),
@@ -54,8 +56,7 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_up && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
             gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
             gamepad1.dpad_left -> robot.shooter.power = 0.0
-//            gamepad1.dpad_right -> robot.shooter.power = 1.0
-
+            gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
 
 //        BELT && GATE
@@ -68,18 +69,18 @@ class AimBotTeleOp(): OpMode() {
         }
 
 //        CONSOLE
-        console.display(2, "Collector: ")
-        console.display(3, "Shooter: ${robot.shooter.power}")
-        console.display(4, "Gate: ${robot.gate.position}")
-        console.display(5, "Belt: ${robot.belt.power}")
+        console.display(4, "Collector: ")
+        console.display(5, "Shooter: ${robot.shooter.power}")
+        console.display(6, "Gate: ${robot.gate.position}")
+        console.display(7, "Belt: ${robot.belt.power}")
         when {
-            driveDirection > 0 -> console.display(6, "Collector first")
-            else -> console.display(6, "Shooter first")
+            driveDirection > 0 -> console.display(8, "Collector first")
+            else -> console.display(8, "Shooter first")
         }
-        console.display(7, "LF: ${robot.lFDrive.power}")
-        console.display(8, "RF: ${robot.rFDrive.power}")
-        console.display(9, "LB: ${robot.lBDrive.power}")
-        console.display(10, "RB: ${robot.rBDrive.power}")
+        console.display(9, "LF: ${robot.lFDrive.power}")
+        console.display(10, "RF: ${robot.rFDrive.power}")
+        console.display(11, "LB: ${robot.lBDrive.power}")
+        console.display(12, "RB: ${robot.rBDrive.power}")
     }
 
     var buttonPreviousValue = false
@@ -87,6 +88,16 @@ class AimBotTeleOp(): OpMode() {
         val re: Boolean = buttonPreviousValue != gamepad1.left_stick_button
         buttonPreviousValue = gamepad1.left_stick_button
         return re
+    }
+
+    fun pow(n: Double, exponent: Double): Double {
+        var polarity: Double = return when {
+            n > 0 -> 1.0
+            n < 0 -> -1.0
+            else -> 0.0
+        }
+//        console.display(3, polarity.toString())
+        return n.absoluteValue.pow(exponent) * polarity
     }
 
     fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
