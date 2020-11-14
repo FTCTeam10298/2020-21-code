@@ -38,9 +38,9 @@ class AimBotTeleOp(): OpMode() {
 //        val r = gamepad1.right_stick_x.toDouble()
 
 
-        val y = pow(gamepad1.left_stick_y.toDouble(),1.4) * driveDirection
-        val x = pow(gamepad1.left_stick_x.toDouble(),2.2) * driveDirection
-        val r = pow(gamepad1.right_stick_x.toDouble(),3.0)
+        val y = gamepad1.left_stick_y.toDouble().pow(3) * driveDirection
+        val x = gamepad1.left_stick_x.toDouble().pow(3) * driveDirection
+        val r = gamepad1.right_stick_x.toDouble().pow(3)
 
         robot.driveSetPower(
                 -(y - x - r),
@@ -92,12 +92,12 @@ class AimBotTeleOp(): OpMode() {
     }
 
     fun pow(n: Double, exponent: Double): Double {
-        var polarity: Double = return when {
+        var polarity: Double = 0.0
+        polarity = when {
             n > 0 -> 1.0
             n < 0 -> -1.0
             else -> 0.0
         }
-//        console.display(3, polarity.toString())
         return n.absoluteValue.pow(exponent) * polarity
     }
 
