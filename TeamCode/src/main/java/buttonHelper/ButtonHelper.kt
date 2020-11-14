@@ -15,14 +15,8 @@ class ButtonHelper() {
         return button
     }
 
-    var toggleState: Boolean = false
     fun toggleButton(button: Boolean): Boolean {
-
-        if (button && stateChanged(button)) // only fire event on button down
-            toggleState = !toggleState //invert
-
-
-        return toggleState
+        return stateChanged(button) && button
     }
 
 //    fun hi() {
