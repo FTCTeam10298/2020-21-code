@@ -29,17 +29,18 @@ class AimBotTeleOp(): OpMode() {
 
 //        DRONE DRIVE
 //        Invert
-        if (stateChanged() && gamepad1.left_stick_button) { // only fire event on button down
+        if (stateChanged(gamepad1.left_stick_button) && gamepad1.left_stick_button) { // only fire event on button down
             driveDirection = -driveDirection //invert
         }
 
-//        val y = driveDirection * curveVal(gamepad1.left_stick_y.toDouble(), 0.5, -0.5, 0.5)
-//        val x = driveDirection * curveVal(gamepad1.left_stick_x.toDouble(), 0.5, -0.5, 0.5)
-//        val r = curveVal(gamepad1.right_stick_x.toDouble(), 0.5, -0.5, 0.5)
+//        val y = driveDirection * gamepad1.left_stick_y.toDouble()
+//        val x = driveDirection * gamepad1.left_stick_x.toDouble()
+//        val r = gamepad1.right_stick_x.toDouble()
 
-        val y = pow(gamepad1.left_stick_y.toDouble(),2.2) * driveDirection
-        val x = gamepad1.left_stick_x.toDouble() * driveDirection
-        val r = pow(gamepad1.right_stick_x.toDouble(),2.2)
+
+        val y = pow(gamepad1.left_stick_y.toDouble(),1.4) * driveDirection
+        val x = pow(gamepad1.left_stick_x.toDouble(),2.2) * driveDirection
+        val r = pow(gamepad1.right_stick_x.toDouble(),3.0)
 
         robot.driveSetPower(
                 -(y - x - r),
@@ -84,9 +85,9 @@ class AimBotTeleOp(): OpMode() {
     }
 
     var buttonPreviousValue = false
-    fun stateChanged():Boolean {
-        val re: Boolean = buttonPreviousValue != gamepad1.left_stick_button
-        buttonPreviousValue = gamepad1.left_stick_button
+    fun stateChanged(button: Boolean):Boolean {
+        val re: Boolean = buttonPreviousValue != button
+        buttonPreviousValue = button
         return re
     }
 
