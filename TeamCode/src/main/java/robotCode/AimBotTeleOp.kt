@@ -77,11 +77,13 @@ class AimBotTeleOp(): OpMode() {
         }
 
 //        WOBBLE ARM
-        when {
-            gamepad2.dpad_up -> robot.wobbleArm.power = 0.4
-            gamepad2.dpad_down -> robot.wobbleArm.power = -0.4
-            else -> robot.wobbleArm.power = 0.0
-        }
+        robot.wobbleArm.power = -gamepad2.right_stick_y.toDouble().pow(5)
+
+//        when {
+//            gamepad2.dpad_up -> robot.wobbleArm.power = 0.4
+//            gamepad2.dpad_down -> robot.wobbleArm.power = -0.4
+//            else -> robot.wobbleArm.power = 0.0
+//        }
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x)
@@ -120,14 +122,5 @@ class AimBotTeleOp(): OpMode() {
             else -> 0.0
         }
         return n.absoluteValue.pow(exponent) * polarity
-    }
-
-    fun curveVal(subject: Double, range1: Double, range2: Double, amp: Double): Double {
-
-        return if (subject < range1 && subject > range2) {
-            subject * amp
-        } else {
-            subject
-        }
     }
 }
