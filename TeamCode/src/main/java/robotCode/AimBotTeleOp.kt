@@ -85,7 +85,7 @@ class AimBotTeleOp(): OpMode() {
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
-        robot.wobbleArm.power = -wobbleStick.toDouble().pow(5) * 0.5 + 0.5 * wobbleStick
+        robot.wobbleArm.power = wobbleStick.toDouble()
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x)
