@@ -66,7 +66,7 @@ open class AimBotHardware {
         collector = hwMap.get("collector") as DcMotor
 
         collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        collector.direction = DcMotorSimple.Direction.REVERSE
+        collector.direction = DcMotorSimple.Direction.FORWARD
 
 //        WOBBLE ARM
         wobbleArm = hwMap.get("wobbleArm") as DcMotor

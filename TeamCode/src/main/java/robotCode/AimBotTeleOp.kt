@@ -73,7 +73,6 @@ class AimBotTeleOp(): OpMode() {
 
 //        COLLECTOR
         if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
-//            robot.collector.power = -robot.collector.power
             if (robot.collector.power == 1.0)
                 robot.collector.power = 0.0
             else
@@ -85,7 +84,8 @@ class AimBotTeleOp(): OpMode() {
                 robot.collector.power = -1.0
 
 //        WOBBLE ARM
-        robot.wobbleArm.power = -gamepad2.right_stick_y.toDouble().pow(5) * 0.5 + 0.5 * rInput
+        val wobbleStick = gamepad2.right_stick_y
+        robot.wobbleArm.power = -wobbleStick.toDouble().pow(5) * 0.5 + 0.5 * wobbleStick
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x)
