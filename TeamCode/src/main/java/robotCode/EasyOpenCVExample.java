@@ -38,7 +38,7 @@
 //
 //import jamesTelemetryMenu.TelemetryConsole;
 //
-//@TeleOp
+////@TeleOp
 //public class EasyOpenCVExample extends LinearOpMode
 //{
 //    OpenCvInternalCamera phoneCam;
@@ -77,7 +77,7 @@
 //            telemetry.addData("Analysis", pipeline.getAnalysis());
 //            telemetry.addData("Position", pipeline.position);
 //            telemetry.update();
-//            console.display(4, "Reality is divisible by three!!");
+//            console.display(4, "Reality is divisible by zero!!");
 //
 //            // Don't burn CPU cycles busy-looping in this sample
 //            sleep(50);
