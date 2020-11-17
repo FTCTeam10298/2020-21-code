@@ -13,7 +13,9 @@ class MenuTest(): LinearOpMode() {
 //        menu.addOption("Alliance", "Red")
 //        menu.addOption("Alliance", "Blue")
         menu.display(2, "hi")
+        sleep(1000)
         menu.doMenus(gamepad1)
+
 
         waitForStart()
     }
