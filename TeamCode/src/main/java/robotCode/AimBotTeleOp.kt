@@ -16,10 +16,12 @@ class AimBotTeleOp(): OpMode() {
     val console = TelemetryConsole(telemetry)
 
     var driveDirection: Int = 1
+
     val invertHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val collectorHelp1 = ButtonHelper()
     val collectorHelp2 = ButtonHelper()
+    val gateHelp = ButtonHelper()
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -64,13 +66,6 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
 
-//        BELT
-        when {
-            gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0 -> robot.belt.power = 0.8
-            gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0 -> robot.belt.power = -0.8
-            else -> robot.belt.power = 0.0
-        }
-
 //        COLLECTOR
         if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
             if (robot.collector.power == 1.0)
@@ -82,6 +77,20 @@ class AimBotTeleOp(): OpMode() {
                 robot.collector.power = 0.0
             else
                 robot.collector.power = -1.0
+
+//        BELT
+        when {
+            gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0 -> robot.belt.power = 0.8
+            gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0 -> robot.belt.power = -0.8
+            else -> robot.belt.power = 0.0
+        }
+
+//        GATE
+        if (gateHelp.stateChanged(gamepad1.y) && (gamepad1.y))
+            if (robot.gate.position == 1.0)
+                robot.gate.position = 0.0
+            else
+                robot.gate.position = 1.0
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
