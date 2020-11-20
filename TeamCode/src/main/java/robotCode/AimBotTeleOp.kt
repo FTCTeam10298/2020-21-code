@@ -20,7 +20,7 @@ class AimBotTeleOp(): OpMode() {
     val invertHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val collectorHelp1 = ButtonHelper()
-    val collectorHelp2 = ButtonHelper()
+    var toggleBumpers = false
     val gateHelp = ButtonHelper()
 
     override fun init() {
@@ -66,31 +66,23 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_right -> robot.shooter.power = 1.0
         }
 
-//        COLLECTOR
-        if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
-            if (robot.collector.power == 1.0)
-                robot.collector.power = 0.0
-            else
-                robot.collector.power = 1.0
-        else if (collectorHelp2.stateChanged(gamepad1.left_bumper) && (gamepad1.left_bumper))
-            if (robot.collector.power == -1.0)
-                robot.collector.power = 0.0
-            else
-                robot.collector.power = -1.0
-
-//        BELT
-        when {
-            gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0 -> robot.belt.power = 0.8
-            gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0 -> robot.belt.power = -0.8
-            else -> robot.belt.power = 0.0
-        }
-
 //        GATE
-        if (gateHelp.stateChanged(gamepad1.y) && (gamepad1.y))
+        val rightTrigger = gamepad1.right_trigger
+
+        if (gateHelp.stateChanged(rightTrigger > 0) && (rightTrigger > 0))
             if (robot.gate.position == 1.0)
                 robot.gate.position = 0.0
             else
                 robot.gate.position = 1.0
+
+//        BELT & COLLECTOR
+        val bumperDown = gamepad1.right_bumper || gamepad2.right_bumper
+
+        if (collectorHelp1.stateChanged(bumperDown) && (bumperDown))
+            when (toggleBumpers) {
+                true ->  {robot.belt.power = 0.8; robot.collector.power = 1.0; toggleBumpers = false}
+                false -> {robot.belt.power = -0.8; robot.collector.power = -1.0; toggleBumpers = true}
+            }
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
