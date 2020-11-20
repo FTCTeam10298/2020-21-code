@@ -19,7 +19,7 @@ class AimBotAuto(): LinearOpMode() {
 
 //        Wins 5 Pts.
 
-
+        robot.shooter.power = 1.0
         robot.driveRobotPosition(1.0,73.0, true)
 //        robot.driveRobotTurn(1.0, 360 * 1.0)
 

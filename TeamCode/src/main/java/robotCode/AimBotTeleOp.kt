@@ -63,7 +63,7 @@ class AimBotTeleOp(): OpMode() {
             gamepad1.dpad_up && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
             gamepad1.dpad_down && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
             gamepad1.dpad_left -> robot.shooter.power = 0.0
-            gamepad1.dpad_right -> robot.shooter.power = 1.0
+            gamepad1.dpad_right -> robot.shooter.power = 0.87
         }
 
 //        COLLECTOR
