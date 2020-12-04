@@ -2,6 +2,7 @@ package jamesTelemetryMenu
 
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import java.lang.Thread.sleep
 
 open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
@@ -31,10 +32,12 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         }
 
 //        Adds line
-        addcursor(cursorLine)
+        addCursor(cursorLine)
     }
 
-    private fun addcursor(line: Int) {
+    private fun addCursor(line: Int) {
+
+
 
         if (queue[line].startsWith("-"))
             queue[line] = queue[line].replaceFirst("-", " ")
@@ -80,7 +83,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
         var currentOption = find(options, currentChoice)
         for (i in (currentOption.indices))
-            replaceLine(i + lastUserLine + 3, "${currentOption.elementAt(i).option}")
+            replaceLine(i + lastUserLine + 3, currentOption.elementAt(i).option)
     }
 
 
@@ -88,6 +91,8 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
     fun doMenus(gamepad: Gamepad) {
         while (!menuDone) {
+            display(1, "still works")
+            sleep(1000)
 
 //            Cursor&dpad
             updateCursorLine(gamepad)
@@ -96,7 +101,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
             addChoiceToQueue()
 
 //            Telemetry
-            queueToTelemetry()
+//            queueToTelemetry()
         }
         display(1, "Menu done.")
     }

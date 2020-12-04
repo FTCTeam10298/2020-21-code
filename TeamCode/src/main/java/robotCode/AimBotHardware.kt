@@ -27,8 +27,15 @@ open class AimBotHardware {
 //    BELT
     lateinit var belt: DcMotor
 
+//    COLLECTOR
+    lateinit var collector: DcMotor
+
+//    WOBBLE ARM
+    lateinit var wobbleArm: DcMotor
+
 //    SERVOS
     lateinit var gate: Servo
+    lateinit var claw: Servo
 
 //    HARDWARE MAP
     lateinit var hwMap: HardwareMap
@@ -37,8 +44,9 @@ open class AimBotHardware {
 
         hwMap = ahwMap
 
-//        SERVO
+//        SERVOS
         gate = hwMap.get("gate") as Servo
+        claw = hwMap.get("claw") as Servo
 
 //        SHOOTER
         shooter = hwMap.get("shooter") as DcMotorEx
@@ -53,6 +61,16 @@ open class AimBotHardware {
         belt.direction = DcMotorSimple.Direction.FORWARD
         belt.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         belt.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
+
+//        COLLECTOR
+        collector = hwMap.get("collector") as DcMotor
+
+        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        collector.direction = DcMotorSimple.Direction.FORWARD
+
+//        WOBBLE ARM
+        wobbleArm = hwMap.get("wobbleArm") as DcMotor
+        wobbleArm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
 //        DRIVE TRAIN
         lFDrive = hwMap.get("lFDrive") as DcMotor

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 
-@TeleOp(name="Button Test", group="Aim Bot")
+//@TeleOp(name="Button Test", group="Aim Bot")
 class ButtonTest(): OpMode() {
 
     val console = TelemetryConsole(telemetry)

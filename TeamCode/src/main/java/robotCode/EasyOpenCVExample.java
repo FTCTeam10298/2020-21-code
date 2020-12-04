@@ -36,19 +36,35 @@
 //import org.openftc.easyopencv.OpenCvInternalCamera;
 //import org.openftc.easyopencv.OpenCvPipeline;
 //
+<<<<<<< HEAD
 //@TeleOp
+=======
+//import jamesTelemetryMenu.TelemetryConsole;
+//
+////@TeleOp
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //public class EasyOpenCVExample extends LinearOpMode
 //{
 //    OpenCvInternalCamera phoneCam;
 //    SkystoneDeterminationPipeline pipeline;
 //
+<<<<<<< HEAD
+=======
+//
+//    TelemetryConsole console = new TelemetryConsole(telemetry);
+//
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //    @Override
 //    public void runOpMode()
 //    {
 //
 //        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+<<<<<<< HEAD
 //        pipeline = new SkystoneDeterminationPipeline();
+=======
+//        pipeline = new SkystoneDeterminationPipeline(console);
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //        phoneCam.setPipeline(pipeline);
 //
 //        // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -72,13 +88,21 @@
 //            telemetry.addData("Analysis", pipeline.getAnalysis());
 //            telemetry.addData("Position", pipeline.position);
 //            telemetry.update();
+<<<<<<< HEAD
+=======
+//            console.display(4, "Reality is divisible by zero!!");
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //
 //            // Don't burn CPU cycles busy-looping in this sample
 //            sleep(50);
 //        }
 //    }
 //
+<<<<<<< HEAD
 //    public static class SkystoneDeterminationPipeline extends OpenCvPipeline
+=======
+//    public static class SkystoneDeterminationPipeline(TelemetryConsole console) extends OpenCvPipeline
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //    {
 //        /*
 //         * An enum to define the skystone position
@@ -114,6 +138,11 @@
 //                REGION1_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
 //                REGION1_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
 //
+<<<<<<< HEAD
+=======
+//
+//
+>>>>>>> 8b9e602e2b8b1afc00eb38c2fefcde62bfb94ec5
 //        /*
 //         * Working variables
 //         */
