@@ -1,4 +1,4 @@
-package robotCode
+ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -21,7 +21,7 @@ class AimBotAuto(): LinearOpMode() {
 
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId)
-        pipeline = SkystoneDeterminationPipeline()
+        pipeline = SkystoneDeterminationPipeline(150, 135)
         phoneCam.setPipeline(pipeline)
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg

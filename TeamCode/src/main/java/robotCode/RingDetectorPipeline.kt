@@ -34,7 +34,7 @@ class EasyOpenCVExample : LinearOpMode() {
     override fun runOpMode() {
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId)
-        pipeline = SkystoneDeterminationPipeline()
+        pipeline = SkystoneDeterminationPipeline(150, 135)
         phoneCam.setPipeline(pipeline)
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -54,7 +54,7 @@ class EasyOpenCVExample : LinearOpMode() {
     }
 }
 
-class SkystoneDeterminationPipeline : OpenCvPipeline() {
+class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int ): OpenCvPipeline() {
     /*
      * An enum to define the skystone position
      */
@@ -62,8 +62,8 @@ class SkystoneDeterminationPipeline : OpenCvPipeline() {
         FOUR, ONE, NONE
     }
 
-    val FOUR_RING_THRESHOLD = 150
-    val ONE_RING_THRESHOLD = 135
+    //val FOUR_RING_THRESHOLD = 150
+    //val ONE_RING_THRESHOLD = 135
     var region1_pointA = Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
             REGION1_TOPLEFT_ANCHOR_POINT.y)
