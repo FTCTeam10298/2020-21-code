@@ -52,7 +52,7 @@ open class AimBotHardware {
         shooter = hwMap.get("shooter") as DcMotorEx
 
         shooter.direction = DcMotorSimple.Direction.REVERSE
-        shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
 //        BELT

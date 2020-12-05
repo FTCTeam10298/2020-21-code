@@ -62,10 +62,10 @@ class AimBotTeleOp(): OpMode() {
         val shooterPower: Double = robot.shooter.power
 
         when {
-            (gamepad1.dpad_up && dUpHelp.stateChanged(gamepad1.dpad_up)) && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
-            (gamepad1.dpad_down && dDownHelp.stateChanged(gamepad1.dpad_down)) && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
+            (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterPower < 1.0 -> robot.shooter.power += shooterPowerIncrement
+            (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterPower > 0.0 + shooterPowerIncrement -> robot.shooter.power -= shooterPowerIncrement
             gamepad1.dpad_left -> robot.shooter.power = 0.0
-            gamepad1.dpad_right -> robot.shooter.power = 0.87
+            gamepad1.dpad_right -> robot.shooter.power = 0.83
         }
 
 //        COLLECTOR
