@@ -37,8 +37,6 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
     private fun addCursor(line: Int) {
 
-
-
         if (queue[line].startsWith("-"))
             queue[line] = queue[line].replaceFirst("-", " ")
 
