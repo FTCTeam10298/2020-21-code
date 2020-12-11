@@ -47,4 +47,5 @@ class LinkSystem {
 
     fun getBoth(item: String): String = options.getBoth(item)
 
+
 }

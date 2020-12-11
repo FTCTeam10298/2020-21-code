@@ -17,9 +17,10 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 //    Input & Cursor--------------------------------------
 
     private fun updateCursorLine(gamepad: Gamepad) {
+
 //        Pushes the cursor beyond the user lines
-        while (cursorLine <= lastUserLine + 1)
-            cursorLine += 1
+//        while (cursorLine <= lastUserLine + 1)
+        cursorLine = lastUserLine + 1
 
 //        Changes the line based on user input
         when {
@@ -42,8 +43,8 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
         if (line == cursorLine)
             queue[line] = "-${queue[line]}"
-        else
-            queue[line] = queue[line]
+//        else
+//            queue[line] = queue[line]
     }
 
 
