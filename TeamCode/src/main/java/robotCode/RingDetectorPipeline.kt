@@ -28,7 +28,6 @@ import org.openftc.easyopencv.OpenCvCamera.AsyncCameraOpenListener
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-@TeleOp
 class EasyOpenCVExample : LinearOpMode() {
     lateinit var phoneCam: OpenCvInternalCamera
     lateinit var pipeline: SkystoneDeterminationPipeline
