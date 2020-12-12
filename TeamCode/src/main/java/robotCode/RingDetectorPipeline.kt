@@ -135,7 +135,7 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
         /*
      * The core values which define the location and size of the sample regions
      */
-        val REGION1_TOPLEFT_ANCHOR_POINT = Point(250.0, 108.0)
+        val REGION1_TOPLEFT_ANCHOR_POINT = Point(300.0, 208.0)
         const val REGION_WIDTH = 35
         const val REGION_HEIGHT = 25
     }
