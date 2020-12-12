@@ -23,13 +23,13 @@ class AimBotAuto(): LinearOpMode() {
 
 //        Wins 5 Pts.
 
-        robot.shooter.power = 1.0
-        robot.driveRobotPosition(1.0, -48.0, true)
+        robot.shooter.power = 0.7
+        robot.driveRobotPosition(0.5, -60.0, true)
 
-        robot.driveRobotTurn(1.0, 35.0 )
-        robot.belt.power = 8.0
+        robot.driveRobotTurn(1.0, 28.0 )
+        robot.belt.power = 1.0
     }
     fun shoot() {
-        robot.belt.power = 8.0
+        robot.belt.power = 1.0
     }
 }
