@@ -21,7 +21,7 @@ class AimBotAuto(): LinearOpMode() {
 
 
 //        Wins 5 Pts.
-
+        waitForStart()
         robot.shooter.power = 1.0
         robot.driveRobotPosition(1.0, -36.0, true)
 
