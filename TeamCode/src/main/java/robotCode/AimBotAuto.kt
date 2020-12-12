@@ -12,7 +12,7 @@ import robotCode.aimBotRobot.EncoderDriveMovement
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {
 
-    var menu: TelemetryMenu = TelemetryMenu(telemetry)
+    var menu: TelemetryConsole = TelemetryConsole(telemetry)
     val robot= EncoderDriveMovement(menu)
 
     override fun runOpMode() {
@@ -23,7 +23,7 @@ class AimBotAuto(): LinearOpMode() {
 //        Wins 5 Pts.
 
         robot.shooter.power = 1.0
-        robot.driveRobotPosition(1.0, 36.0, true)
+        robot.driveRobotPosition(1.0, -36.0, true)
 
         robot.driveRobotTurn(1.0, 45.0 )
         robot.belt.power = 8.0

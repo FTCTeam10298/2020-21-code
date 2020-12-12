@@ -1,0 +1,27 @@
+Index: TeamCode/src/main/java/robotCode/AimBotAuto.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+> package robotCode\n\nimport com.qualcomm.robotcore.eventloop.opmode.Autonomous\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode\nimport jamesTelemetryMenu.TelemetryConsole\nimport org.openftc.easyopencv.OpenCvCamera\nimport org.openftc.easyopencv.OpenCvCameraFactory\nimport org.openftc.easyopencv.OpenCvCameraRotation\nimport org.openftc.easyopencv.OpenCvInternalCamera\nimport robotCode.aimBotRobot.EncoderDriveMovement\n\n@Autonomous(name=\"Aim Bot Auto\", group=\"Aim Bot\")\nclass AimBotAuto(): LinearOpMode() {\n\n    var menu: TelemetryMenu = TelemetryMenu(telemetry)\n    val robot= EncoderDriveMovement(menu)\n\n    override fun runOpMode() {\n\n        robot.init(hardwareMap)\n\n\n//        Wins 5 Pts.\n\n        robot.shooter.power = 1.0\n        robot.driveRobotPosition(1.0, 36.0, true)\n\n        robot.driveRobotTurn(1.0, 45.0 )\n        robot.belt.power = 8.0\n    }\n    fun shoot() {\n        robot.belt.power = 8.0\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- TeamCode/src/main/java/robotCode/AimBotAuto.kt	(revision 1c1c60cc57c9740870c6c883f22a0ba8e5c1a2ff)
++++ TeamCode/src/main/java/robotCode/AimBotAuto.kt	(date 1607747145000)
+@@ -12,7 +12,7 @@
+ @Autonomous(name="Aim Bot Auto", group="Aim Bot")
+ class AimBotAuto(): LinearOpMode() {
+ 
+-    var menu: TelemetryMenu = TelemetryMenu(telemetry)
++    var menu: TelemetryConsole = TelemetryConsole(telemetry)
+     val robot= EncoderDriveMovement(menu)
+ 
+     override fun runOpMode() {
+@@ -23,7 +23,7 @@
+ //        Wins 5 Pts.
+ 
+         robot.shooter.power = 1.0
+-        robot.driveRobotPosition(1.0, 36.0, true)
++        robot.driveRobotPosition(1.0, -36.0, true)
+ 
+         robot.driveRobotTurn(1.0, 45.0 )
+         robot.belt.power = 8.0
