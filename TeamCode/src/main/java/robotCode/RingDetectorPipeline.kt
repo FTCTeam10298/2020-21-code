@@ -30,11 +30,11 @@ import org.openftc.easyopencv.OpenCvCamera.AsyncCameraOpenListener
 @TeleOp
 class EasyOpenCVExample : LinearOpMode() {
     lateinit var phoneCam: OpenCvInternalCamera
-    lateinit var pipeline: SkystoneDeterminationPipeline
+    lateinit var pipeline: RingDeterminationPipeline
     override fun runOpMode() {
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId)
-        pipeline = SkystoneDeterminationPipeline(150, 135)
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.FRONT, cameraMonitorViewId)
+        pipeline = RingDeterminationPipeline(150, 135)
         phoneCam.setPipeline(pipeline)
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -54,7 +54,7 @@ class EasyOpenCVExample : LinearOpMode() {
     }
 }
 
-class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int ): OpenCvPipeline() {
+class RingDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int ): OpenCvPipeline() {
     /*
      * An enum to define the skystone position
      */
@@ -139,7 +139,7 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
      * The core values which define the location and size of the sample regions
      */
 //        Camera is landscape top left is 0,0
-        val REGION1_TOPLEFT_ANCHOR_POINT = Point(165.0, 00.0)
+        val REGION1_TOPLEFT_ANCHOR_POINT = Point(90.0, 197.0)
         const val REGION_WIDTH = 35
         const val REGION_HEIGHT = 25
     }
