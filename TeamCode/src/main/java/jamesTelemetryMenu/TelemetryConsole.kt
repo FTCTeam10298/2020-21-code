@@ -7,11 +7,11 @@ open class TelemetryConsole(private val telemetry: Telemetry) {
     var queue: MutableList<String> = mutableListOf()
     var lastUserLine= 0
 
-    fun addToQueue(line: Int, text: String) {
-        replaceLine(line, text)
-        if (line > lastUserLine)
-            lastUserLine = line
-    }
+//    fun addToQueue(line: Int, text: String) {
+//        replaceLine(line, text)
+//        if (line > lastUserLine)
+//            lastUserLine = line
+//    }
 
     fun replaceLine(line: Int, text: String) {
 
