@@ -2,7 +2,7 @@
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import jamesTelemetryMenu.TelemetryMenu
+import jamesTelemetryMenu.TelemetryConsole
 import org.openftc.easyopencv.OpenCvCamera
 import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
@@ -19,7 +19,6 @@ class AimBotAuto(): LinearOpMode() {
 
         robot.init(hardwareMap)
 
-        waitForStart()
 
 //        Wins 5 Pts.
 
