@@ -121,7 +121,7 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
                 region1_pointA,  // First point which defines the rectangle
                 region1_pointB,  // Second point which defines the rectangle
                 GREEN,  // The color the rectangle is drawn in
-                -1) // Negative thickness means solid fill
+                1) // Negative thickness means solid fill
         return input
     }
 
