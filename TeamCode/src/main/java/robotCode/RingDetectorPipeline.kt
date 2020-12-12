@@ -2,7 +2,6 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.*
@@ -45,8 +44,8 @@ class EasyOpenCVExample : LinearOpMode() {
         phoneCam.openCameraDeviceAsync(AsyncCameraOpenListener { phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
         waitForStart()
         while (opModeIsActive()) {
-            telemetry.addData("Analysis", pipeline!!.analysis)
-            telemetry.addData("Position", pipeline!!.position)
+            telemetry.addData("Analysis", pipeline.analysis)
+            telemetry.addData("Position", pipeline.position)
             telemetry.update()
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -109,18 +108,22 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
                 BLUE,  // The color the rectangle is drawn in
                 2) // Thickness of the rectangle lines
         position = RingPosition.FOUR // Record our analysis
-        position = if (analysis > FOUR_RING_THRESHOLD) {
-            RingPosition.FOUR
-        } else if (analysis > ONE_RING_THRESHOLD) {
-            RingPosition.ONE
-        } else {
-            RingPosition.NONE
+        position = when {
+            analysis > FOUR_RING_THRESHOLD -> {
+                RingPosition.FOUR
+            }
+            analysis > ONE_RING_THRESHOLD -> {
+                RingPosition.ONE
+            }
+            else -> {
+                RingPosition.NONE
+            }
         }
         Imgproc.rectangle(
                 input,  // Buffer to draw on
                 region1_pointA,  // First point which defines the rectangle
                 region1_pointB,  // Second point which defines the rectangle
-                GREEN,  // The color the rectangle is drawn in
+                TRANSPARENT,  // The color the rectangle is drawn in
                 1) // Negative thickness means solid fill
         return input
     }
@@ -130,12 +133,13 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
      * Some color constants
      */
         val BLUE = Scalar(0.0, 0.0, 255.0)
-        val GREEN = Scalar(0.0, 255.0, 0.0)
+        val TRANSPARENT = Scalar(0.0, 255.0, 0.0)
 
         /*
      * The core values which define the location and size of the sample regions
      */
-        val REGION1_TOPLEFT_ANCHOR_POINT = Point(300.0, 208.0)
+//        Camera is landscape top left is 0,0
+        val REGION1_TOPLEFT_ANCHOR_POINT = Point(165.0, 00.0)
         const val REGION_WIDTH = 35
         const val REGION_HEIGHT = 25
     }
