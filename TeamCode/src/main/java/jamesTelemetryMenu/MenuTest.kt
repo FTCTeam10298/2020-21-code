@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 @Autonomous
 class MenuTest(): LinearOpMode() {
 
-    val menu = TelemetryMenu(telemetry)
+    val menu = TelemetryConsole(telemetry)
 
     override fun runOpMode() {
 
@@ -14,7 +14,7 @@ class MenuTest(): LinearOpMode() {
 //        menu.addOption("Alliance", "Blue")
         menu.display(2, "hi")
         sleep(1000)
-        menu.doMenus(gamepad1)
+//        menu.doMenus(gamepad1)
 
 
         waitForStart()

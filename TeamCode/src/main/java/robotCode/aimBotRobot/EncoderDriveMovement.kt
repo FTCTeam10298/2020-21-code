@@ -21,7 +21,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
     val WHEEL_DIAMETER_INCHES = 3.77953 // For figuring circumference
     val DRIVETRAIN_ERROR = 1.015 // Error determined from testing
     val COUNTS_PER_INCH = COUNTS_PER_MOTOR_REV * GEARBOX_RATIO * DRIVE_GEAR_REDUCTION / (WHEEL_DIAMETER_INCHES * PI) / DRIVETRAIN_ERROR
-    val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.225 + 0.0 // Found by testing
+    val COUNTS_PER_DEGREE: Double = COUNTS_PER_INCH * 0.25 + 0.0 // Found by testing
 
     /**
      * DriveRobotTime drives the robot the set number of inches at the given power level.

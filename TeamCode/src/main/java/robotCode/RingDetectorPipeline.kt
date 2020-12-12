@@ -2,6 +2,7 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.*
@@ -96,6 +97,7 @@ class SkystoneDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING
         inputToCb(firstFrame)
         region1_Cb = Cb.submat(Rect(region1_pointA, region1_pointB))
     }
+
 
     override fun processFrame(input: Mat): Mat {
         inputToCb(input)
