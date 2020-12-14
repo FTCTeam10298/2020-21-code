@@ -1,10 +1,8 @@
 package jamesTelemetryMenu
 
-import androidx.versionedparcelable.ParcelImpl
+open class PairSystem {
 
-open class PairSystem(){
-
-    private val matches: MutableList<String> = mutableListOf("")
+    /*private*/ val matches: MutableList<String> = mutableListOf("")
 
     fun addPair(item1: String, item2: String) {
         matches.add(item1 + item2)
@@ -15,19 +13,23 @@ open class PairSystem(){
     fun getMatches(predicate: String): String = getRaw(predicate).replace(predicate,"").removePrefix("[").removeSuffix("]")
 }
 
-open class MenuChoices() {
-    private val choices = PairSystem()
+open class OptionSystem: PairSystem() {
+
+}
+
+open class MenuChoices {
+    /*private*/ val choices = OptionSystem()
     private val links = PairSystem()
 
     fun addChoiceItem(Choice: String, item: String) {
         choices.addPair(Choice, item)
     }
 
-    fun link(item: String, Choice: String) {
+    fun addLink(item: String, Choice: String) {
         links.addPair(item, Choice)
     }
 
-    fun getOptions(Choice: String): String = choices.getMatches(Choice)
+    fun getOptions(choice: String): String = choices.getMatches(choice)
 
     fun getLink(item: String): String = links.getMatches(item)
 }
