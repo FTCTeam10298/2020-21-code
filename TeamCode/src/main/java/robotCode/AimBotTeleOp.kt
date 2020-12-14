@@ -1,6 +1,7 @@
 package robotCode
 
 //import buttonHelper.Gamepad1
+import android.os.SystemClock.sleep
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -24,6 +25,7 @@ class AimBotTeleOp(): OpMode() {
     val gateHelp = ButtonHelper()
     val dUpHelp = ButtonHelper()
     val dDownHelp = ButtonHelper()
+    val triggerHelper = ButtonHelper()
 
     override fun init() {
         console.display(1, "Initializing...")
@@ -57,6 +59,23 @@ class AimBotTeleOp(): OpMode() {
                 -(y - x + r)
         )
 
+
+//        Shoot routine
+        if (gamepad1.right_trigger > 0.2) {
+            robot.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
+            robot.shooter.velocity = 1980.0
+            if (robot.shooter.velocity * 60 / 28 >= 4114.0 /*RPM*/ ) {
+                robot.gate.position = 1.0
+                robot.belt.power = 0.8
+            }
+        } else {
+            robot.belt.power = 0.0
+//            robot.shooter.power = 1.0   // Idle Shooter
+            robot.gate.position = 0.0
+        }
+        console.display(4, "Shooter rpm: ${robot.shooter.velocity * 60 / 28}")
+        console.display(5, "Shooter Power: ${robot.shooter.power}")
+
 //        SHOOTER
         val shooterPowerIncrement: Double = 0.008
         val shooterPower: Double = robot.shooter.power
@@ -82,17 +101,11 @@ class AimBotTeleOp(): OpMode() {
 
 //        BELT
         when {
-            gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0 -> robot.belt.power = 0.8
-            gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0 -> robot.belt.power = -0.8
+            gamepad1.b || gamepad2.b -> robot.belt.power = 0.8
+            gamepad1.b || gamepad2.b -> robot.belt.power = -0.8
             else -> robot.belt.power = 0.0
         }
 
-//        GATE
-        if (gateHelp.stateChanged(gamepad1.y) && (gamepad1.y))
-            if (robot.gate.position == 1.0)
-                robot.gate.position = 0.0
-            else
-                robot.gate.position = 1.0
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
@@ -106,8 +119,7 @@ class AimBotTeleOp(): OpMode() {
             }
 
 //        CONSOLE
-        console.display(4, "Shooter: ${robot.shooter.power}")
-        console.display(5, "Collector: ${robot.collector.power}")
+//        console.display(5, "Collector: ${robot.collector.power}")
         console.display(6, "Claw: ${robot.claw.position}")
         console.display(7, "Belt: ${robot.belt.power}")
         when {
@@ -119,13 +131,6 @@ class AimBotTeleOp(): OpMode() {
         console.display(11, "LB: ${robot.lBDrive.power}")
         console.display(12, "RB: ${robot.rBDrive.power}")
     }
-
-//    var buttonPreviousValue = false
-//    fun stateChanged(button: Boolean):Boolean {
-//        val re: Boolean = buttonPreviousValue != button
-//        buttonPreviousValue = button
-//        return re
-//    }
 
     fun pow(n: Double, exponent: Double): Double {
         var polarity: Double = 0.0

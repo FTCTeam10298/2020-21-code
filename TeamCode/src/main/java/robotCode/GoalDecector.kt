@@ -82,6 +82,7 @@ class GoalDetectionPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHO
     override fun processFrame(input: Mat): Mat {
         inputToCb(input)
         analysis = Core.mean(region1_Cb).`val`[0].toInt()
+//        opencv.findContours
         Imgproc.rectangle(
                 input,  // Buffer to draw on
                 region1_pointA,  // First point which defines the rectangle

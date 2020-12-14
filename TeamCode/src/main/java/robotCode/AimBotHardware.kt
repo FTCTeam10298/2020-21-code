@@ -22,7 +22,7 @@ open class AimBotHardware {
     lateinit var rBDrive: DcMotor
 
 //    SHOOTER
-    lateinit var shooter: DcMotor
+    lateinit var shooter: DcMotorEx
 
 //    BELT
     lateinit var belt: DcMotor
@@ -47,6 +47,8 @@ open class AimBotHardware {
 //        SERVOS
         gate = hwMap.get("gate") as Servo
         claw = hwMap.get("claw") as Servo
+        gate.direction = Servo.Direction.REVERSE
+        gate.position = 0.0
 
 //        SHOOTER
         shooter = hwMap.get("shooter") as DcMotorEx
