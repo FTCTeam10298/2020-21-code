@@ -1,8 +1,8 @@
 package jamesTelemetryMenu
 
+import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import java.lang.Thread.sleep
 
 open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
@@ -10,7 +10,6 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
     private var menuDone= false
 
 //    Input & Cursor--------------------------------------
-
 
     private fun getCursorContent(): String = removeCursor(queue[cursorLine])
 
@@ -33,8 +32,9 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         }
 
 //        Adds cursor
-        removeCursor(queue[cursorLine])
-        addCursor(queue[cursorLine])
+//        problomatic
+//        removeCursor(queue[cursorLine])
+//        addCursor(queue[cursorLine])
     }
 
     private fun removeCursor(where: String): String {
@@ -51,14 +51,13 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
             where
     }
 
-
 //    Options
 
-    private val options = MenuChoices()
+    private val menu = MenuSystem()
     private val chosen: MutableList<String> = mutableListOf("")
 
     private fun getCurrentOption(): String {
-        return queue.filter { queue.contains(options.choices.matches.any()) }.toString()
+        return queue.filter { queue.contains(menu.options.listOfOptions()) }.toString()
     }
 
     private fun addToChosen(item: String) {
@@ -68,34 +67,33 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 //    OPTION INTERACTION
 
     fun addOption(option: String,  item: String) {
-        options.addChoiceItem(option, item)
+        menu.addChoiceItem(option, item)
     }
 
     fun wasItemChosen(item: String): Boolean = chosen.contains(item)
 
     fun linkOption(item: String,  option: String) {
-        options.addLink(option, item)
+        menu.addLink(option, item)
     }
 
 //    FIND AND REPLACE?
 
     private fun addChoiceToQueue() {
 
-        val option = options.getLink(getCurrentOption())
+        val option = menu.getLink(getCurrentOption())
         replaceLine( lastUserLine + 2, "$option:")
 
-        val item = options.getOptions(getCurrentOption())
+        val item = menu.getItems(getCurrentOption())
         for (i in (item.indices))
             replaceLine(i + lastUserLine + 3, item.elementAt(i).toString())
     }
-
 
 //    DO MENUS
 
     fun doMenus(gamepad: Gamepad) {
         while (!menuDone) {
-//            display(1, "still works")
-//            sleep(1000)
+            display(1, "still works")
+            sleep(1000)
 
 //            Cursor&dpad
             updateCursorLine(gamepad)
@@ -109,4 +107,3 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         display(1, "Menu done.")
     }
 }
-
