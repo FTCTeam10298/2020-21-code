@@ -15,7 +15,7 @@ class PairSystem {
 
 class OptionSystem {
 
-    private val options = PairSystem()
+    /*private*/ val options = PairSystem()
     private val items = PairSystem()
 
     fun addOption(item: String, option: String) {
@@ -43,7 +43,7 @@ open class MenuSystem {
         options.addOption(option, item)
     }
 
-    fun getItems(option: String): List<String> = options.getItems(option)/*.toList()*/
+    fun getItems(option: String): List<String> = options.getItems(option)
 
     fun addLink(item: String, Choice: String) {
         links.addPair(item, Choice)

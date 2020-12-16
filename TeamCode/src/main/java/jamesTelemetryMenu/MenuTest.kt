@@ -13,10 +13,12 @@ class MenuTest(): LinearOpMode() {
 
         menu.addOption("Alliance", "Red")
         menu.addOption("Alliance", "Blue")
-//        menu.display(1, menu.)
-        menu.doMenus(gamepad1)
+        menu.firstOption("Alliance")
 
+//        menu.display(1, menu.menu.options.options.getRaw("").toString())
+//        menu.display(2, menu.menu.getItems("Alliance").toString())
+
+        menu.doMenus(gamepad1)
         waitForStart()
     }
-
 }
