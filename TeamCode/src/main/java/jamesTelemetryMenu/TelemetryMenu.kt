@@ -6,15 +6,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 
 open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
-    private var cursorLine= 4
-    private var menuDone= false
+    private var cursorLine = 0
+    private var menuDone = false
 
 //    Input & Cursor--------------------------------------
 
-    private fun getCursorContent(): String = removeCursor(queue[cursorLine])
+    private fun getCursorContent(): String = "hi"/*queue[cursorLine].replaceFirst("-", "")*/
 
 
-    private var keyDown= true
+    private var keyDown = true
 
     private fun updateCursorLine(gamepad: Gamepad) {
 
@@ -32,23 +32,21 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         }
 
 //        Adds cursor
-//        problomatic
-//        removeCursor(queue[cursorLine])
-        addCursor(queue[cursorLine])
+
+        if (queue.size >= cursorLine) {
+            removeCursor()
+            addCursor()
+        }
     }
 
-    private fun removeCursor(where: String): String {
-        return if (where.startsWith("-"))
-            where.replaceFirst("-", "")
-        else
-            where
+    private fun removeCursor() {
+        if (queue[cursorLine].startsWith("-"))
+            replaceLine(cursorLine, queue[cursorLine].replaceFirst("-", ""))
     }
 
-    private fun addCursor(where: String): String {
-//        return if (!where.contains("-"))
-            return "hi"// "-${where}"
-//        else
-//            where
+    private fun addCursor() {
+        if (!queue[cursorLine].contains("-"))
+            replaceLine(cursorLine, "-${queue[cursorLine]}")
     }
 
 //    Options
@@ -91,9 +89,8 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 //    DO MENUS
 
     fun doMenus(gamepad: Gamepad) {
+        keyDown = false //test
         while (!menuDone) {
-            display(1, "still works")
-            sleep(1000)
 
 //            Cursor&dpad
             updateCursorLine(gamepad)
@@ -103,6 +100,13 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
 //            Telemetry
             queueToTelemetry()
+
+//            test
+            sleep(1000)
+            if (!keyDown) {
+                keyDown = true; if (cursorLine < queue.size - 1) cursorLine += 1;
+                keyDown = true; if (cursorLine < queue.size - 1) cursorLine += 1;
+            }
         }
         display(1, "Menu done.")
     }
