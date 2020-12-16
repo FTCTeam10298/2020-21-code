@@ -81,6 +81,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         val option = menu.getLink(getCurrentOption())
         replaceLine( lastUserLine + 2, "$option:")
 
+//        problematic
         val item = menu.getItems(getCurrentOption())
         for (i in (item.indices))
             replaceLine(i + lastUserLine + 3, item.elementAt(i).toString())
