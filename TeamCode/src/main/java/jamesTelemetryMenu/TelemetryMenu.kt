@@ -34,7 +34,7 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 //        Adds cursor
 //        problomatic
 //        removeCursor(queue[cursorLine])
-//        addCursor(queue[cursorLine])
+        addCursor(queue[cursorLine])
     }
 
     private fun removeCursor(where: String): String {
@@ -45,10 +45,10 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
     }
 
     private fun addCursor(where: String): String {
-        return if (!where.contains("-"))
-            "-${where}"
-        else
-            where
+//        return if (!where.contains("-"))
+            return "hi"// "-${where}"
+//        else
+//            where
     }
 
 //    Options

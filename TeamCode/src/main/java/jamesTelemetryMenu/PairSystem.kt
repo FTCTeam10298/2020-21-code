@@ -8,9 +8,9 @@ class PairSystem {
         matches.add(item1 + item2)
     }
 
-    fun getRaw(predicate: String): String = matches.filter{ it.contains(predicate) }.toString()
+    fun getRaw(predicate: String): MutableList<String> = matches.filter{ it.contains(predicate) }.toMutableList()
 
-    fun getMatches(predicate: String): String = getRaw(predicate).replace(predicate,"").removePrefix("[").removeSuffix("]")
+    fun getMatches(predicate: String): String = getRaw(predicate).toString().replace(predicate,"").removePrefix("[").removeSuffix("]")
 }
 
 class OptionSystem {
@@ -29,7 +29,7 @@ class OptionSystem {
         }
     }
 
-    fun getItems(option: String): String = items.getMatches(options.getMatches(option))
+    fun getItems(option: String): MutableList<String> = items.getRaw(options.getMatches(option))
 
     fun listOfOptions(): MutableList<String> = options.matches
 
@@ -43,7 +43,7 @@ open class MenuSystem {
         options.addOption(option, item)
     }
 
-    fun getItems(option: String): String = options.getItems(option)
+    fun getItems(option: String): List<String> = options.getItems(option)/*.toList()*/
 
     fun addLink(item: String, Choice: String) {
         links.addPair(item, Choice)
