@@ -2,21 +2,26 @@ package jamesTelemetryMenu
 
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.Gamepad
-import org.firstinspires.ftc.robotcore.external.Telemetry
 
-open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
+open class TelemetryMenu(private val console:TelemetryConsole)  {
 
     private var cursorLine = 0
     private var menuDone = false
     private var menuIterator = 0
 
     private var firstOption = ""
-    private val currentOption: String
-        get() = queue.filter { queue.contains(menu.options.listOfOptions()) }.toString()
+
+
+    private fun isNotEmpty(it: String): Boolean = it !== " " || it !== " "
+
+    /*private*/ var currentOption: String? = ""
+        get()  = console.linesDisplayed.filter{ it ->  menuSystem.options.listOfOptions.any{ menuSystem.options.listOfOptions.contains(it) } && isNotEmpty(it) }.joinToString(" ")
+
+
 
 //    Input & Cursor--------------------------------------
 
-    private fun getCursorContent(): String = queue[cursorLine].replaceFirst("-", "")
+    private fun getCursorContent(): String = console.linesDisplayed[cursorLine].replaceFirst("-", "")
 
 
     private var keyDown = true
@@ -24,12 +29,13 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
     private fun updateCursorLine(gamepad: Gamepad) {
 
 //        Pushes the cursor beyond the user lines
-        cursorLine = lastUserLine + 1
+        cursorLine = console.lastUserLine + 1
+        firstOption.contains("hi")
 
 //        Changes the line based on user input
         when {
-            gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > lastUserLine + 1) cursorLine -= 1;}
-            gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < queue.size - 1) cursorLine += 1;}
+            gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > console.lastUserLine + 1) cursorLine -= 1;}
+            gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < console.linesDisplayed.size - 1) cursorLine += 1;}
             gamepad.dpad_right && !keyDown -> {keyDown = true; getCursorContent(); chosen.add(getCursorContent());}
             gamepad.dpad_left && !keyDown -> {keyDown = true; menuDone = true;}
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
@@ -38,25 +44,25 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 
 //        Adds cursor
 
-        if (queue.size >= cursorLine) {
+        if (console.linesDisplayed.size >= cursorLine) {
             removeCursor()
             addCursor()
         }
     }
 
     private fun removeCursor() {
-        if (queue[cursorLine].startsWith("-"))
-            replaceLine(cursorLine, queue[cursorLine].replaceFirst("-", ""))
+        if (console.linesDisplayed[cursorLine].startsWith("-"))
+            console.replaceLine(cursorLine, console.linesDisplayed[cursorLine].replaceFirst("-", ""))
     }
 
     private fun addCursor() {
-        if (!queue[cursorLine].contains("-"))
-            replaceLine(cursorLine, "-${queue[cursorLine]}")
+        if (!console.linesDisplayed[cursorLine].contains("-"))
+            console.replaceLine(cursorLine, "-${console.linesDisplayed[cursorLine]}")
     }
 
 //    Options
 
-    /*private*/ val menu = MenuSystem()
+    /*private*/ val menuSystem = MenuSystem()
     private val chosen: MutableList<String> = mutableListOf("")
 
     private fun addToChosen(item: String) {
@@ -66,13 +72,13 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
 //    OPTION INTERACTION
 
     fun addOption(option: String,  item: String) {
-        menu.addChoiceItem(option, item)
+        menuSystem.addChoiceItem(option, item)
     }
 
     fun wasItemChosen(item: String): Boolean = chosen.contains(item)
 
     fun linkOption(item: String,  option: String) {
-        menu.addLink(option, item)
+        menuSystem.addLink(option, item)
     }
 
     fun firstOption(option: String) {
@@ -89,17 +95,17 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
         if (currentOption == "[]") {
             option = firstOption
 //            item = menu.getItems(firstOption)
-            item = menu.getItems(currentOption)
+            item = menuSystem.getItems(currentOption)
         } else {
             option = currentOption
-            item = menu.getItems(currentOption)
+            item = menuSystem.getItems(currentOption)
         }
 
-        replaceLine(lastUserLine + 2, "$option:")
+        console.replaceLine(console.lastUserLine + 2, "$option:")
 
 //        problematic
         for (i in (item.indices))
-            replaceLine(i + lastUserLine + 3, item.elementAt(i).toString())
+            console.replaceLine(i + console.lastUserLine + 3, item.elementAt(i).toString())
     }
 
 //    DO MENUS
@@ -115,11 +121,11 @@ open class TelemetryMenu(telemetry: Telemetry): TelemetryConsole(telemetry) {
             addChoiceToQueue()
 
 //            Telemetry
-            queueToTelemetry()
+            console.queueToTelemetry()
 
 //            test
             sleep(1000)
         }
-        display(1, "Menu done.")
+        console.display(1, "Menu done.")
     }
 }

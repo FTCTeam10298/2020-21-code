@@ -4,7 +4,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 
 open class TelemetryConsole(private val telemetry: Telemetry) {
 
-    var queue: MutableList<String> = mutableListOf()
+    var linesDisplayed: MutableList<String> = mutableListOf()
     var lastUserLine= 0
 
 //    fun addToQueue(line: Int, text: String) {
@@ -16,11 +16,11 @@ open class TelemetryConsole(private val telemetry: Telemetry) {
     fun replaceLine(line: Int, text: String) {
 
 //        Adds empty lines into the list if necessary
-        while (queue.size <= line)
-            queue.add(" ")
+        while (linesDisplayed.size <= line)
+            linesDisplayed.add(" ")
 
 //        Add content
-        queue[line] = text
+        linesDisplayed[line] = text
     }
 
     fun display(line: Int, text: String) {
@@ -34,8 +34,8 @@ open class TelemetryConsole(private val telemetry: Telemetry) {
 
     fun queueToTelemetry() {
         telemetry.clearAll()
-        for (i in (1 until queue.size)) {
-            telemetry.addLine(queue[i])
+        for (i in (1 until linesDisplayed.size)) {
+            telemetry.addLine(linesDisplayed[i])
         }
         println("its here")
         telemetry.update()

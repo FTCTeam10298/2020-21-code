@@ -2,10 +2,10 @@ package jamesTelemetryMenu
 
 class PairSystem {
 
-    val matches: MutableList<String> = mutableListOf("")
+    var matches: List<String> = mutableListOf("")
 
     fun addPair(item1: String, item2: String) {
-        matches.add(item1 + item2)
+        matches = matches + (item1 + item2)
     }
 
     fun getRaw(predicate: String): MutableList<String> = matches.filter{ it.contains(predicate) }.toMutableList()
@@ -31,7 +31,7 @@ class OptionSystem {
 
     fun getItems(option: String): MutableList<String> = items.getRaw(options.getMatches(option))
 
-    fun listOfOptions(): MutableList<String> = options.matches
+    val listOfOptions: List<String> get() = options.matches
 
 }
 
