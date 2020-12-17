@@ -95,10 +95,10 @@ open class TelemetryMenu(private val console:TelemetryConsole)  {
         if (currentOption == "[]") {
             option = firstOption
 //            item = menu.getItems(firstOption)
-            item = menuSystem.getItems(currentOption)
+            item = menuSystem.getItems(currentOption!!)
         } else {
-            option = currentOption
-            item = menuSystem.getItems(currentOption)
+            option = currentOption!!
+            item = menuSystem.getItems(currentOption!!)
         }
 
         console.replaceLine(console.lastUserLine + 2, "$option:")
