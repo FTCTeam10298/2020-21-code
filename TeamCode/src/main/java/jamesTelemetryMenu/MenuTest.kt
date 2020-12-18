@@ -15,6 +15,7 @@ class MenuTest(): LinearOpMode() {
         wizard.newMenu("GameType", "Which kind of game is it?", listOf("Remote", "In-Person"), true, wizard.getMenu("Alliance"))
 
         wizard.summonWizard(gamepad1)
+        console.display(2, wizard.wasItemChosen("Red").toString())
         waitForStart()
     }
 }

@@ -18,7 +18,7 @@ open class TelemetryConsole(val telemetry: Telemetry) {
 
 //        Adds empty lines into the list if necessary
         while (linesDisplayed.size <= line)
-            linesDisplayed.add(" ")
+            linesDisplayed.add("")
 
 //        Add content
         linesDisplayed[line] = text
@@ -33,12 +33,20 @@ open class TelemetryConsole(val telemetry: Telemetry) {
         queueToTelemetry()
     }
 
+    fun eraseLine(line: Int) {
+        replaceLine(line, "")
+    }
+
+    fun clearAll() {
+        telemetry.clearAll()
+        linesDisplayed.clear()
+    }
+
     fun queueToTelemetry() {
         telemetry.clearAll()
         for (i in (1 until linesDisplayed.size)) {
             telemetry.addLine(linesDisplayed[i])
         }
-        println("its here")
         telemetry.update()
     }
 }
