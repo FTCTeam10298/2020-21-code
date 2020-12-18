@@ -59,26 +59,22 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     }
 
     fun summonWizard(gamepad: Gamepad) {
-//        needs to be modded to work in a loop (fix first)
         val firstMenu = menuList.first { it.firstMenu }
-        var lastMenu = Menu("Start", "Start", listOf(), firstMenu)
+        var lastMenu = Menu("", "", listOf(), firstMenu)
 
         menuList.forEachIndexed { index, action ->
             val thisMenu = lastMenu.nextMenu
+            currentMenu = thisMenu
 
-//            displayMenu(formatMenu(firstMenu))
+            if (thisMenu !== null) {
+                while (!menuDone) {
+                    changeCursorBasedOnDPad(gamepad)
 
-            while (!menuDone) {
-                changeCursorBasedOnDPad(gamepad)
-
-//                problematic? nullPointerException?
-                currentMenu = thisMenu
-                if (thisMenu !== null) {
                     displayMenu(formatMenu(thisMenu))
-                    lastMenu = thisMenu
                 }
+                lastMenu = thisMenu
             }
-
         }
+        console.display(startLine, "Wizard Complete!")
     }
 }
