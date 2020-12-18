@@ -13,7 +13,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     data class Menu(val name: String, val caption: String, val items: List<String>, val nextMenu: Menu? = null, val firstMenu: Boolean = false)
 
-    fun newMenu(name: String, caption: String, items: List<String>, firstMenu: Boolean = false, nextMenu: Menu? = null) {
+    fun newMenu(name: String, caption: String, items: List<String>, nextMenu: Menu? = null, firstMenu: Boolean = false) {
 //        val nextMenu = previousMenu!!.nextMenu
         menuList += Menu(name, caption, items, nextMenu, firstMenu)
     }

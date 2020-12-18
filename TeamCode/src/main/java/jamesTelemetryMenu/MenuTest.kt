@@ -1,7 +1,7 @@
 package jamesTelemetryMenu
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
 @TeleOp
@@ -11,11 +11,15 @@ class MenuTest(): LinearOpMode() {
 
     override fun runOpMode() {
 
-        wizard.newMenu("Alliance", "Alliance", listOf("Red", "Blue"))
-        wizard.newMenu("GameType", "Which kind of game is it?", listOf("Remote", "In-Person"), true, wizard.getMenu("Alliance"))
+//        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
+//        wizard.newMenu("powerShot", "Will we do the power shots?", listOf("Yes", "No"))
+        wizard.newMenu("theirWobble", "Will we do our partner's wobble", listOf("Yes", "No"))
+        wizard.newMenu("ourWobble", "Will we do our wobble", listOf("Yes", "No"), wizard.getMenu("theirWobble"))
+        wizard.newMenu("startPos", "Which line are we starting in?", listOf("Closer to you", "Closer to the middle"), wizard.getMenu("ourWobble"))
+        wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"), wizard.getMenu("startPos"))
+        wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"), wizard.getMenu("alliance"), true)
 
         wizard.summonWizard(gamepad1)
-        console.display(2, wizard.wasItemChosen("Red").toString())
         waitForStart()
     }
 }
