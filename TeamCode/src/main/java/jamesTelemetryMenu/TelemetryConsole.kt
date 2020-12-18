@@ -2,7 +2,7 @@ package jamesTelemetryMenu
 
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-open class TelemetryConsole(private val telemetry: Telemetry) {
+open class TelemetryConsole(val telemetry: Telemetry) {
 
     var linesDisplayed: MutableList<String> = mutableListOf()
     var lastUserLine= 0
@@ -12,6 +12,7 @@ open class TelemetryConsole(private val telemetry: Telemetry) {
 //        if (line > lastUserLine)
 //            lastUserLine = line
 //    }
+
 
     fun replaceLine(line: Int, text: String) {
 

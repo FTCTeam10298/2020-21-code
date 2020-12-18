@@ -11,7 +11,8 @@ class MenuTest(): LinearOpMode() {
 
     override fun runOpMode() {
 
-        wizard.newMenu(TelemetryWizard.Menu("Alliance", "Alliance", listOf<Any>(), "hi", true))
+        wizard.newMenu(TelemetryWizard.Menu("Alliance", "Alliance", listOf("Red", "Blue")))
+        wizard.newMenu(TelemetryWizard.Menu("GameType", "What kind of game is it?", listOf("Remote", "In-Person"), wizard.getMenu("Alliance"), true))
 
         wizard.summonWizard(gamepad1)
         waitForStart()
