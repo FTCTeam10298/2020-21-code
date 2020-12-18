@@ -4,6 +4,7 @@ import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.Gamepad
 
 class TelemetryWizard(private val console: TelemetryConsole) {
+    private val startLine = 2
 
 //    Menu organization
     private var menuList: List<Menu> = listOf()
@@ -18,8 +19,6 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     fun getMenu(name: String): Menu = menuList.first{ it.name == name }
 
     private fun formatMenu(menu: Menu): List<String> {
-        currentMenu = menu
-
         var format = listOf(menu.caption + ":\n")
         menu.items.forEachIndexed { index, action ->
             format += placeCursor(index) + action
@@ -29,7 +28,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     private fun displayMenu(formattedMenu: List<String>) {
         formattedMenu.forEachIndexed{ index, action ->
-            console.replaceLine(index + 2, action)
+            console.replaceLine(index + startLine, action)
         }
         console.queueToTelemetry()
     }
@@ -49,7 +48,6 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 //                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
         }
-        console.display(10, keyDown.toString())
     }
 
     private fun placeCursor(option: Int): String {
@@ -61,24 +59,24 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     }
 
     fun summonWizard(gamepad: Gamepad) {
-
+//        needs to be modded to work in a loop (fix first)
         val firstMenu = menuList.first { it.firstMenu }
-        var lastMenu = firstMenu
+        var lastMenu = Menu("Start", "Start", listOf(), firstMenu)
 
         menuList.forEachIndexed { index, action ->
             val thisMenu = lastMenu.nextMenu
 
-            displayMenu(formatMenu(firstMenu))
+//            displayMenu(formatMenu(firstMenu))
 
             while (!menuDone) {
                 changeCursorBasedOnDPad(gamepad)
 
-                displayMenu(formatMenu(firstMenu))
-
-//                if (thisMenu !== null) {
-//                    displayMenu(formatMenu(thisMenu))
-//                    lastMenu = thisMenu
-//                }
+//                problematic? nullPointerException?
+                currentMenu = thisMenu
+                if (thisMenu !== null) {
+                    displayMenu(formatMenu(thisMenu))
+                    lastMenu = thisMenu
+                }
             }
 
         }
