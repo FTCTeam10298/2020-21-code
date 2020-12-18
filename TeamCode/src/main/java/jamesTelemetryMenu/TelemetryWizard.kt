@@ -39,9 +39,10 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         var keyDown = false
 
         while (!menuDone) {
+//            debugging why dpad input does not move cursor
             when {
-                gamepad.dpad_up && !keyDown -> cursorOption -= 1 //moves cursor up
-                gamepad.dpad_down && !keyDown -> cursorOption += 1  //moves cursor down
+                gamepad.dpad_up && !keyDown -> {keyDown = true; cursorOption -= 1} //moves cursor up
+                gamepad.dpad_down && !keyDown -> {keyDown = true; cursorOption += 1}  //moves cursor down
 //                gamepad.dpad_right && !keyDown -> //selects option
 //                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
                 !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
