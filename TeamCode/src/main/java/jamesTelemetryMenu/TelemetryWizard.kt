@@ -8,12 +8,13 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
 //    Menu organization
     private var menuList: List<Menu> = listOf()
-    private var currentMenu: Menu? = null
 
     data class Menu(val name: String, val caption: String, val items: List<String>, val nextMenu: Menu? = null, val firstMenu: Boolean = false)
+    private var chosenItems: List<String> = listOf()
 
-    fun newMenu(menu: Menu) {
-        menuList += menu
+    fun newMenu(name: String, caption: String, items: List<String>, firstMenu: Boolean = false, nextMenu: Menu? = null) {
+//        val nextMenu = previousMenu!!.nextMenu
+        menuList += Menu(name, caption, items, nextMenu, firstMenu)
     }
 
     fun getMenu(name: String): Menu = menuList.first{ it.name == name }
@@ -34,24 +35,24 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     }
 
 //    Gamepad input handler
-    private var cursorOption = 0
+    private var cursorLine = 0
     private var menuDone = false
 
-    private fun changeCursorBasedOnDPad(gamepad: Gamepad) {
-        val cursorMax = currentMenu!!.items.size - 1
+    private fun changeCursorBasedOnDPad(gamepad: Gamepad, currentMenu: Menu) {
+        val cursorMax = currentMenu.items.size - 1
         var keyDown = false
 
         when {
-            gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorOption > 0) cursorOption -= 1} //moves cursor up
-            gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorOption < cursorMax) cursorOption += 1}  //moves cursor down
-//                gamepad.dpad_right && !keyDown -> //selects option
-//                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
+            gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > 0) cursorLine -= 1} //moves cursor up
+            gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < cursorMax) cursorLine += 1}  //moves cursor down
+            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine]; menuDone = true;} //selects option
+//                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
         }
     }
 
     private fun placeCursor(option: Int): String {
-        return if (option == cursorOption) {
+        return if (option == cursorLine) {
             "-"
         } else {
             " "
@@ -64,16 +65,15 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
         menuList.forEachIndexed { index, action ->
             val thisMenu = lastMenu.nextMenu
-            currentMenu = thisMenu
+            menuDone = thisMenu === null
 
-            if (thisMenu !== null) {
-                while (!menuDone) {
-                    changeCursorBasedOnDPad(gamepad)
+            while (!menuDone) {
+                changeCursorBasedOnDPad(gamepad, thisMenu!!)
 
-                    displayMenu(formatMenu(thisMenu))
-                }
-                lastMenu = thisMenu
+                displayMenu(formatMenu(thisMenu))
             }
+            lastMenu = thisMenu!!
+            sleep(2000)
         }
         console.display(startLine, "Wizard Complete!")
     }
