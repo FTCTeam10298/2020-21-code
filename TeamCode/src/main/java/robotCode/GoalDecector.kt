@@ -27,7 +27,7 @@ class GoalTracker : LinearOpMode()  {
     }
 }
 
-class GoalDetector(val console: TelemetryConsole): OpenCvPipeline() {
+class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
     private val workingMatrix: Mat = Mat()
 
@@ -85,7 +85,6 @@ class ColorSorterThing(): OpenCvPipeline() {
             return mat
         }
         fun toScalar(value: DoubleArray): Scalar = Scalar(value)
-
 
         val lowBlue = doubleArrayOf(94.0, 80.0, 2.0)
         val highBlue = doubleArrayOf(126.0, 255.0, 255.0)
