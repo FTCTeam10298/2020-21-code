@@ -1,7 +1,9 @@
 package robotCode
 
+import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.*
@@ -11,18 +13,21 @@ class GoalTracker : LinearOpMode()  {
 
     lateinit var camera: OpenCvInternalCamera
     lateinit var pipeline: GoalDetector
+    val console = TelemetryConsole(telemetry)
 
     override fun runOpMode() {
         val cameraMonitorViewId: Int = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
         camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId)
         camera.openCameraDevice()
+        pipeline = GoalDetector(console)
         camera.setPipeline(pipeline)
         camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT)
+        waitForStart()
 
     }
 }
 
-class GoalDetector(): OpenCvPipeline() {
+class GoalDetector(val console: TelemetryConsole): OpenCvPipeline() {
 
     private val workingMatrix: Mat = Mat()
 
@@ -40,16 +45,16 @@ class GoalDetector(): OpenCvPipeline() {
 
         val thresh = Mat()
         Imgproc.threshold(imgGray, thresh, 127.0, 255.0, 0)
-        val ret = thresh
-
+//        val ret = thresh
         val contours: MutableList<MatOfPoint> = mutableListOf(MatOfPoint())
         val hierarchy = Mat()
         Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
-        println("Number of contours: ${contours.size}")
+        console.display(1, "Number of contours: ${contours.size}")
 
+        sleep(20000)
         val img = Mat()
-        Imgproc.drawContours(workingMatrix, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
+        Imgproc.drawContours(img, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
 
         return img
     }
