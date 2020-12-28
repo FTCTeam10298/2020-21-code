@@ -1,6 +1,5 @@
 package robotCode
 
-import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
@@ -21,7 +20,7 @@ class GoalTracker : LinearOpMode()  {
         camera.openCameraDevice()
         pipeline = GoalDetector(console)
         camera.setPipeline(pipeline)
-        camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT)
+        camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
         waitForStart()
 
     }
@@ -29,36 +28,44 @@ class GoalTracker : LinearOpMode()  {
 
 class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
-    private val workingMatrix: Mat = Mat()
+    private val frame: Mat = Mat()
 
     override fun processFrame(input: Mat): Mat {
 
-        input.copyTo(workingMatrix)
+        input.copyTo(frame)
 
-        if (workingMatrix.empty()) {
+        if (frame.empty()) {
             return input
         }
 
 //        The actual code
-        val imgGray = Mat()
-        Imgproc.cvtColor(workingMatrix, imgGray, Imgproc.COLOR_BGR2GRAY)
 
-        val thresh = Mat()
-        Imgproc.threshold(imgGray, thresh, 127.0, 255.0, 0)
-//        val ret = thresh
-        val contours: MutableList<MatOfPoint> = mutableListOf(MatOfPoint())
+        val mask = colorMask()
+
+        val contours: List<MatOfPoint> = listOf<MatOfPoint>()
         val hierarchy = Mat()
-        Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
+        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
-        console.display(1, "Number of contours: ${contours.size}")
+        Imgproc.drawContours(frame, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
 
-        sleep(20000)
-        val img = Mat()
-        Imgproc.drawContours(img, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
+        return frame
+    }
 
-        return img
+    private fun colorMask(): Mat {
+        val hsv = Mat()
+        Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_RGB2HSV)
+
+        val lowBlue = doubleArrayOf(94.0, 80.0, 2.0)
+        val highBlue = doubleArrayOf(126.0, 255.0, 255.0)
+
+        val mask = Mat()
+        Core.inRange(hsv, Scalar(lowBlue), Scalar(highBlue), mask)
+
+        return mask
     }
 }
+
+
 
 class ColorSorterThing(): OpenCvPipeline() {
 
