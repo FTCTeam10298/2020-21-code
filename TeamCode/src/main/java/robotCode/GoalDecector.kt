@@ -45,10 +45,9 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
         val mask = colorMask(blurredFrame)
 
-        val contours: List<MatOfPoint> = listOf()
+        val contours: MutableList<MatOfPoint> = mutableListOf()
         val hierarchy = Mat()
-//        problematic:
-//        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
+        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
         Imgproc.drawContours(frame, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
 
