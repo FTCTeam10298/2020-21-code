@@ -42,13 +42,18 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
         val blurredFrame = Mat()
         Imgproc.GaussianBlur(frame, blurredFrame, Size(5.0, 5.0), 0.0)
 
-        val mask = colorMask(blurredFrame, doubleArrayOf(48.0, 86.0, 100.0), doubleArrayOf(131.0, 255.0, 255.0))
+//        To be tuned
+        val mask = colorMask(blurredFrame, doubleArrayOf(48.0, 86.0, 0.0), doubleArrayOf(121.0, 255.0, 255.0))
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
         val hierarchy = Mat()
         Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
-        Imgproc.drawContours(frame, contours, -1, Scalar(0.0, 255.0, 0.0), 1)
+        for (contour in contours) {
+            val area = Imgproc.contourArea(contour)
+            if (area > 1000)
+                Imgproc.drawContours(frame, listOf(contour), -1, Scalar(0.0, 255.0, 0.0), 1)
+        }
 
         return frame
     }
