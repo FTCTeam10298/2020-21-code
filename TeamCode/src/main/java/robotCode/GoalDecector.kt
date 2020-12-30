@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
+import org.opencv.imgproc.Moments
 import org.openftc.easyopencv.*
 
 @TeleOp
@@ -39,20 +40,20 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
 //        The actual code
 
-        val blurredFrame = Mat()
-        Imgproc.GaussianBlur(frame, blurredFrame, Size(5.0, 5.0), 0.0)
 
 //        To be tuned
-        val mask = colorMask(blurredFrame, doubleArrayOf(48.0, 86.0, 0.0), doubleArrayOf(121.0, 255.0, 255.0))
+        val mask = colorMask(frame, doubleArrayOf(48.0, 86.0, 0.0), doubleArrayOf(131.0, 155.0, 255.0))
+
+        val blurredFrame = Mat()
+        Imgproc.GaussianBlur(mask, blurredFrame, Size(5.0, 5.0), 0.0)
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
         val hierarchy = Mat()
-        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
+        Imgproc.findContours(blurredFrame, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
         for (contour in contours) {
-            val area = Imgproc.contourArea(contour)
-            if (area > 1000)
-                Imgproc.drawContours(frame, listOf(contour), -1, Scalar(0.0, 255.0, 0.0), 1)
+            Imgproc.drawContours(frame, findSquares(contour), 0, Scalar(0.0, 255.0, 0.0), 2)
+            Imgproc.circle(frame, contourCenter(contour), 3, Scalar(255.0, 255.0, 255.0), -1)
         }
 
         return frame
@@ -66,5 +67,26 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
         Core.inRange(hsv, Scalar(lowValue), Scalar(highValue), mask)
 
         return mask
+    }
+
+    private fun findSquares(contour: MatOfPoint): List<MatOfPoint> {
+        val c = MatOfPoint2f()
+        contour.convertTo(c, CvType.CV_32F)
+
+        val peri = Imgproc.arcLength(c, true)
+        val approx = MatOfPoint2f()
+        Imgproc.approxPolyDP(c, approx,0.04 * peri, true)
+
+        val a = MatOfPoint()
+        approx.convertTo(a, CvType.CV_32S)
+        return listOf(a)
+    }
+
+    private fun contourCenter(contour: MatOfPoint): Point {
+        val m: Moments = Imgproc.moments(contour)
+        val cX = m._m10 / m._m00
+        val cY = m._m01 / m._m00
+
+        return Point(cX, cY)
     }
 }
