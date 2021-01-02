@@ -49,12 +49,13 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
         val hierarchy = Mat()
-        Imgproc.findContours(blurredFrame, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
+        Imgproc.findContours(blurredFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
 
-        for (contour in contours) {
-            Imgproc.drawContours(frame, findSquares(contour), 0, Scalar(0.0, 255.0, 0.0), 2)
-            Imgproc.circle(frame, contourCenter(contour), 3, Scalar(255.0, 255.0, 255.0), -1)
-        }
+        for (cnt in contours)
+            if (isSquare(cnt)) {
+                Imgproc.drawContours(frame, listOf(cnt), 0, Scalar(0.0, 255.0, 0.0), 2)
+                Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
+            }
 
         return frame
     }
@@ -69,17 +70,18 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
         return mask
     }
 
-    private fun findSquares(contour: MatOfPoint): List<MatOfPoint> {
-        val c = MatOfPoint2f()
-        contour.convertTo(c, CvType.CV_32F)
+    private fun isSquare(contour: MatOfPoint): Boolean {
+        val cnt = MatOfPoint2f()
+        contour.convertTo(cnt, CvType.CV_32F)
 
-        val peri = Imgproc.arcLength(c, true)
+        val peri = Imgproc.arcLength(cnt, true)
         val approx = MatOfPoint2f()
-        Imgproc.approxPolyDP(c, approx,0.04 * peri, true)
+        Imgproc.approxPolyDP(cnt, approx,0.02 * peri, true)
 
         val a = MatOfPoint()
         approx.convertTo(a, CvType.CV_32S)
-        return listOf(a)
+
+        return a.rows() == 4
     }
 
     private fun contourCenter(contour: MatOfPoint): Point {
