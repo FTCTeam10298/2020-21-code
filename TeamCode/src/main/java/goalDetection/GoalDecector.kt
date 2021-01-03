@@ -47,14 +47,17 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
         val mask = colorMask(blurredFrame, doubleArrayOf(48.0, 86.0, 0.0), doubleArrayOf(131.0, 155.0, 255.0))
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
-        val hierarchy = Mat()
-        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
+//        val hierarchy = Mat()
+        Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
 
-        for (cnt in contours)
-            if (isSquare(cnt)) {
+        for (cnt in contours) {
+            val area = Imgproc.contourArea(cnt)
+
+            if (area > 100)
                 Imgproc.drawContours(frame, listOf(cnt), 0, Scalar(0.0, 255.0, 0.0), 2)
-                Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
-            }
+                if (isSquare(cnt))
+                    Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
+        }
 
         return frame
     }
@@ -75,12 +78,12 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 
         val peri = Imgproc.arcLength(cnt, true)
         val approx = MatOfPoint2f()
-        Imgproc.approxPolyDP(cnt, approx,0.02 * peri, true)
+        Imgproc.approxPolyDP(cnt, approx,0.01 * peri, true)
 
         val a = MatOfPoint()
         approx.convertTo(a, CvType.CV_32S)
 
-        return a.cols() == 4
+        return a.rows() == 4
     }
 
     private fun contourCenter(contour: MatOfPoint): Point {

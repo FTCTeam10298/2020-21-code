@@ -1,6 +1,4 @@
-package PID
-
-import com.qualcomm.robotcore.hardware.DcMotor
+package pid
 
 fun main() {
     val pid: PID = PID()

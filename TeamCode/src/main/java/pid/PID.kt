@@ -1,4 +1,4 @@
-package PID
+package pid
 
 import com.qualcomm.robotcore.hardware.DcMotor
 
