@@ -2,6 +2,7 @@ package goalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.Gamepad
 import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -12,17 +13,15 @@ class GoalTracker : LinearOpMode()  {
 
     val console = TelemetryConsole(telemetry)
 
-    val opencv = OpencvAbstraction()
-    val goalDetector = GoalDetector(console)
+    val opencv = OpencvAbstraction(this)
+    val goalDetector = GoalDetector()
 
     override fun runOpMode() {
-        val cameraMonitorViewId: Int = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        opencv.init(cameraMonitorViewId)
+        opencv.init()
         opencv.start()
 
         while (!isStarted) {
-            console.display(1, opencv.pipeline.rtn.empty().toString() + "hi")
-            goalDetector.detectTrapezoid(opencv.frame)
+            goalDetector.detectTrapezoid(opencv.frame, gamepad1, gamepad2)
             opencv.setReturn(goalDetector.display)
         }
 
@@ -31,29 +30,51 @@ class GoalTracker : LinearOpMode()  {
     }
 }
 
-class GoalDetector(private val console: TelemetryConsole) {
+class GoalDetector() {
 
     var display: Mat = Mat()
 
-    fun detectTrapezoid(frame: Mat) {
-
-        val blurredFrame = Mat()
-        Imgproc.GaussianBlur(frame, blurredFrame, Size(10.0, 10.0), 0.0)
+    fun detectTrapezoid(frame: Mat, gamepad1: Gamepad, gamepad2: Gamepad) {
 
 //        To be tuned
-        val lowBlue = doubleArrayOf(48.0, 86.0, 0.0)
-        val highBlue = doubleArrayOf(131.0, 155.0, 255.0)
 
-        val mask = colorMask(blurredFrame, lowBlue, highBlue)
+        var lh = 0.0
+        lh += gamepad1.left_stick_y.toDouble()
+
+        var ls = 0.0
+        ls += gamepad1.left_stick_x.toDouble()
+
+        var lv = 0.0
+        lv += gamepad1.right_stick_y.toDouble()
+
+        var h = 0.0
+        h += gamepad2.left_stick_y.toDouble()
+
+        var s = 0.0
+        s += gamepad2.left_stick_x.toDouble()
+
+        var v = 0.0
+        v += gamepad2.right_stick_y.toDouble()
+
+
+        val lowBlue = doubleArrayOf(lh, ls, lv)
+        doubleArrayOf(48.0, 86.0, 0.0)
+        val highBlue = doubleArrayOf(h, s, v)
+        doubleArrayOf(131.0, 155.0, 255.0)
+
+        val mask = colorMask(frame, lowBlue, highBlue)
+
+        val blurredMask = Mat()
+        Imgproc.GaussianBlur(mask, blurredMask, Size(5.0, 5.0), 0.0)
 
 //        val erodedMask = Mat()
 //        Imgproc.erode(mask, erodedMask, Mat())
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
-        Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE)
+        Imgproc.findContours(blurredMask, contours, Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE)
 
         val largeContours = contours.filter{ Imgproc.contourArea(it) > 500}
-        val squareContours = largeContours.filter{ isSquare(it) }
+        val squareContours = contours.filter{ isSquare(it) }
         squareContours.forEach {
 
 //            val x = it.row(0)
@@ -62,8 +83,10 @@ class GoalDetector(private val console: TelemetryConsole) {
             Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1)
         }
 
+//        val sdo = squareContours.maxWith{ Imgproc.contourArea(it).toDouble() }
+//        val goal = squareContours.first{ Imgproc.contourArea(it) >  }
 
-        display = frame
+        display = blurredMask
     }
 
     private fun colorMask(frame: Mat, lowValue: DoubleArray, highValue: DoubleArray): Mat {
