@@ -21,9 +21,8 @@ class GoalTracker : LinearOpMode()  {
         opencv.start()
 
         while (true) {
-            console.display(1, opencv.frame().toString())
-            console.display(2, opencv.frame.toString())
-            goalDetector.detectTrapazoid(Mat())
+            console.display(1, opencv.pipeline.rtn.empty().toString() + "hi")
+            goalDetector.detectTrapezoid(opencv.frame)
         }
 
         waitForStart()
@@ -33,36 +32,27 @@ class GoalTracker : LinearOpMode()  {
 
 class GoalDetector(private val console: TelemetryConsole) {
 
-    fun detectTrapazoid(frame: Mat) {
+    fun detectTrapezoid(frame: Mat)/*: Mat*/ {
 
         val blurredFrame = Mat()
         Imgproc.GaussianBlur(frame, blurredFrame, Size(5.0, 5.0), 0.0)
 
 //        To be tuned
-        val mask = colorMask(blurredFrame, doubleArrayOf(48.0, 86.0, 0.0), doubleArrayOf(131.0, 155.0, 255.0))
+        val lowBlue = doubleArrayOf(48.0, 86.0, 0.0)
+        val highBlue = doubleArrayOf(131.0, 155.0, 255.0)
+
+        val mask = colorMask(blurredFrame, lowBlue, highBlue)
 
         val contours: MutableList<MatOfPoint> = mutableListOf()
-//        val hierarchy = Mat()
         Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
 
-        val largeContours = contours.filter{Imgproc.contourArea(it) > 100}
+        val largeContours = contours/*.filter{Imgproc.contourArea(it) > 100}*/
         largeContours.forEach{ Imgproc.drawContours(frame, listOf(it), 0, Scalar(0.0, 255.0, 0.0), 2) }
 
         val squareContours = largeContours.filter{isSquare(it)}
         squareContours.forEach{ Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1) }
 
-//        for (cnt in contours) {
-//            val area = Imgproc.contourArea(cnt)
-//
-////            To be tuned
-//            if (area > 100) {
-//                Imgproc.drawContours(frame, listOf(cnt), 0, Scalar(0.0, 255.0, 0.0), 2)
-//
-//                if (isSquare(cnt))
-//                    Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
-//            }
-//        }
-
+//        return mask
     }
 
     private fun colorMask(frame: Mat, lowValue: DoubleArray, highValue: DoubleArray): Mat {

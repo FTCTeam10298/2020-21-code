@@ -1,5 +1,6 @@
 package goalDetection
 
+import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.util.Hardware
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
@@ -28,19 +29,28 @@ class CameraMaker {
 class PipelineAbstraction: OpenCvPipeline() {
     val frame: Mat = Mat()
     var newFrame: Mat = Mat()
+    var rtn = Mat()
 
-    override fun processFrame(input: Mat?): Mat {
-        input?.copyTo(frame)
+    override fun processFrame(input: Mat): Mat {
+        input.copyTo(frame)
 
         if (frame.empty()) {
-            return input!!
+            return input
         }
 
         newFrame = frame
 
         return frame
+//        return if (rtn.empty())
+//            frame
+//        else
+//            rtn
     }
 
+    fun setReturn(input: Mat) {
+        if (!frame.empty())
+            rtn = input
+    }
 }
 
 class OpencvAbstraction {
@@ -53,15 +63,18 @@ class OpencvAbstraction {
     fun init(cameraMonitorViewId: Int) {
         camera = OpenCvCameraFactory.getInstance().createInternalCamera(cameraDirection, cameraMonitorViewId)
         camera.openCameraDevice()
-
         camera.setPipeline(pipeline)
     }
 
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+        sleep(80)
     }
+
 
     val frame get() = pipeline.newFrame
 
-    fun frame() = pipeline.newFrame
+    fun setReturn(input: Mat) {
+        pipeline.setReturn(input)
+    }
 }
