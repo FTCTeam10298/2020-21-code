@@ -1,4 +1,4 @@
-package robotCode
+package goalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -6,39 +6,34 @@ import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Moments
-import org.openftc.easyopencv.*
 
 @TeleOp
 class GoalTracker : LinearOpMode()  {
 
-    lateinit var camera: OpenCvInternalCamera
-    lateinit var pipeline: GoalDetector
     val console = TelemetryConsole(telemetry)
+
+    val opencv = OpencvAbstraction()
+    val goalDetector = GoalDetector(console)
 
     override fun runOpMode() {
         val cameraMonitorViewId: Int = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-        camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId)
-        camera.openCameraDevice()
-        pipeline = GoalDetector(console)
-        camera.setPipeline(pipeline)
-        camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+        opencv.init(cameraMonitorViewId)
+        opencv.start()
+
+        while (true) {
+            console.display(1, opencv.frame().toString())
+            console.display(2, opencv.frame.toString())
+            goalDetector.detectTrapazoid(Mat())
+        }
+
         waitForStart()
 
     }
 }
 
-class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
+class GoalDetector(private val console: TelemetryConsole) {
 
-    private val frame: Mat = Mat()
-
-    override fun processFrame(input: Mat): Mat {
-        input.copyTo(frame)
-
-        if (frame.empty()) {
-            return input
-        }
-
-//        The actual code
+    fun detectTrapazoid(frame: Mat) {
 
         val blurredFrame = Mat()
         Imgproc.GaussianBlur(frame, blurredFrame, Size(5.0, 5.0), 0.0)

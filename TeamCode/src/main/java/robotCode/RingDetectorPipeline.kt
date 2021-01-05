@@ -54,7 +54,7 @@ class EasyOpenCVExample : LinearOpMode() {
     }
 }
 
-class RingDeterminationPipeline (val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int ): OpenCvPipeline() {
+class RingDeterminationPipeline(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int ): OpenCvPipeline() {
     /*
      * An enum to define the skystone position
      */
