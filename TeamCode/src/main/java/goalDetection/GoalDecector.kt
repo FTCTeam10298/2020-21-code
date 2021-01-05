@@ -50,16 +50,24 @@ class GoalDetector(private val console: TelemetryConsole): OpenCvPipeline() {
 //        val hierarchy = Mat()
         Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
 
-        for (cnt in contours) {
-            val area = Imgproc.contourArea(cnt)
+        val largeContours = contours.filter{Imgproc.contourArea(it) > 100}
+        largeContours.forEach{ Imgproc.drawContours(frame, listOf(it), 0, Scalar(0.0, 255.0, 0.0), 2) }
 
-            if (area > 100)
-                Imgproc.drawContours(frame, listOf(cnt), 0, Scalar(0.0, 255.0, 0.0), 2)
-                if (isSquare(cnt))
-                    Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
-        }
+        val squareContours = largeContours.filter{isSquare(it)}
+        squareContours.forEach{ Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1) }
 
-        return frame
+//        for (cnt in contours) {
+//            val area = Imgproc.contourArea(cnt)
+//
+////            To be tuned
+//            if (area > 100) {
+//                Imgproc.drawContours(frame, listOf(cnt), 0, Scalar(0.0, 255.0, 0.0), 2)
+//
+//                if (isSquare(cnt))
+//                    Imgproc.circle(frame, contourCenter(cnt), 3, Scalar(255.0, 255.0, 255.0), -1)
+//            }
+//        }
+
     }
 
     private fun colorMask(frame: Mat, lowValue: DoubleArray, highValue: DoubleArray): Mat {
