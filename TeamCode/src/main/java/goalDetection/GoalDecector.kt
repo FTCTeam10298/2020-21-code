@@ -20,9 +20,10 @@ class GoalTracker : LinearOpMode()  {
         opencv.init(cameraMonitorViewId)
         opencv.start()
 
-        while (true) {
+        while (!isStarted) {
             console.display(1, opencv.pipeline.rtn.empty().toString() + "hi")
             goalDetector.detectTrapezoid(opencv.frame)
+            opencv.setReturn(goalDetector.display)
         }
 
         waitForStart()
@@ -32,7 +33,9 @@ class GoalTracker : LinearOpMode()  {
 
 class GoalDetector(private val console: TelemetryConsole) {
 
-    fun detectTrapezoid(frame: Mat)/*: Mat*/ {
+    var display: Mat = Mat()
+
+    fun detectTrapezoid(frame: Mat) {
 
         val blurredFrame = Mat()
         Imgproc.GaussianBlur(frame, blurredFrame, Size(5.0, 5.0), 0.0)
@@ -43,16 +46,17 @@ class GoalDetector(private val console: TelemetryConsole) {
 
         val mask = colorMask(blurredFrame, lowBlue, highBlue)
 
+        
         val contours: MutableList<MatOfPoint> = mutableListOf()
-        Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE)
+        Imgproc.findContours(mask, contours, Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE)
 
-        val largeContours = contours/*.filter{Imgproc.contourArea(it) > 100}*/
+        val largeContours = contours.filter{Imgproc.contourArea(it) > 100}
         largeContours.forEach{ Imgproc.drawContours(frame, listOf(it), 0, Scalar(0.0, 255.0, 0.0), 2) }
 
         val squareContours = largeContours.filter{isSquare(it)}
         squareContours.forEach{ Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1) }
 
-//        return mask
+        display = frame
     }
 
     private fun colorMask(frame: Mat, lowValue: DoubleArray, highValue: DoubleArray): Mat {

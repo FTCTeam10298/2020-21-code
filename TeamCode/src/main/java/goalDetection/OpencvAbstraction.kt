@@ -40,11 +40,10 @@ class PipelineAbstraction: OpenCvPipeline() {
 
         newFrame = frame
 
-        return frame
-//        return if (rtn.empty())
-//            frame
-//        else
-//            rtn
+        if (rtn.empty())
+            rtn = frame
+
+        return rtn
     }
 
     fun setReturn(input: Mat) {
@@ -68,7 +67,7 @@ class OpencvAbstraction {
 
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-        sleep(80)
+        sleep(100)
     }
 
 
