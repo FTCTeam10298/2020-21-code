@@ -3,14 +3,20 @@ package robotCode
 import com.qualcomm.robotcore.hardware.*
 
 /*  CURRENT HARDWARE MAP:
-*    Expansion hub 2:
-*     lFDrive
-*     rFDrive
-*     lBDrive
-*     rBDrive
+*   Expansion hub 2:
+*       motors
+*           lFDrive
+*           rFDrive
+*           lBDrive
+*           rBDrive
+*       servos
+*
 *    Expansion hub 3:
-*     shooter
-*     belt
+*       motors
+*           shooter
+*           belt
+*       servos
+*
 */
 
 open class AimBotHardware {
