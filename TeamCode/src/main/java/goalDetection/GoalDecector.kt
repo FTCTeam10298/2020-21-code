@@ -14,7 +14,7 @@ class GoalTracker : LinearOpMode()  {
     val console = TelemetryConsole(telemetry)
 
     val opencv = OpencvAbstraction(this)
-    val goalDetector = GoalDetector()
+    val goalDetector = GoalDetector(console)
 
     override fun runOpMode() {
         opencv.init()
@@ -30,7 +30,7 @@ class GoalTracker : LinearOpMode()  {
     }
 }
 
-class GoalDetector() {
+class GoalDetector(private val console: TelemetryConsole) {
 
     var display: Mat = Mat()
 
@@ -38,29 +38,9 @@ class GoalDetector() {
 
 //        To be tuned
 
-        var lh = 0.0
-        lh += gamepad1.left_stick_y.toDouble()
+        val lowBlue = doubleArrayOf(112.0, 255.0, 255.0)
 
-        var ls = 0.0
-        ls += gamepad1.left_stick_x.toDouble()
-
-        var lv = 0.0
-        lv += gamepad1.right_stick_y.toDouble()
-
-        var h = 0.0
-        h += gamepad2.left_stick_y.toDouble()
-
-        var s = 0.0
-        s += gamepad2.left_stick_x.toDouble()
-
-        var v = 0.0
-        v += gamepad2.right_stick_y.toDouble()
-
-
-        val lowBlue = doubleArrayOf(lh, ls, lv)
-        doubleArrayOf(48.0, 86.0, 0.0)
-        val highBlue = doubleArrayOf(h, s, v)
-        doubleArrayOf(131.0, 155.0, 255.0)
+        val highBlue = doubleArrayOf(181.0, 255.0, 114.0)
 
         val mask = colorMask(frame, lowBlue, highBlue)
 

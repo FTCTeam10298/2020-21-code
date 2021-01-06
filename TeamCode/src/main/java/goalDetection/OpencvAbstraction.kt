@@ -58,7 +58,7 @@ class OpencvAbstraction(private val opmode: OpMode) {
     val pipeline = PipelineAbstraction()
 
     lateinit var camera: OpenCvInternalCamera
-    var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.BACK
+    var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
 
     fun init() {
 
