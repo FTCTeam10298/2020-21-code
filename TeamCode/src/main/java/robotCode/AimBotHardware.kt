@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.hardware.*
+import robotCode.aimBotRobot.MecanumHardware
 
 /*  CURRENT HARDWARE MAP:
 *   Expansion hub 2:
@@ -19,24 +20,16 @@ import com.qualcomm.robotcore.hardware.*
 *
 */
 
-open class AimBotHardware {
+open class AimBotHardware: MecanumHardware {
 
-//    DRIVE TRAIN
-    lateinit var lFDrive: DcMotor
-    lateinit var rFDrive: DcMotor
-    lateinit var lBDrive: DcMotor
-    lateinit var rBDrive: DcMotor
-
-//    SHOOTER
+//    MOTORS
+    override lateinit var lFDrive: DcMotor
+    override lateinit var rFDrive: DcMotor
+    override lateinit var lBDrive: DcMotor
+    override lateinit var rBDrive: DcMotor
     lateinit var shooter: DcMotorEx
-
-//    BELT
     lateinit var belt: DcMotor
-
-//    COLLECTOR
     lateinit var collector: DcMotor
-
-//    WOBBLE ARM
     lateinit var wobbleArm: DcMotor
 
 //    SERVOS
@@ -44,9 +37,9 @@ open class AimBotHardware {
     lateinit var claw: Servo
 
 //    HARDWARE MAP
-    lateinit var hwMap: HardwareMap
+    override lateinit var hwMap: HardwareMap
 
-    fun init(ahwMap: HardwareMap) {
+    override fun init(ahwMap: HardwareMap) {
 
         hwMap = ahwMap
 
