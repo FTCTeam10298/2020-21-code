@@ -16,10 +16,11 @@ class AimBotAuto(): LinearOpMode() {
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
 
-    val robot= EncoderDriveMovement(console)
+    val hardware = AimBotHardware()
+    val robot = EncoderDriveMovement(console, hardware)
 
     override fun runOpMode() {
-        robot.init(hardwareMap)
+        hardware.init(hardwareMap)
 
 //        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
 //        wizard.newMenu("powerShot", "Will we do the power shots?", listOf("Yes", "No"))
@@ -34,13 +35,13 @@ class AimBotAuto(): LinearOpMode() {
 
 //        Wins 5 Pts.
 
-        robot.shooter.power = 0.7
+        hardware.shooter.power = 0.7
         robot.driveRobotPosition(0.5, -60.0, true)
 
         robot.driveRobotTurn(1.0, 28.0 )
-        robot.belt.power = 1.0
+        hardware.belt.power = 1.0
     }
     fun shoot() {
-        robot.belt.power = 1.0
+        hardware.belt.power = 1.0
     }
 }

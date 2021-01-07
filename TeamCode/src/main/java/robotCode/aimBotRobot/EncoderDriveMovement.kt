@@ -5,13 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
 import jamesTelemetryMenu.TelemetryConsole
-import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import java.lang.Thread.sleep
 import kotlin.math.PI
 import kotlin.math.abs
 
-open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumDriveTrain() {
+open class EncoderDriveMovement(private val console: TelemetryConsole, private val hardware: MecanumHardware): MecanumDriveTrain(hardware) {
 
     lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
@@ -43,7 +42,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
      * @param power Power level to set motors to
      */
     fun driveRobotDistanceToObject(power: Double, inches: Double, smart_accel: Boolean) {
-        val target = rangeSensor.getDistance(DistanceUnit.INCH) as Float - inches // FIXME: how accurate is sensor?
+        val target = rangeSensor.getDistance(DistanceUnit.INCH).toFloat() - inches // FIXME: how accurate is sensor?
         console.display(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
         driveRobotPosition(abs(power), target, smart_accel) // Use abs() to make sure power is positive
     }
@@ -65,26 +64,26 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
         } else {
             drivePowerAll(abs(power)) // Use abs() to make sure power is positive
         }
-        val flOrigTarget: Int = lFDrive.targetPosition
-        val frOrigTarget: Int = rFDrive.targetPosition
-        val blOrigTarget: Int = lBDrive.targetPosition
-        val brOrigTarget: Int = rBDrive.targetPosition
+        val flOrigTarget: Int = hardware.lFDrive.targetPosition
+        val frOrigTarget: Int = hardware.rFDrive.targetPosition
+        val blOrigTarget: Int = hardware.lBDrive.targetPosition
+        val brOrigTarget: Int = hardware.rBDrive.targetPosition
         driveAddTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-                val flDrive: Int = lFDrive.currentPosition
-                val frDrive: Int = rFDrive.currentPosition
-                val blDrive: Int = lBDrive.currentPosition
-                val brDrive: Int = rBDrive.currentPosition
+                val flDrive: Int = hardware.lFDrive.currentPosition
+                val frDrive: Int = hardware.rFDrive.currentPosition
+                val blDrive: Int = hardware.lBDrive.currentPosition
+                val brDrive: Int = hardware.rBDrive.currentPosition
                 console.display(3, "Front left encoder: $flDrive")
                 console.display(4, "Front right encoder: $frDrive")
                 console.display(5, "Back left encoder: $blDrive")
                 console.display(6, "Back right encoder $brDrive")
-                console.display(7, "Front left target: ${lFDrive.targetPosition}")
-                console.display(8, "Front right target: ${rFDrive.targetPosition}")
-                console.display(9, "Back left target: ${lBDrive.targetPosition}")
-                console.display(10, "Back right target ${rBDrive.targetPosition}")
+                console.display(7, "Front left target: ${hardware.lFDrive.targetPosition}")
+                console.display(8, "Front right target: ${hardware.rFDrive.targetPosition}")
+                console.display(9, "Back left target: ${hardware.lBDrive.targetPosition}")
+                console.display(10, "Back right target ${hardware.rBDrive.targetPosition}")
 
                 // State magic
                 if (state == 1 &&
@@ -123,18 +122,18 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
         } else {
             driveSetPower(power, -power, power, -power)
         }
-        val flOrigTarget: Int = lFDrive.targetPosition
-        val frOrigTarget: Int = rFDrive.targetPosition
-        val blOrigTarget: Int = lBDrive.targetPosition
-        val brOrigTarget: Int = rBDrive.targetPosition
+        val flOrigTarget: Int = hardware.lFDrive.targetPosition
+        val frOrigTarget: Int = hardware.rFDrive.targetPosition
+        val blOrigTarget: Int = hardware.lBDrive.targetPosition
+        val brOrigTarget: Int = hardware.rBDrive.targetPosition
         driveAddTargetPosition(position.toInt(), -position.toInt(), position.toInt(), -position.toInt())
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-                val flDrive: Int = lFDrive.currentPosition
-                val frDrive: Int = rFDrive.currentPosition
-                val blDrive: Int = lBDrive.currentPosition
-                val brDrive: Int = rBDrive.currentPosition
+                val flDrive: Int = hardware.lFDrive.currentPosition
+                val frDrive: Int = hardware.rFDrive.currentPosition
+                val blDrive: Int = hardware.lBDrive.currentPosition
+                val brDrive: Int = hardware.rBDrive.currentPosition
                 console.display(3, "Front left encoder: $flDrive")
                 console.display(4, "Front right encoder: $frDrive")
                 console.display(5, "Back left encoder: $blDrive")
@@ -211,10 +210,10 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
-                console.display(3, "Left front encoder: ${lFDrive.currentPosition}")
-                console.display(4, "Right front encoder: ${rFDrive.currentPosition}")
-                console.display(5, "Left back encoder: ${lBDrive.currentPosition}")
-                console.display(6, "Right back encoder: ${rBDrive.currentPosition}")
+                console.display(3, "Left front encoder: ${hardware.lFDrive.currentPosition}")
+                console.display(4, "Right front encoder: ${hardware.rFDrive.currentPosition}")
+                console.display(5, "Left back encoder: ${hardware.lBDrive.currentPosition}")
+                console.display(6, "Right back encoder: ${hardware.rBDrive.currentPosition}")
             }
             sleep(10)
         }
@@ -230,37 +229,37 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
         //power 1, inches -48, difference -.5
         driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
         if (difference > 0) {
-            rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            lFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            lBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.lFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.lBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
         } else {
-            rFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            rBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
-            lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-            lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.rFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.rBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         }
         if (difference > 0 && inches > 0) driveSetPower(abs(power), abs(power * difference), abs(power), abs(power * difference)) else if (difference > 0 && inches < 0) driveSetPower(abs(power), -abs(power * difference), abs(power), -abs(power * difference)) else if (difference < 0 && inches > 0) driveSetPower(abs(power * difference), abs(power), abs(power * difference), abs(power)) else if (difference < 0 && inches < 0) driveSetPower(-abs(power * difference), abs(power), -abs(power * difference), abs(power))
         if (difference > 0) {
-            lFDrive.targetPosition = position.toInt()
-            lBDrive.targetPosition = position.toInt()
+            hardware.lFDrive.targetPosition = position.toInt()
+            hardware.lBDrive.targetPosition = position.toInt()
         } else {
-            rFDrive.targetPosition = position.toInt()
-            rBDrive.targetPosition = position.toInt()
+            hardware.rFDrive.targetPosition = position.toInt()
+            hardware.rBDrive.targetPosition = position.toInt()
         }
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             if (difference > 0) {
-                while (lFDrive.isBusy && lBDrive.isBusy) {
-                    val flDrive: Int = lFDrive.currentPosition
-                    val blDrive: Int = lBDrive.currentPosition
+                while (hardware.lFDrive.isBusy && hardware.lBDrive.isBusy) {
+                    val flDrive: Int = hardware.lFDrive.currentPosition
+                    val blDrive: Int = hardware.lBDrive.currentPosition
                     console.display(3, "Front left encoder: $flDrive")
                     console.display(4, "Back left encoder: $blDrive")
                 }
             } else {
-                while (rFDrive.isBusy && rBDrive.isBusy) {
-                    val frDrive: Int = rFDrive.currentPosition
-                    val brDrive: Int = rBDrive.currentPosition
+                while (hardware.rFDrive.isBusy && hardware.rBDrive.isBusy) {
+                    val frDrive: Int = hardware.rFDrive.currentPosition
+                    val brDrive: Int = hardware.rBDrive.currentPosition
                     console.display(3, "Front left encoder: $frDrive")
                     console.display(4, "Back left encoder: $brDrive")
                 }
@@ -268,51 +267,6 @@ open class EncoderDriveMovement(private val console: TelemetryConsole): MecanumD
             sleep(10)
         }
         drivePowerAll(0.0)
-    }
-
-//    New funs
-
-    fun tiptoeMotor(motorUsed:DcMotor, ticks:Int) {
-
-        motorUsed.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorUsed.mode = DcMotor.RunMode.RUN_TO_POSITION
-
-        motorUsed.targetPosition = ticks
-        while (motorUsed.isBusy) {
-            motorUsed.power = 1.0
-        }
-
-        motorUsed.power = 0.0
-    }
-
-    fun abscondCautiously(motorUsed1:DcMotor, motorUsed2:DcMotor, motorUsed3:DcMotor, motorUsed4:DcMotor,  ticks:Int) {
-
-        motorUsed1.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorUsed1.mode = DcMotor.RunMode.RUN_TO_POSITION
-        motorUsed2.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorUsed2.mode = DcMotor.RunMode.RUN_TO_POSITION
-        motorUsed3.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorUsed3.mode = DcMotor.RunMode.RUN_TO_POSITION
-        motorUsed4.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motorUsed4.mode = DcMotor.RunMode.RUN_TO_POSITION
-
-        motorUsed1.targetPosition = ticks
-        motorUsed2.targetPosition = ticks
-        motorUsed3.targetPosition = ticks
-        motorUsed4.targetPosition = ticks
-
-        while (motorUsed1.isBusy && motorUsed2.isBusy && motorUsed3.isBusy && motorUsed4.isBusy) {
-            motorUsed1.power = 1.0
-            motorUsed2.power = 1.0
-            motorUsed3.power = 1.0
-            motorUsed4.power = 1.0
-        }
-
-        motorUsed1.power = 0.0
-        motorUsed2.power = 0.0
-        motorUsed3.power = 0.0
-        motorUsed4.power = 0.0
-
     }
 
 }
