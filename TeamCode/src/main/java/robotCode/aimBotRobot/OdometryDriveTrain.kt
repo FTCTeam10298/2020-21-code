@@ -3,7 +3,7 @@ package robotCode.aimBotRobot
 import com.qualcomm.robotcore.util.Range
 import locationTracking.GlobalRobot
 
-class OdometryDriveTrain(private val hardwareMec: MecOdometryHardware): MecanumDriveTrain(hardwareMec) {
+class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriveTrain(hardware) {
 
     var deltaL = 0.0
     var deltaC = 0.0
@@ -74,10 +74,10 @@ class OdometryDriveTrain(private val hardwareMec: MecOdometryHardware): MecanumD
         fr = Range.clip(fr, -1.0, 1.0)
 
         // Set powers
-        hardwareMec.lBDrive.power = bl
-        hardwareMec.lFDrive.power = fl
-        hardwareMec.rFDrive.power = fr
-        hardwareMec.rBDrive.power = br
+        hardware.lBDrive.power = bl
+        hardware.lFDrive.power = fl
+        hardware.rFDrive.power = fr
+        hardware.rBDrive.power = br
     }
 
     /**
@@ -86,9 +86,9 @@ class OdometryDriveTrain(private val hardwareMec: MecOdometryHardware): MecanumD
      */
     fun updatePosition() {
 //        bulkData = expansionHub.getBulkInputData()
-        val currentL = hardwareMec.lOdom.currentPosition.toDouble() / 1144.0
-        val currentC = hardwareMec.cOdom.currentPosition.toDouble() / 1144.0
-        val currentR = hardwareMec.rOdom.currentPosition.toDouble() / 1144.0
+        val currentL = hardware.lOdom.currentPosition.toDouble() / 1144.0
+        val currentC = hardware.cOdom.currentPosition.toDouble() / 1144.0
+        val currentR = hardware.rOdom.currentPosition.toDouble() / 1144.0
         deltaL = currentL - previousL
         deltaC = currentC - previousC
         deltaR = currentR - previousR

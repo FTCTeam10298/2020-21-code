@@ -8,14 +8,14 @@ import locationTracking.GlobalRobot
 import pid.PID
 import kotlin.math.*
 
-class OdometryDriveMovement(private val console: TelemetryConsole, private val hardwareMec: MecOdometryHardware) {
+class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): EncoderDriveMovement(console, hardware) {
 
 
     enum class State {
         INIT, BUSY, DONE, TIMEOUT
     }
 
-    private val drive = OdometryDriveTrain(hardwareMec)
+    private val drive = OdometryDriveTrain(hardware)
 
     private var prevErrorX = 0.0
     private var prevErrorY = 0.0
@@ -87,7 +87,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 console.display(8, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
                 console.display(9, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
                 console.display(10, "absAngleError: ${Math.toDegrees(absAngleError)}")
-                console.display(11, "Raw L, Raw C, Raw R: ${hardwareMec.lOdom}, ${hardwareMec.cOdom}, ${hardwareMec.rOdom}")
+                console.display(11, "Raw L, Raw C, Raw R: ${hardware.lOdom}, ${hardware.cOdom}, ${hardware.rOdom}")
 
                 // I and D terms are not being currently used
 
