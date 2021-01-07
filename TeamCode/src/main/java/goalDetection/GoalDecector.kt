@@ -21,7 +21,7 @@ class GoalTracker : LinearOpMode()  {
         opencv.start()
 
         while (!isStarted) {
-            goalDetector.detectTrapezoid(opencv.frame, gamepad1, gamepad2)
+            goalDetector.detectTrapezoid(opencv.frame)
             opencv.setReturn(goalDetector.display)
         }
 
@@ -33,8 +33,9 @@ class GoalTracker : LinearOpMode()  {
 class GoalDetector(private val console: TelemetryConsole) {
 
     var display: Mat = Mat()
+    var goal: Mat = Mat()
 
-    fun detectTrapezoid(frame: Mat, gamepad1: Gamepad, gamepad2: Gamepad) {
+    fun detectTrapezoid(frame: Mat) {
 
 //        To be tuned
 
@@ -63,8 +64,7 @@ class GoalDetector(private val console: TelemetryConsole) {
             Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1)
         }
 
-//        val sdo = squareContours.maxWith{ Imgproc.contourArea(it).toDouble() }
-//        val goal = squareContours.first{ Imgproc.contourArea(it) >  }
+//        goal = squareContours.maxWith{ Imgproc.contourArea(it).toDouble() }
 
         display = blurredMask
     }
