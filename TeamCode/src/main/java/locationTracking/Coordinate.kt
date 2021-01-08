@@ -2,10 +2,6 @@ package locationTracking
 
 open class Coordinate(var x: Double, var y: Double, var r: Double) {
 
-//    var x = 0.0
-//    var y = 0.0
-//    var r = 0.0
-
     /**
      * Creates a Coordinate with given values. All alternate constructors assume 0 for unstated variables.
      * @param x X position
