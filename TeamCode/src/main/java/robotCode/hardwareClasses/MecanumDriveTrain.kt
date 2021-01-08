@@ -1,7 +1,6 @@
-package robotCode.aimBotRobot
+package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.hardware.DcMotor
-import robotCode.AimBotHardware
 
 open class MecanumDriveTrain(private val hardware: MecanumHardware) {
 

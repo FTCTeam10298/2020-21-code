@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
 import locationTracking.Coordinate
-import robotCode.aimBotRobot.EncoderDriveMovement
+import robotCode.hardwareClasses.EncoderDriveMovement
 
 @TeleOp
 class AutoAim(private val console: TelemetryConsole, opMode: OpMode, val robot: EncoderDriveMovement) {

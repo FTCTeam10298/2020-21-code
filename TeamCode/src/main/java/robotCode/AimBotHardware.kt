@@ -1,7 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.hardware.*
-import robotCode.aimBotRobot.MecanumHardware
+import robotCode.hardwareClasses.MecanumHardware
 
 /*  CURRENT HARDWARE MAP:
 *   Expansion hub 2:
