@@ -1,4 +1,4 @@
-package robotCode.aimBotRobot
+package robotCode.hardwareClasses
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor

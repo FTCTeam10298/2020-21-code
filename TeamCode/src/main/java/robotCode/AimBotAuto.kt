@@ -4,11 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import jamesTelemetryMenu.TelemetryConsole
 import jamesTelemetryMenu.TelemetryWizard
-import org.openftc.easyopencv.OpenCvCamera
-import org.openftc.easyopencv.OpenCvCameraFactory
-import org.openftc.easyopencv.OpenCvCameraRotation
-import org.openftc.easyopencv.OpenCvInternalCamera
-import robotCode.aimBotRobot.EncoderDriveMovement
+import robotCode.hardwareClasses.EncoderDriveMovement
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto(): LinearOpMode() {

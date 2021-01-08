@@ -5,7 +5,7 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import jamesTelemetryMenu.TelemetryConsole
-import robotCode.aimBotRobot.MecanumDriveTrain
+import robotCode.hardwareClasses.MecanumDriveTrain
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 

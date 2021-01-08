@@ -1,4 +1,4 @@
-package robotCode.aimBotRobot
+package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.Range
