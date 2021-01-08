@@ -57,7 +57,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
         var state = 0 // 0 = NONE, 1 = ACCEL, 2 = DRIVE, 3 = DECEL
         val position: Double = inches * COUNTS_PER_INCH
 
-        driveSetRunToPosition()
+
         if (smart_accel && power > 0.25) {
             drivePowerAll(0.25) // Use abs() to make sure power is positive
             state = 1 // ACCEL
@@ -69,6 +69,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
         val blOrigTarget: Int = hardware.lBDrive.targetPosition
         val brOrigTarget: Int = hardware.rBDrive.targetPosition
         driveAddTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
+        driveSetRunToPosition()
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {

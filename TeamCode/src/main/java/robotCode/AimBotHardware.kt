@@ -11,11 +11,13 @@ import robotCode.aimBotRobot.MecanumHardware
 *           lBDrive
 *           rBDrive
 *       servos
-*
+*           gate
+*           claw
 *    Expansion hub 3:
 *       motors
 *           shooter
 *           belt
+*           collector
 *       servos
 *
 */
@@ -28,6 +30,7 @@ open class AimBotHardware: MecanumHardware {
     override lateinit var lBDrive: DcMotor
     override lateinit var rBDrive: DcMotor
     lateinit var shooter: DcMotorEx
+
     lateinit var belt: DcMotor
     lateinit var collector: DcMotor
     lateinit var wobbleArm: DcMotor

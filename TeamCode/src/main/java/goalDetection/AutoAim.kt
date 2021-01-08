@@ -6,7 +6,7 @@ import jamesTelemetryMenu.TelemetryConsole
 import locationTracking.Coordinate
 import robotCode.aimBotRobot.EncoderDriveMovement
 
-@TeleOp
+//@TeleOp
 class AutoAim(private val console: TelemetryConsole, opMode: OpMode, val robot: EncoderDriveMovement) {
 
     val detector = GoalDetector(console)
