@@ -1,70 +1,27 @@
 package pid
 
-import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 
-class MotorWithPID: PID() {
+class MotorWithPID() {
 
-    fun runMotorWithP(motor: DcMotor, power: Double) {
-        motor.setPower(calcP(motor.power, power))
+    fun setPIDFVals(motor: DcMotorEx, p: Double, i: Double, d: Double, f: Double) {
+//        translate some actual standard to the sdk's weird thing
+        motor.setVelocityPIDFCoefficients(p, i, d, f)
     }
 
-    fun runMotorWithI(motor: DcMotor, power: Double) {
-        motor.setPower(calcI(motor.power, power))
+    fun setPIDVals(motor: DcMotorEx, p: Double, i: Double, d: Double) {
+        setPIDFVals(motor, p, i, d, 0.0)
     }
 
-    fun runMotorWithD(motor: DcMotor, power: Double) {
-        motor.setPower(calcD(motor.power, power))
+    /*
+     *  @tpr stands for ticks per revolution
+    */
+    fun startMotorPID(motor: DcMotorEx, targetRpm: Double, tpr: Int) {
+        motor.velocity = targetRpm / 60 * tpr
     }
 
-    fun runMotorWithPI(motor: DcMotor, power: Double) {
-        motor.setPower(calcPI(motor.power, power))
+    fun startMotorPID(motor: DcMotorEx, targetRpm: Double) {
+        startMotorPID(motor, targetRpm, 28)
     }
 
-    fun runMotorWithPD(motor: DcMotor, power: Double) {
-        motor.setPower(calcPD(motor.power, power))
-    }
-
-    fun runMotorWithPID(motor: DcMotor, power: Double) {
-        motor.setPower(calcPID(motor.power, power))
-    }
-
-    fun motorToPositionWithP(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition(calcP(motor.currentPosition.toDouble(), position.toDouble()).toInt())
-        runMotorWithP(motor, power)
-    }
-
-    fun motorToPositionWithI(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition(calcI(motor.currentPosition.toDouble(), position.toDouble()).toInt())
-        runMotorWithI(motor, power)
-    }
-
-    fun motorToPositionWithD(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition(calcD(motor.currentPosition.toDouble(), position.toDouble()).toInt())
-        runMotorWithD(motor, power)
-    }
-
-    fun motorToPositionWithPI(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition((
-                calcP(motor.currentPosition.toDouble(), position.toDouble()) +
-                        calcI(motor.currentPosition.toDouble(), position.toDouble())).toInt()
-        )
-        runMotorWithPI(motor, power)
-    }
-
-    fun motorToPositionWithPD(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition((
-                calcP(motor.currentPosition.toDouble(), position.toDouble()) +
-                        calcD(motor.currentPosition.toDouble(), position.toDouble())).toInt()
-        )
-        runMotorWithPD(motor, power)
-    }
-
-    fun motorToPositionWithPID(motor: DcMotor, position: Int, power: Double) {
-        motor.setTargetPosition((
-                calcP(motor.currentPosition.toDouble(), position.toDouble()) +
-                        calcI(motor.currentPosition.toDouble(), position.toDouble()) +
-                        calcD(motor.currentPosition.toDouble(), position.toDouble())).toInt()
-        )
-        runMotorWithPID(motor, power)
-    }
 }
