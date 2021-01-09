@@ -121,6 +121,23 @@ class AimBotTeleOp(): OpMode() {
                 }
             }
         }
+//        GATE
+        if (gateHelp.stateChanged(gamepad2.y) && gamepad2.y) {
+            when (hardware.gate.position) {
+                0.0 -> {
+                    hardware.gate.position = 1.0
+                }
+                else -> {
+                    hardware.gate.position = 0.0
+                }
+            }
+        }
+
+
+
+
+
+
 //        CONSOLE
 //        console.display(5, "Collector: ${robot.collector.power}")
         console.display(6, "Claw: ${hardware.lClaw.position}")
