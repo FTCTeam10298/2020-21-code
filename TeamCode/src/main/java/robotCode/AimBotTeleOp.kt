@@ -17,7 +17,7 @@ class AimBotTeleOp(): OpMode() {
     val console = TelemetryConsole(telemetry)
 
     var driveDirection: Int = 1
-    var shooterRpm = 4114
+    var shooterRpm = 4000
     var triggerHeld = false
 
     val invertHelp = ButtonHelper()
@@ -35,10 +35,13 @@ class AimBotTeleOp(): OpMode() {
         console.display(1, "Initialized")
     }
 
+    override fun start() {
+        console.display(1, "Robot Running")
 
+        hardware.shooter.power = 0.3
+    }
     override fun loop() {
 
-        console.display(1, "Robot Running")
 
 //        DRONE DRIVE
 //        Invert
