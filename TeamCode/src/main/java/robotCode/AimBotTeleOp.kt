@@ -66,7 +66,7 @@ class AimBotTeleOp(): OpMode() {
         if (gamepad1.right_trigger > 0.2) {
             hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
             hardware.shooter.velocity = (shooterRpm / 60 * 28).toDouble()
-            if (hardware.shooter.velocity * 60 / 28 >= 4114.0 /*RPM*/ ) {
+            if (hardware.shooter.velocity * 60 / 28 >= shooterRpm /*RPM*/ ) {
                 hardware.gate.position = 1.0
                 hardware.belt.power = 0.8
             }
@@ -87,7 +87,7 @@ class AimBotTeleOp(): OpMode() {
         when {
             (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
             (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
-//            gamepad1.dpad_left -> shooterRpm += shooterRpmIncrement
+            gamepad1.dpad_left -> hardware.shooter.power = 0.0
             gamepad1.dpad_right -> shooterRpm = 4114
         }
 
