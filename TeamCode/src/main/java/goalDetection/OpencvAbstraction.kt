@@ -3,10 +3,7 @@ package goalDetection
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.opencv.core.Mat
-import org.openftc.easyopencv.OpenCvCameraFactory
-import org.openftc.easyopencv.OpenCvCameraRotation
-import org.openftc.easyopencv.OpenCvInternalCamera
-import org.openftc.easyopencv.OpenCvPipeline
+import org.openftc.easyopencv.*
 
 //class CameraMaker {
 //
@@ -66,6 +63,7 @@ class OpencvAbstraction(private val opmode: OpMode) {
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
         sleep(100)
+//        camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
     }
 
     val frame get() = pipeline.newFrame
