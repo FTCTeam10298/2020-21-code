@@ -17,6 +17,8 @@ class AimBotTeleOp(): OpMode() {
     val console = TelemetryConsole(telemetry)
 
     var driveDirection: Int = 1
+    var shooterRpm = 4114
+    var triggerHeld = false
 
     val invertHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
@@ -63,28 +65,30 @@ class AimBotTeleOp(): OpMode() {
 //        Shoot routine
         if (gamepad1.right_trigger > 0.2) {
             hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
-            hardware.shooter.velocity = 1980.0
+            hardware.shooter.velocity = (shooterRpm / 60 * 28).toDouble()
             if (hardware.shooter.velocity * 60 / 28 >= 4114.0 /*RPM*/ ) {
                 hardware.gate.position = 1.0
                 hardware.belt.power = 0.8
             }
-        } else {
+            triggerHeld = true
+        } else if (triggerHeld) {
             hardware.belt.power = 0.0
-//            robot.shooter.power = 1.0   // Idle Shooter
+            hardware.shooter.power = 0.3   // Idle Shooter
             hardware.gate.position = 0.0
+            triggerHeld = false
         }
+
         console.display(4, "Shooter rpm: ${hardware.shooter.velocity * 60 / 28}")
         console.display(5, "Shooter Power: ${hardware.shooter.power}")
 
 //        SHOOTER
-        val shooterPowerIncrement: Double = 0.008
-        val shooterPower: Double = hardware.shooter.power
+        val shooterRpmIncrement: Int = 300
 
         when {
-            (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterPower < 1.0 -> hardware.shooter.power += shooterPowerIncrement
-            (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterPower > 0.0 + shooterPowerIncrement -> hardware.shooter.power -= shooterPowerIncrement
-            gamepad1.dpad_left -> hardware.shooter.power = 0.0
-            gamepad1.dpad_right -> hardware.shooter.power = 0.83
+            (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
+            (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
+//            gamepad1.dpad_left -> shooterRpm += shooterRpmIncrement
+            gamepad1.dpad_right -> shooterRpm = 4114
         }
 
 //        COLLECTOR
@@ -114,15 +118,16 @@ class AimBotTeleOp(): OpMode() {
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
             when (hardware.lClaw.position) {
                 0.0 -> {
-                    hardware.lClaw.position = 1.0; hardware.rClaw.position = 1.0
+                    hardware.lClaw.position = 5.0; hardware.rClaw.position = 5.0
                 }
                 else -> {
                     hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
                 }
             }
         }
+
 //        GATE
-        if (gateHelp.stateChanged(gamepad2.y) && gamepad2.y) {
+        if (gateHelp.stateChanged(gamepad1.y) && gamepad1.y) {
             when (hardware.gate.position) {
                 0.0 -> {
                     hardware.gate.position = 1.0
@@ -132,11 +137,6 @@ class AimBotTeleOp(): OpMode() {
                 }
             }
         }
-
-
-
-
-
 
 //        CONSOLE
 //        console.display(5, "Collector: ${robot.collector.power}")
