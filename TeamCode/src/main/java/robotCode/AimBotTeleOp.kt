@@ -106,21 +106,24 @@ class AimBotTeleOp(): OpMode() {
             else -> hardware.belt.power = 0.0
         }
 
-
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
         hardware.wobbleArm.power = wobbleStick.toDouble()
 
 //        CLAW
-        if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x)
-            when (hardware.claw.position) {
-                0.0  -> hardware.claw.position = 1.0
-                else -> hardware.claw.position = 0.0
+        if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
+            when (hardware.lClaw.position) {
+                0.0 -> {
+                    hardware.lClaw.position = 1.0; hardware.rClaw.position = 1.0
+                }
+                else -> {
+                    hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+                }
             }
-
+        }
 //        CONSOLE
 //        console.display(5, "Collector: ${robot.collector.power}")
-        console.display(6, "Claw: ${hardware.claw.position}")
+        console.display(6, "Claw: ${hardware.lClaw.position}")
         console.display(7, "Belt: ${hardware.belt.power}")
         when {
             driveDirection > 0 -> console.display(8, "Collector first")

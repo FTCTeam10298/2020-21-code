@@ -12,12 +12,14 @@ import robotCode.hardwareClasses.MecanumHardware
 *           rBDrive
 *       servos
 *           gate
-*           claw
+*           rClaw
+*           lClaw
 *    Expansion hub 3:
 *       motors
 *           shooter
 *           belt
 *           collector
+*           wobbleArm
 *       servos
 *
 */
@@ -37,7 +39,8 @@ open class AimBotHardware: MecanumHardware {
 
 //    SERVOS
     lateinit var gate: Servo
-    lateinit var claw: Servo
+    lateinit var lClaw: Servo
+    lateinit var rClaw: Servo
 
 //    HARDWARE MAP
     override lateinit var hwMap: HardwareMap
@@ -48,7 +51,8 @@ open class AimBotHardware: MecanumHardware {
 
 //        SERVOS
         gate = hwMap.get("gate") as Servo
-        claw = hwMap.get("claw") as Servo
+        lClaw = hwMap.get("lClaw") as Servo
+        rClaw = hwMap.get("rClaw") as Servo
         gate.direction = Servo.Direction.REVERSE
         gate.position = 0.0
 
