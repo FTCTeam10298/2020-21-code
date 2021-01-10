@@ -1,6 +1,6 @@
 package goalDetection
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
 import jamesTelemetryMenu.TelemetryConsole
@@ -9,25 +9,24 @@ import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Moments
 
 @TeleOp
-class GoalTracker : LinearOpMode()  {
+class GoalTracker : OpMode()  {
 
     val console = TelemetryConsole(telemetry)
 
     val opencv = OpencvAbstraction(this)
     val goalDetector = GoalDetector(console)
 
-    override fun runOpMode() {
+    override fun init() {
         opencv.init()
         opencv.start()
+    }
 
-        while (!isStarted) {
+    override fun init_loop() {
             goalDetector.detectTrapezoid(opencv.frame)
             opencv.setReturn(goalDetector.display)
-        }
-
-        waitForStart()
-
     }
+
+    override fun loop() {}
 }
 
 class GoalDetector(private val console: TelemetryConsole) {

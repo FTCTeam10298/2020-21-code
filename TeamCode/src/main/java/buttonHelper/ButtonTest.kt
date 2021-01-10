@@ -11,7 +11,8 @@ class ButtonTest(): OpMode() {
 
     override fun init() {
     }
-var toggleState = false
+
+    var toggleState = false
     override fun loop() {
         if (toggleState)
             console.display(1, "toggle")
