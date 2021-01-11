@@ -11,19 +11,16 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     private var menuList: List<Menu> = listOf()
     private var chosenItems: List<String?> = listOf()
 
-    data class Menu(val id: String, val caption: String, val items: List<Map<String, String?>>, val firstMenu: Boolean = false)
+    data class Menu(val id: String, val caption: String, val items: Map<String, String?>, val firstMenu: Boolean = false)
 
     fun newMenu(name: String, caption: String, items: List<String>, nextMenu: String? = null, firstMenu: Boolean = false) {
+        var item: Map<String, String?> = mapOf()
+        items.forEach{ item += mapOf(it to nextMenu) }
 
-        var item: List<Map<String, String?>> = listOf(mapOf("" to ""))
-        for (i in items.iterator())
-            item += mapOf(i to nextMenu)
-
-        menuList += Menu(name, caption, item, firstMenu)
-        console.display(3, menuList.toString())
+        menuList += Menu(name, caption, item!!, firstMenu)
     }
 
-    fun newMenu(name: String, caption: String, items: List<Map<String, String>>, firstMenu: Boolean = false) {
+    fun newMenu(name: String, caption: String, items: Map<String, String?>, firstMenu: Boolean = false) {
         menuList += Menu(name, caption, items, firstMenu)
     }
 
@@ -33,8 +30,15 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     private fun formatMenu(menu: Menu): List<String> {
         var formattedMenu = listOf(menu.caption + ":\n")
-        menu.items.forEachIndexed { index, action ->
-            formattedMenu += placeCursor(index) + action
+//        problematic
+        for (i in menu.items) {
+            formattedMenu += placeCursor(menu.items.size + 1) + i.key
+            console.display(5, menu.items[i].hashCode().toString())
+        }
+//        console.display(5, cursorLine.toString())
+
+        menu.items.forEach{ index, key ->
+            formattedMenu += placeCursor(index.) + action
         }
         return formattedMenu
     }
@@ -65,7 +69,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         when {
             gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > 0) cursorLine -= 1} //moves cursor up
             gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < cursorMax) cursorLine += 1}  //moves cursor down
-            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine][1]; menuDone = true;} //selects option
+            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items.keys.first{ it.hashCode() == cursorLine }; menuDone = true;} //selects option
 //                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
         }
@@ -81,26 +85,23 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         }
     }
 
-//    problematic
     fun summonWizard(gamepad: Gamepad) {
         val firstMenu = menuList.first{ it.firstMenu }
-        var lastMenu = Menu("", "", listOf(mapOf("hi" to firstMenu.id)))
+        var lastMenu = Menu("", "", mapOf("hi" to firstMenu.id))
         var chosenItem: String? = "hi"
 
         menuList.forEachIndexed{ index, action ->
-            console.display(4, lastMenu.items[1].toString())
-            console.display(3, lastMenu.items.firstOrNull{ it[1] == chosenItem }.toString())
-//            val thisMenu = getMenu(lastMenu.items.first{ it[1] == chosenItem }[chosenItem])
-//            menuDone = thisMenu === null
-//
-//            while (!menuDone) {
-//                changeCursorBasedOnDPad(gamepad, thisMenu!!)
-//
-//                displayMenu(formatMenu(thisMenu))
-//            }
-////            chosenItem = thisMenu?.items?.first{ it[1] == chosenItem }?.get(chosenItem)
-//            lastMenu = thisMenu!!
-//            eraseLastMenu()
+            val thisMenu = getMenu(lastMenu.items[chosenItem])
+            menuDone = thisMenu === null
+
+            while (!menuDone) {
+                changeCursorBasedOnDPad(gamepad, thisMenu!!)
+
+                displayMenu(formatMenu(thisMenu))
+            }
+//            chosenItem = thisMenu?.items?[chosenItem]
+            lastMenu = thisMenu!!
+            eraseLastMenu()
         }
 
         console.display(startLine, "Wizard Complete!")

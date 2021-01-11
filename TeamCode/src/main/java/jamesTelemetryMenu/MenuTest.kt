@@ -17,7 +17,7 @@ class MenuTest(): LinearOpMode() {
         wizard.newMenu("ourWobble", "Will we do our wobble", listOf("Yes", "No"), "theirWobble")
         wizard.newMenu("startPos", "Which line are we starting in?", listOf("Closer to you", "Closer to the middle"),"ourWobble")
         wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"),"startPos")
-        wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"),"alliance", true)
+        wizard.newMenu("gameType", "Which kind of game is it?", mapOf("Remote" to "alliance", "In-Person" to "alliance"), true)
 
 //        sleep(2000)
         wizard.summonWizard(gamepad1)
