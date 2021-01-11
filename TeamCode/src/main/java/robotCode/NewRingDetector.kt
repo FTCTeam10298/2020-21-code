@@ -20,7 +20,6 @@ class RingDetectorTest: OpMode()  {
 
     override fun init() {
         opencv.init()
-        opencv.cameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
