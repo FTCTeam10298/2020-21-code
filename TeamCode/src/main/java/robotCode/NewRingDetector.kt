@@ -23,9 +23,9 @@ class RingDetectorTest: LinearOpMode()  {
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
-        ringDetector.init(opencv.frame)
 
         waitForStart()
+        ringDetector.init(opencv.frame)
 
         while (opModeIsActive()) {
             telemetry.addData("Analysis", ringDetector.analysis)
