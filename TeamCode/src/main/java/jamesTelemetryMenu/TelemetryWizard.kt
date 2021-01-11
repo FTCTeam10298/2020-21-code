@@ -1,5 +1,6 @@
 package jamesTelemetryMenu
 
+import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.Gamepad
 
 class TelemetryWizard(private val console: TelemetryConsole) {
@@ -11,16 +12,16 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     private var menuList: List<Menu> = listOf()
     private var chosenItems: List<String?> = listOf()
 
-    data class Menu(val id: String, val caption: String, val items: Map<String, String?>, val firstMenu: Boolean = false)
+    data class Menu(val id: String, val caption: String, val items: List<Pair<String, String?>>, val firstMenu: Boolean = false, val answer: Pair<String, String?>? = null)
 
     fun newMenu(name: String, caption: String, items: List<String>, nextMenu: String? = null, firstMenu: Boolean = false) {
-        var item: Map<String, String?> = mapOf()
-        items.forEach{ item += mapOf(it to nextMenu) }
+        var item: List<Pair<String, String?>> = listOf()
+        items.forEach{ item += it to nextMenu }
 
-        menuList += Menu(name, caption, item!!, firstMenu)
+        menuList += Menu(name, caption, item, firstMenu)
     }
 
-    fun newMenu(name: String, caption: String, items: Map<String, String?>, firstMenu: Boolean = false) {
+    fun newMenu(name: String, caption: String, items: List<Pair<String, String?>>, firstMenu: Boolean = false) {
         menuList += Menu(name, caption, items, firstMenu)
     }
 
@@ -30,12 +31,9 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     private fun formatMenu(menu: Menu): List<String> {
         var formattedMenu = listOf(menu.caption + ":\n")
-//        problematic
         for (i in menu.items) {
-            formattedMenu += placeCursor(menu.items.size + 1) + i.key
-            console.display(5, menu.items[i].hashCode().toString())
+            formattedMenu += placeCursor(menu.items.indexOf(i)) + i.first
         }
-//        console.display(5, cursorLine.toString())
 
 //        menu.items.forEach{ index, key ->
 //            formattedMenu += placeCursor(index.) + action
@@ -69,8 +67,8 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         when {
             gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > 0) cursorLine -= 1} //moves cursor up
             gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < cursorMax) cursorLine += 1}  //moves cursor down
-            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items.keys.first{ it.hashCode() == cursorLine }; menuDone = true;} //selects option
-//                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
+            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine].first; menuDone = true} //selects option
+            gamepad.dpad_left && !keyDown -> { keyDown = true; chosenItems += currentMenu.items[1].first; menuDone = true}//Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
         }
         if (cursorLine >= cursorMax)
@@ -86,21 +84,21 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     }
 
     fun summonWizard(gamepad: Gamepad) {
-        val firstMenu = menuList.first{ it.firstMenu }
-        var lastMenu = Menu("", "", mapOf("hi" to firstMenu.id))
-        var chosenItem: String? = "hi"
+        var thisMenu: Menu? = menuList.first{ it.firstMenu }
 
         menuList.forEachIndexed{ index, action ->
-            val thisMenu = getMenu(lastMenu.items[chosenItem])
-            menuDone = thisMenu === null
 
             while (!menuDone) {
                 changeCursorBasedOnDPad(gamepad, thisMenu!!)
 
-                displayMenu(formatMenu(thisMenu))
+                displayMenu(formatMenu(thisMenu!!))
             }
-//            chosenItem = thisMenu?.items?[chosenItem]
-            lastMenu = thisMenu!!
+
+            menuDone = index == menuList.size - 1
+
+            if (!menuDone)
+                thisMenu = getMenu(thisMenu?.items?.first { it.first == chosenItems.last() }?.second)
+
             eraseLastMenu()
         }
 
