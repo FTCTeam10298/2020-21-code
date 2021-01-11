@@ -10,9 +10,8 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
 //    Menu organization
     private var menuList: List<Menu> = listOf()
-    private var chosenItems: List<String?> = listOf()
 
-    data class Menu(val id: String, val caption: String, val items: List<Pair<String, String?>>, val firstMenu: Boolean = false, val answer: Pair<String, String?>? = null)
+    data class Menu(val id: String, val caption: String, val items: List<Pair<String, String?>>, val firstMenu: Boolean = false, var answer: Pair<String, String?>? = null)
 
     fun newMenu(name: String, caption: String, items: List<String>, nextMenu: String? = null, firstMenu: Boolean = false) {
         var item: List<Pair<String, String?>> = listOf()
@@ -27,17 +26,13 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     fun getMenu(id: String?): Menu? = menuList.first{ it.id == id }
 
-    fun wasItemChosen(item: String): Boolean = chosenItems.contains(item)
+    fun wasItemChosen(id: String, item: String): Boolean = getMenu(id)?.answer?.first == item
 
     private fun formatMenu(menu: Menu): List<String> {
         var formattedMenu = listOf(menu.caption + ":\n")
-        for (i in menu.items) {
-            formattedMenu += placeCursor(menu.items.indexOf(i)) + i.first
-        }
 
-//        menu.items.forEach{ index, key ->
-//            formattedMenu += placeCursor(index.) + action
-//        }
+        menu.items.forEach{ formattedMenu += placeCursor(menu.items.indexOf(it)) + it.first }
+
         return formattedMenu
     }
 
@@ -49,11 +44,16 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         console.queueToTelemetry()
     }
 
+    private fun placeCursor(option: Int): String {
+        return if (option == cursorLine) {
+            "-"
+        } else {
+            " "
+        }
+    }
+
     private fun eraseLastMenu() {
         console.clearAll()
-//        for (i in (startLine .. endLine))
-//            console.eraseLine(i)
-//        console.queueToTelemetry()
     }
 
 //    Gamepad input handler
@@ -67,39 +67,33 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         when {
             gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > 0) cursorLine -= 1} //moves cursor up
             gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < cursorMax) cursorLine += 1}  //moves cursor down
-            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine].first; menuDone = true} //selects option
-            gamepad.dpad_left && !keyDown -> { keyDown = true; chosenItems += currentMenu.items[1].first; menuDone = true}//Stops wizard or menu (haven't decided) and sets answers to default
+            gamepad.dpad_right && !keyDown -> {keyDown = true; currentMenu.answer = currentMenu.items[cursorLine]; menuDone = true} //selects option
+//            gamepad.dpad_left && !keyDown -> { keyDown = true; currentMenu.answer = currentMenu.items[1]; menuDone = true} //Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
         }
         if (cursorLine >= cursorMax)
             cursorLine = cursorMax
     }
-
-    private fun placeCursor(option: Int): String {
-        return if (option == cursorLine) {
-            "-"
-        } else {
-            " "
-        }
-    }
-
+    
     fun summonWizard(gamepad: Gamepad) {
-        var thisMenu: Menu? = menuList.first{ it.firstMenu }
+        var thisMenu: Menu = menuList.first{ it.firstMenu }
 
-        menuList.forEachIndexed{ index, action ->
+        for (i in (0 .. menuList.size)) {
+
+            menuDone = false
 
             while (!menuDone) {
-                changeCursorBasedOnDPad(gamepad, thisMenu!!)
+                changeCursorBasedOnDPad(gamepad, thisMenu)
 
-                displayMenu(formatMenu(thisMenu!!))
+                displayMenu(formatMenu(thisMenu))
             }
 
-            menuDone = index == menuList.size - 1
-
-            if (!menuDone)
-                thisMenu = getMenu(thisMenu?.items?.first { it.first == chosenItems.last() }?.second)
-
             eraseLastMenu()
+
+            if (thisMenu.answer?.second !== null)
+                thisMenu = getMenu(thisMenu.answer?.second)!!
+            else
+                break
         }
 
         console.display(startLine, "Wizard Complete!")
