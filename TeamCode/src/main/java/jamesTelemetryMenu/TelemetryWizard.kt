@@ -83,22 +83,24 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
 //    problematic
     fun summonWizard(gamepad: Gamepad) {
-        val firstMenu = menuList.first { it.firstMenu }
+        val firstMenu = menuList.first{ it.firstMenu }
         var lastMenu = Menu("", "", listOf(mapOf("hi" to firstMenu.id)))
         var chosenItem: String? = "hi"
 
         menuList.forEachIndexed{ index, action ->
-            val thisMenu = getMenu(lastMenu.items.first{ it[1] == chosenItem }[chosenItem])
-            menuDone = thisMenu === null
-
-            while (!menuDone) {
-                changeCursorBasedOnDPad(gamepad, thisMenu!!)
-
-                displayMenu(formatMenu(thisMenu))
-            }
-//            chosenItem = thisMenu?.items?.first{ it[1] == chosenItem }?.get(chosenItem)
-            lastMenu = thisMenu!!
-            eraseLastMenu()
+            console.display(4, lastMenu.items[1].toString())
+            console.display(3, lastMenu.items.firstOrNull{ it[1] == chosenItem }.toString())
+//            val thisMenu = getMenu(lastMenu.items.first{ it[1] == chosenItem }[chosenItem])
+//            menuDone = thisMenu === null
+//
+//            while (!menuDone) {
+//                changeCursorBasedOnDPad(gamepad, thisMenu!!)
+//
+//                displayMenu(formatMenu(thisMenu))
+//            }
+////            chosenItem = thisMenu?.items?.first{ it[1] == chosenItem }?.get(chosenItem)
+//            lastMenu = thisMenu!!
+//            eraseLastMenu()
         }
 
         console.display(startLine, "Wizard Complete!")
