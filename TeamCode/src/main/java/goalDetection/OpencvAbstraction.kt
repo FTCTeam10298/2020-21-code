@@ -48,10 +48,12 @@ class PipelineAbstraction: OpenCvPipeline() {
 
 class OpencvAbstraction(private val opmode: OpMode) {
 
-    val pipeline = PipelineAbstraction()
+    private val pipeline = PipelineAbstraction()
 
-    lateinit var camera: OpenCvInternalCamera
+    private lateinit var camera: OpenCvInternalCamera
     var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
+    var optimizeView = false
+    var openCameraDeviceAsync = false
 
     fun init() {
         val cameraMonitorViewId: Int = opmode.hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", opmode.hardwareMap.appContext.packageName)
@@ -63,8 +65,12 @@ class OpencvAbstraction(private val opmode: OpMode) {
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
         sleep(100)
-        camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
-        camera.openCameraDeviceAsync(OpenCvCamera.AsyncCameraOpenListener { camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
+
+        if (optimizeView)
+            camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
+
+        if (openCameraDeviceAsync)
+            camera.openCameraDeviceAsync(OpenCvCamera.AsyncCameraOpenListener { camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
     }
 
     val frame get() = pipeline.newFrame

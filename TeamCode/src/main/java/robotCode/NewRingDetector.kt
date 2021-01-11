@@ -6,6 +6,7 @@ import goalDetection.OpencvAbstraction
 import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
+import org.openftc.easyopencv.OpenCvInternalCamera
 
 // CURRENT VERSION
 
@@ -19,6 +20,9 @@ class RingDetectorTest: OpMode()  {
 
     override fun init() {
         opencv.init()
+        opencv.cameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
+        opencv.optimizeView = true
+        opencv.openCameraDeviceAsync = true
         opencv.start()
     }
 
