@@ -11,14 +11,14 @@ class TelemetryWizard(private val console: TelemetryConsole) {
     private var menuList: List<Menu> = listOf()
     private var chosenItems: List<String> = listOf()
 
-    data class Menu(val name: String, val caption: String, val items: List<String>, val nextMenu: Menu? = null, val firstMenu: Boolean = false)
+    data class Menu(val id: String, val caption: String, val items: List<String>, val nextMenu: String? = null, val firstMenu: Boolean = false)
 
-    fun newMenu(name: String, caption: String, items: List<String>, nextMenu: Menu? = null, firstMenu: Boolean = false) {
+    fun newMenu(name: String, caption: String, items: List<String>, nextMenu: String? = null, firstMenu: Boolean = false) {
 //        val nextMenu = previousMenu!!.nextMenu
         menuList += Menu(name, caption, items, nextMenu, firstMenu)
     }
 
-    fun getMenu(name: String): Menu = menuList.first{ it.name == name }
+    fun getMenu(id: String?): Menu? = menuList.first{ it.id == id }
 
     fun wasItemChosen(item: String): Boolean = chosenItems.contains(item)
 
@@ -74,10 +74,10 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
     fun summonWizard(gamepad: Gamepad) {
         val firstMenu = menuList.first { it.firstMenu }
-        var lastMenu = Menu("", "", listOf(), firstMenu)
+        var lastMenu = Menu("", "", listOf(), firstMenu.id)
 
         menuList.forEachIndexed { index, action ->
-            val thisMenu = lastMenu.nextMenu
+            val thisMenu = getMenu(lastMenu.nextMenu)
             menuDone = thisMenu === null
 
             while (!menuDone) {
