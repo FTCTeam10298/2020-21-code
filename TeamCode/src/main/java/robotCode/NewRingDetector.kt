@@ -1,6 +1,6 @@
 package robotCode
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import goalDetection.OpencvAbstraction
 import jamesTelemetryMenu.TelemetryConsole
@@ -11,30 +11,29 @@ import org.openftc.easyopencv.OpenCvInternalCamera
 // CURRENT VERSION
 
 @TeleOp
-class RingDetectorTest: OpMode()  {
+class RingDetectorTest: LinearOpMode()  {
 
     val console = TelemetryConsole(telemetry)
 
     val opencv = OpencvAbstraction(this)
     val ringDetector = NewRingDetector(150, 135)
 
-    override fun init() {
+    override fun runOpMode() {
         opencv.init()
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
-    }
-
-    override fun start() {
         ringDetector.init(opencv.frame)
-    }
 
-    override fun loop() {
-        telemetry.addData("Analysis", ringDetector.analysis)
-        telemetry.addData("Position", ringDetector.position)
-        telemetry.update()
+        waitForStart()
 
-        opencv.setReturn(ringDetector.processFrame(opencv.frame))
+        while (opModeIsActive()) {
+            telemetry.addData("Analysis", ringDetector.analysis)
+            telemetry.addData("Position", ringDetector.position)
+            telemetry.update()
+
+            opencv.setReturn(ringDetector.processFrame(opencv.frame))
+        }
     }
 }
 

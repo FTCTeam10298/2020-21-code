@@ -1,14 +1,15 @@
 package jamesTelemetryMenu
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
 @TeleOp
-class MenuTest(): OpMode() {
+class MenuTest(): LinearOpMode() {
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
 
-    override fun init() {
+    override fun runOpMode() {
 
 //        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
 //        wizard.newMenu("powerShot", "Will we do the power shots?", listOf("Yes", "No"))
@@ -19,7 +20,6 @@ class MenuTest(): OpMode() {
         wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"),"alliance", true)
 
         wizard.summonWizard(gamepad1)
+        waitForStart()
     }
-
-    override fun loop() {}
 }

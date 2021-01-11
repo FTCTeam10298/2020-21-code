@@ -1,13 +1,13 @@
  package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import jamesTelemetryMenu.TelemetryConsole
 import jamesTelemetryMenu.TelemetryWizard
 import robotCode.hardwareClasses.EncoderDriveMovement
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
-class AimBotAuto(): OpMode() {
+class AimBotAuto(): LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
@@ -15,7 +15,7 @@ class AimBotAuto(): OpMode() {
     val hardware = AimBotHardware()
     val robot = EncoderDriveMovement(console, hardware)
 
-    override fun init() {
+    override fun runOpMode() {
         hardware.init(hardwareMap)
 
 //        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
@@ -26,9 +26,8 @@ class AimBotAuto(): OpMode() {
         wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"), "startPos")
         wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"), "alliance", true)
         wizard.summonWizard(gamepad1)
-    }
 
-    override fun start() {
+        waitForStart()
 
 //        Wins 5 Pts.
 
@@ -38,9 +37,6 @@ class AimBotAuto(): OpMode() {
         robot.driveRobotTurn(1.0, 28.0 )
         hardware.belt.power = 1.0
     }
-
-    override fun loop() {}
-
     fun shoot() {
         hardware.belt.power = 1.0
     }
