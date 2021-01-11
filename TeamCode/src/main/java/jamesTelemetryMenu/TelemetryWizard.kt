@@ -37,9 +37,9 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         }
 //        console.display(5, cursorLine.toString())
 
-        menu.items.forEach{ index, key ->
-            formattedMenu += placeCursor(index.) + action
-        }
+//        menu.items.forEach{ index, key ->
+//            formattedMenu += placeCursor(index.) + action
+//        }
         return formattedMenu
     }
 
