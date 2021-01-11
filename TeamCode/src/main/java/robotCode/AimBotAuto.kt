@@ -2,8 +2,8 @@
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import jamesTelemetryMenu.TelemetryConsole
-import jamesTelemetryMenu.TelemetryWizard
+import telemetryWizard.TelemetryConsole
+import telemetryWizard.TelemetryWizard
 import robotCode.hardwareClasses.EncoderDriveMovement
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")

@@ -4,7 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
-import jamesTelemetryMenu.TelemetryConsole
+import telemetryWizard.TelemetryConsole
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import java.lang.Thread.sleep
 import kotlin.math.PI

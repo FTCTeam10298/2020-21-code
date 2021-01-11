@@ -2,7 +2,7 @@ package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.Range
-import jamesTelemetryMenu.TelemetryConsole
+import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate
 import locationTracking.GlobalRobot
 import pid.PID

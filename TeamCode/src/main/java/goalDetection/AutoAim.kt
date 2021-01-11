@@ -1,8 +1,7 @@
 package goalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import jamesTelemetryMenu.TelemetryConsole
+import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate
 import robotCode.hardwareClasses.EncoderDriveMovement
 

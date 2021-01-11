@@ -1,8 +1,7 @@
 package buttonHelper
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import jamesTelemetryMenu.TelemetryConsole
+import telemetryWizard.TelemetryConsole
 
 //@TeleOp(name="Button Test", group="Aim Bot")
 class ButtonTest(): OpMode() {

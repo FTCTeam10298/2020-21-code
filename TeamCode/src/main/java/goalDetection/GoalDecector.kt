@@ -2,8 +2,7 @@ package goalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.Gamepad
-import jamesTelemetryMenu.TelemetryConsole
+import telemetryWizard.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Moments

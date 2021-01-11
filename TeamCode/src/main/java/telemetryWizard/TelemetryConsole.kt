@@ -1,4 +1,4 @@
-package jamesTelemetryMenu
+package telemetryWizard
 
 import org.firstinspires.ftc.robotcore.external.Telemetry
 

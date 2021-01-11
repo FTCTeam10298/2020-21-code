@@ -1,6 +1,5 @@
-package jamesTelemetryMenu
+package telemetryWizard
 
-import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.Gamepad
 
 class TelemetryWizard(private val console: TelemetryConsole) {
@@ -74,7 +73,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         if (cursorLine >= cursorMax)
             cursorLine = cursorMax
     }
-    
+
     fun summonWizard(gamepad: Gamepad) {
         var thisMenu: Menu = menuList.first{ it.firstMenu }
 
