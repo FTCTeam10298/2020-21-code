@@ -19,6 +19,7 @@ class MenuTest(): LinearOpMode() {
         wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"),"startPos")
         wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"),"alliance", true)
 
+//        sleep(2000)
         wizard.summonWizard(gamepad1)
         waitForStart()
     }

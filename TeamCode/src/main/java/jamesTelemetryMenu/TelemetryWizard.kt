@@ -9,13 +9,22 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
 //    Menu organization
     private var menuList: List<Menu> = listOf()
-    private var chosenItems: List<String> = listOf()
+    private var chosenItems: List<String?> = listOf()
 
-    data class Menu(val id: String, val caption: String, val items: List<String>, val nextMenu: String? = null, val firstMenu: Boolean = false)
+    data class Menu(val id: String, val caption: String, val items: List<Map<String, String?>>, val firstMenu: Boolean = false)
 
     fun newMenu(name: String, caption: String, items: List<String>, nextMenu: String? = null, firstMenu: Boolean = false) {
-//        val nextMenu = previousMenu!!.nextMenu
-        menuList += Menu(name, caption, items, nextMenu, firstMenu)
+
+        var item: List<Map<String, String?>> = listOf(mapOf("" to ""))
+        for (i in items.iterator())
+            item += mapOf(i to nextMenu)
+
+        menuList += Menu(name, caption, item, firstMenu)
+        console.display(3, menuList.toString())
+    }
+
+    fun newMenu(name: String, caption: String, items: List<Map<String, String>>, firstMenu: Boolean = false) {
+        menuList += Menu(name, caption, items, firstMenu)
     }
 
     fun getMenu(id: String?): Menu? = menuList.first{ it.id == id }
@@ -56,7 +65,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         when {
             gamepad.dpad_up && !keyDown -> {keyDown = true; if (cursorLine > 0) cursorLine -= 1} //moves cursor up
             gamepad.dpad_down && !keyDown -> {keyDown = true; if (cursorLine < cursorMax) cursorLine += 1}  //moves cursor down
-            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine]; menuDone = true;} //selects option
+            gamepad.dpad_right && !keyDown -> {keyDown = true; chosenItems += currentMenu.items[cursorLine][1]; menuDone = true;} //selects option
 //                gamepad.dpad_left && !keyDown -> //Stops wizard or menu (haven't decided) and sets answers to default
             !gamepad.dpad_up && !gamepad.dpad_down && !gamepad.dpad_right && !gamepad.dpad_left -> keyDown = false
         }
@@ -72,12 +81,14 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         }
     }
 
+//    problematic
     fun summonWizard(gamepad: Gamepad) {
         val firstMenu = menuList.first { it.firstMenu }
-        var lastMenu = Menu("", "", listOf(), firstMenu.id)
+        var lastMenu = Menu("", "", listOf(mapOf("hi" to firstMenu.id)))
+        var chosenItem: String? = "hi"
 
-        menuList.forEachIndexed { index, action ->
-            val thisMenu = getMenu(lastMenu.nextMenu)
+        menuList.forEachIndexed{ index, action ->
+            val thisMenu = getMenu(lastMenu.items.first{ it[1] == chosenItem }[chosenItem])
             menuDone = thisMenu === null
 
             while (!menuDone) {
@@ -85,6 +96,7 @@ class TelemetryWizard(private val console: TelemetryConsole) {
 
                 displayMenu(formatMenu(thisMenu))
             }
+//            chosenItem = thisMenu?.items?.first{ it[1] == chosenItem }?.get(chosenItem)
             lastMenu = thisMenu!!
             eraseLastMenu()
         }
