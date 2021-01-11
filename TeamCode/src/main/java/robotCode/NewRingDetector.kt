@@ -7,6 +7,8 @@ import jamesTelemetryMenu.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 
+// CURRENT VERSION
+
 @TeleOp
 class RingDetectorTest: OpMode()  {
 

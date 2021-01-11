@@ -63,7 +63,8 @@ class OpencvAbstraction(private val opmode: OpMode) {
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
         sleep(100)
-//        camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
+        camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
+        camera.openCameraDeviceAsync(OpenCvCamera.AsyncCameraOpenListener { camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
     }
 
     val frame get() = pipeline.newFrame
