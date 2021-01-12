@@ -1,11 +1,25 @@
 package pid
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
 import telemetryWizard.TelemetryConsole
 
-class MultiValTuner(private val vals: MutableList<Double>, private val increment: Double, private val console: TelemetryConsole) {
+@TeleOp
+class tuner: OpMode() {
+    val console = TelemetryConsole(telemetry)
+    val tuner = MultiValTuner(listOf(2.0, 4.4, 232.0), 0.5, console)
 
-    var keyDown = false
+    override fun init() {}
+    override fun loop() {
+        tuner.tuneVals(gamepad1)
+    }
+}
+
+class MultiValTuner(vals: List<Double>, private val increment: Double, private val console: TelemetryConsole) {
+
+    private val vals = vals.toMutableList()
+    private var keyDown = false
 
     fun tuneVals(gamepad: Gamepad) {
         console.display(1, "Tuning ${vals.size} values.")
