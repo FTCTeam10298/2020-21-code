@@ -37,6 +37,7 @@ class AimBotAuto(): LinearOpMode() {
 
         robot.driveRobotTurn(1.0, 28.0 )
         hardware.belt.power = 1.0
+//        hardware.collector.mode .powerFloat
     }
     fun shoot() {
         hardware.belt.power = 1.0
