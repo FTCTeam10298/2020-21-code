@@ -4,6 +4,7 @@
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import pid.MotorWithPID
 import telemetryWizard.TelemetryConsole
 import robotCode.hardwareClasses.MecanumDriveTrain
 import kotlin.math.absoluteValue
@@ -15,6 +16,8 @@ class AimBotTeleOp(): OpMode() {
     val hardware = AimBotHardware()
     val robot = MecanumDriveTrain(hardware)
     val console = TelemetryConsole(telemetry)
+
+    val shooterPID = MotorWithPID()
 
     var driveDirection: Int = 1
     var shooterRpm = 4000
@@ -67,8 +70,9 @@ class AimBotTeleOp(): OpMode() {
 
 //        Shoot routine
         if (gamepad1.right_trigger > 0.2) {
-            hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
-            hardware.shooter.velocity = (shooterRpm / 60 * 28).toDouble()
+//            hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
+            hardware.shooter.setVelocityPIDFCoefficients(700.0, 50.0, 0.0,0.0)
+            hardware.shooter.velocity = (shooterRpm / 60.0 * 28).toDouble()
             if (hardware.shooter.velocity * 60 / 28 >= shooterRpm /*RPM*/ ) {
                 hardware.gate.position = 1.0
                 hardware.belt.power = 0.8
@@ -82,7 +86,8 @@ class AimBotTeleOp(): OpMode() {
         }
 
         console.display(4, "Shooter rpm: ${hardware.shooter.velocity * 60 / 28}")
-        console.display(5, "Shooter Power: ${hardware.shooter.power}")
+        console.display(5, "Shooter tps: ${hardware.shooter.velocity}")
+        console.display(6, "Shooter Power: ${hardware.shooter.power}")
 
 //        SHOOTER
         val shooterRpmIncrement: Int = 300
@@ -143,16 +148,16 @@ class AimBotTeleOp(): OpMode() {
 
 //        CONSOLE
 //        console.display(5, "Collector: ${robot.collector.power}")
-        console.display(6, "Claw: ${hardware.lClaw.position}")
-        console.display(7, "Belt: ${hardware.belt.power}")
+        console.display(7, "Claw: ${hardware.lClaw.position}")
+        console.display(8, "Belt: ${hardware.belt.power}")
         when {
-            driveDirection > 0 -> console.display(8, "Collector first")
-            else -> console.display(8, "Shooter first")
+            driveDirection > 0 -> console.display(9, "Collector first")
+            else -> console.display(10, "Shooter first")
         }
-        console.display(9, "LF: ${hardware.lFDrive.power}")
-        console.display(10, "RF: ${hardware.rFDrive.power}")
-        console.display(11, "LB: ${hardware.lBDrive.power}")
-        console.display(12, "RB: ${hardware.rBDrive.power}")
+        console.display(11, "LF: ${hardware.lFDrive.power}")
+        console.display(12, "RF: ${hardware.rFDrive.power}")
+        console.display(13, "LB: ${hardware.lBDrive.power}")
+        console.display(14, "RB: ${hardware.rBDrive.power}")
     }
 
     fun pow(n: Double, exponent: Double): Double {

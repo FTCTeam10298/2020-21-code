@@ -30,7 +30,7 @@ class AimBotAuto(): LinearOpMode() {
 //        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
 //        wizard.newMenu("powerShot", "Will we do the power shots?", listOf("Yes", "No"))
         
-        wizard.summonWizard(gamepad1)
+//        wizard.summonWizard(gamepad1)
 
         opencv.init()
         opencv.optimizeView = true
