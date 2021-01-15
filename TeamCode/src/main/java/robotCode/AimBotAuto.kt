@@ -38,14 +38,15 @@ class AimBotAuto(): LinearOpMode() {
         opencv.start()
 
         waitForStart()
+
         ringDetector.init(opencv.frame)
-       if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
+        if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
             robot.driveRobotPosition(1.0, 132.0,  smart_accel = true)
             hardware.wobbleArm.power = 1.0
             sleep(5000)
-           hardware.wobbleArm.power = 0.0
-           console.display(1, "Cupertino, The Wobble Is Down")
-       }
+            hardware.wobbleArm.power = 0.0
+            console.display(1, "Cupertino, The Wobble Is Down")
+        }
     }
 
     fun shoot() {
