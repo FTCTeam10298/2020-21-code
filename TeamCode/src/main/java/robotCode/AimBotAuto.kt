@@ -2,6 +2,7 @@
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import goalDetection.OpencvAbstraction
 import telemetryWizard.TelemetryConsole
 import telemetryWizard.TelemetryWizard
 import robotCode.hardwareClasses.EncoderDriveMovement
@@ -11,6 +12,9 @@ class AimBotAuto(): LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
+
+    val opencv = OpencvAbstraction(this)
+    val ringDetector = NewRingDetector(150, 135)
 
     val hardware = AimBotHardware()
     val robot = EncoderDriveMovement(console, hardware)
@@ -28,17 +32,22 @@ class AimBotAuto(): LinearOpMode() {
         
         wizard.summonWizard(gamepad1)
 
+        opencv.init()
+        opencv.optimizeView = true
+        opencv.openCameraDeviceAsync = true
+        opencv.start()
+
         waitForStart()
-
-//        Wins 5 Pts.
-
-        hardware.shooter.power = 0.7
-        robot.driveRobotPosition(0.5, -60.0, true)
-
-        robot.driveRobotTurn(1.0, 28.0 )
-        hardware.belt.power = 1.0
-//        hardware.collector.mode .powerFloat
+        ringDetector.init(opencv.frame)
+       if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
+            robot.driveRobotPosition(1.0, 132.0,  smart_accel = true)
+            hardware.wobbleArm.power = 1.0
+            sleep(5000)
+           hardware.wobbleArm.power = 0.0
+           console.display(1, "Cupertino, The Wobble Is Down")
+       }
     }
+
     fun shoot() {
         hardware.belt.power = 1.0
     }

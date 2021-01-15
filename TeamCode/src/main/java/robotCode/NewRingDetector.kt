@@ -26,6 +26,7 @@ class RingDetectorTest: LinearOpMode()  {
         waitForStart()
         ringDetector.init(opencv.frame)
 
+        if (ringDetector.position == NewRingDetector.RingPosition.FOUR)
         while (opModeIsActive()) {
             telemetry.addData("Analysis", ringDetector.analysis)
             telemetry.addData("Position", ringDetector.position)
