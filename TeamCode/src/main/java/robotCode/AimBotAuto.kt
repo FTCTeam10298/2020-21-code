@@ -8,7 +8,7 @@ import telemetryWizard.TelemetryWizard
 import robotCode.hardwareClasses.EncoderDriveMovement
 
 @Autonomous(name="Aim Bot Auto", group="Aim Bot")
-class AimBotAuto(): LinearOpMode() {
+class AimBotAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
@@ -40,13 +40,21 @@ class AimBotAuto(): LinearOpMode() {
         waitForStart()
 
         ringDetector.init(opencv.frame)
-        if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
-            robot.driveRobotPosition(1.0, 132.0,  smart_accel = true)
+        //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
+            robot.driveRobotPosition(1.0, 132.0, true)
             hardware.wobbleArm.power = 1.0
             sleep(5000)
             hardware.wobbleArm.power = 0.0
+            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+            hardware.wobbleArm.power = -1.0
+            sleep(5000)
+            hardware.wobbleArm.power = 0.0
+            robot.driveRobotPosition(-1.0, 132.0, true)
+
+
+
             console.display(1, "Cupertino, The Wobble Is Down")
-        }
+        //}
     }
 
     fun shoot() {
