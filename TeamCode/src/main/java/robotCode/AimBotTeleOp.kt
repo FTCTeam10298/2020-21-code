@@ -4,6 +4,7 @@
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.DcMotor
 import pid.MotorWithPID
 import telemetryWizard.TelemetryConsole
 import robotCode.hardwareClasses.MecanumDriveTrain
@@ -18,7 +19,7 @@ class AimBotTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
 
     val shooterPID = MotorWithPID()
-    val highGoalPreset = 4050
+    val highGoalPreset = 4100
     var shooterRpm: Double = highGoalPreset.toDouble()
     var triggerHeld = false
 
@@ -70,16 +71,24 @@ class AimBotTeleOp: OpMode() {
 
 
 //        Shoot routine
-        if (gamepad1.right_trigger > 0.2) {
+        fun goToVelocity() {
+            hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
             hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0,0.0)
             hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
-            if (toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0 , shooterRpm)/*RPM*/ ) {
+        }
+
+        fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0 , shooterRpm)
+
+        if (gamepad1.right_trigger > 0.2) {
+            goToVelocity()
+            if (isVelocityCorrect()) {
                 hardware.gate.position = 1.0
                 hardware.belt.power = 0.8
             }
             triggerHeld = true
-        } else if (triggerHeld) {
+        } else if (triggerHeld && !isVelocityCorrect()) {
             hardware.belt.power = 0.0
+            hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             hardware.shooter.power = 0.3   // Idle Shooter
             hardware.gate.position = 0.0
             triggerHeld = false
@@ -95,12 +104,15 @@ class AimBotTeleOp: OpMode() {
         when {
             (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
             (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
-            gamepad1.dpad_left || gamepad2.dpad_left-> hardware.shooter.power = 0.0
+            gamepad1.dpad_left || gamepad2.dpad_left -> hardware.shooter.power = 0.0
             gamepad1.dpad_right || gamepad2.dpad_right-> shooterRpm = highGoalPreset.toDouble()
         }
 
-        if (gamepad1.left_trigger > 0.2)
+        if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2) {
+            hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+            hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0, 0.0)
             hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
+        }
 
 //        COLLECTOR
         if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
@@ -138,7 +150,7 @@ class AimBotTeleOp: OpMode() {
         }
 
 //        GATE
-        if (gateHelp.stateChanged(gamepad1.y) && gamepad1.y) {
+        if (gateHelp.stateChanged(gamepad1.y) && gamepad1.y || gateHelp.stateChanged(gamepad2.y) && gamepad2.y) {
             when (hardware.gate.position) {
                 0.0 -> {
                     hardware.gate.position = 1.0

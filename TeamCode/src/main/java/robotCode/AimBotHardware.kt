@@ -54,8 +54,8 @@ open class AimBotHardware: MecanumHardware {
         rClaw = hwMap.get("rClaw") as Servo
         lClaw.direction = Servo.Direction.FORWARD
         rClaw.direction = Servo.Direction.REVERSE
-        lClaw.position = 0.4
-        rClaw.position = 0.4
+        lClaw.position = 1.0
+        rClaw.position = 1.0
 
 //        Gate
         gate = hwMap.get("gate") as Servo
