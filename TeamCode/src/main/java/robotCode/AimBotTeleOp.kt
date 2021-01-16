@@ -18,10 +18,11 @@ class AimBotTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
 
     val shooterPID = MotorWithPID()
+    val highGoalPreset = 4050
+    var shooterRpm: Double = highGoalPreset.toDouble()
+    var triggerHeld = false
 
     var driveDirection: Int = 1
-    var shooterRpm = 4000
-    var triggerHeld = false
 
     val invertHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
@@ -70,11 +71,9 @@ class AimBotTeleOp: OpMode() {
 
 //        Shoot routine
         if (gamepad1.right_trigger > 0.2) {
-//            hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
-//            hardware.shooter.setVelocityPIDFCoefficients(700.0, 50.0, 0.0,0.0)
-            hardware.shooter.setVelocityPIDFCoefficients(0.0, 10.0, 0.0,0.0)
-            hardware.shooter.velocity = (shooterRpm / 60.0 * 28).toDouble()
-            if (hardware.shooter.velocity * 60 / 28 >= shooterRpm /*RPM*/ ) {
+            hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0,0.0)
+            hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
+            if (toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0 , shooterRpm)/*RPM*/ ) {
                 hardware.gate.position = 1.0
                 hardware.belt.power = 0.8
             }
@@ -91,14 +90,17 @@ class AimBotTeleOp: OpMode() {
         console.display(6, "Shooter Power: ${hardware.shooter.power}")
 
 //        SHOOTER
-        val shooterRpmIncrement: Int = 300
+        val shooterRpmIncrement: Int = 200
 
         when {
             (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
             (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
-            gamepad1.dpad_left -> hardware.shooter.power = 0.0
-            gamepad1.dpad_right -> shooterRpm = 4114
+            gamepad1.dpad_left || gamepad2.dpad_left-> hardware.shooter.power = 0.0
+            gamepad1.dpad_right || gamepad2.dpad_right-> shooterRpm = highGoalPreset.toDouble()
         }
+
+        if (gamepad1.left_trigger > 0.2)
+            hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
 
 //        COLLECTOR
         if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
@@ -160,6 +162,9 @@ class AimBotTeleOp: OpMode() {
         console.display(13, "LB: ${hardware.lBDrive.power}")
         console.display(14, "RB: ${hardware.rBDrive.power}")
     }
+    fun toRPM(tps: Double): Double = tps * 60 / 28
+
+    fun percentage(percent: Double, value: Double): Double = (value / 100) * percent
 
     fun pow(n: Double, exponent: Double): Double {
         var polarity: Double = 0.0
