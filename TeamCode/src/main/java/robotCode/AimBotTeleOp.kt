@@ -19,7 +19,8 @@ class AimBotTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
 
     val shooterPID = MotorWithPID()
-    val highGoalPreset = 4100
+    val highGoalPreset = 4150
+    val powerShotsPreset = 2800
     var shooterRpm: Double = highGoalPreset.toDouble()
     var triggerHeld = false
 
@@ -107,6 +108,9 @@ class AimBotTeleOp: OpMode() {
             gamepad1.dpad_left || gamepad2.dpad_left -> hardware.shooter.power = 0.0
             gamepad1.dpad_right || gamepad2.dpad_right-> shooterRpm = highGoalPreset.toDouble()
         }
+
+        if (gamepad2.a || gamepad1.a)
+            shooterRpm = powerShotsPreset.toDouble()
 
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2) {
             hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;

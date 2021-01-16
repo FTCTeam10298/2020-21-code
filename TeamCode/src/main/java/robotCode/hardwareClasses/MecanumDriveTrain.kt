@@ -55,11 +55,17 @@ open class MecanumDriveTrain(private val hardware: MecanumHardware) {
      * @param rBPosition Position to set back right motor to run to
      */
     fun driveSetTargetPosition(lFPosition: Int, rFPosition: Int, lBPosition: Int, rBPosition: Int) {
-
+        hardware.lFDrive.targetPosition = lFPosition
+        hardware.rFDrive.targetPosition = rFPosition
+        hardware.lBDrive.targetPosition = lBPosition
+        hardware.rBDrive.targetPosition = rBPosition
     }
 
     fun driveAddTargetPosition(lFPosition: Int, rFPosition: Int, lBPosition: Int, rBPosition: Int) {
-
+        hardware.lFDrive.targetPosition = hardware.lFDrive.targetPosition + lFPosition
+        hardware.rFDrive.targetPosition = hardware.rFDrive.targetPosition + rFPosition
+        hardware.lBDrive.targetPosition = hardware.lBDrive.targetPosition + lBPosition
+        hardware.rBDrive.targetPosition = hardware.rBDrive.targetPosition + rBPosition
     }
 
     fun driveAllAreBusy(): Boolean = hardware.lFDrive.isBusy && hardware.rFDrive.isBusy && hardware.lBDrive.isBusy && hardware.rBDrive.isBusy
