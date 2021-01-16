@@ -11,7 +11,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 @TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
-class AimBotTeleOp(): OpMode() {
+class AimBotTeleOp: OpMode() {
 
     val hardware = AimBotHardware()
     val robot = MecanumDriveTrain(hardware)
@@ -71,7 +71,8 @@ class AimBotTeleOp(): OpMode() {
 //        Shoot routine
         if (gamepad1.right_trigger > 0.2) {
 //            hardware.shooter.setVelocityPIDFCoefficients(55.0, 1.0, 0.0,0.0)
-            hardware.shooter.setVelocityPIDFCoefficients(700.0, 50.0, 0.0,0.0)
+//            hardware.shooter.setVelocityPIDFCoefficients(700.0, 50.0, 0.0,0.0)
+            hardware.shooter.setVelocityPIDFCoefficients(0.0, 10.0, 0.0,0.0)
             hardware.shooter.velocity = (shooterRpm / 60.0 * 28).toDouble()
             if (hardware.shooter.velocity * 60 / 28 >= shooterRpm /*RPM*/ ) {
                 hardware.gate.position = 1.0
