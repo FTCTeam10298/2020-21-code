@@ -21,7 +21,8 @@ class GoalTracker : LinearOpMode()  {
 
         while (!isStarted) {
             goalDetector.detectTrapezoid(opencv.frame)
-            opencv.setReturn(goalDetector.display)
+            opencv.asdf{ goalDetector.detectTrapezoid(it) }
+//            opencv.setReturn(goalDetector.display)
         }
 
         waitForStart()
@@ -34,7 +35,7 @@ class GoalDetector(private val console: TelemetryConsole) {
     var display: Mat = Mat()
     var goal: Mat = Mat()
 
-    fun detectTrapezoid(frame: Mat) {
+    fun detectTrapezoid(frame: Mat): Mat {
 
 //        To be tuned
 
@@ -63,9 +64,9 @@ class GoalDetector(private val console: TelemetryConsole) {
             Imgproc.circle(frame, contourCenter(it), 3, Scalar(255.0, 255.0, 255.0), -1)
         }
 
-//        goal = squareContours.maxWith{ Imgproc.contourArea(it).toDouble() }
-
-        display = blurredMask
+//        goal = squareContours.maxWith{ Imgproc.contourArea(it).toDouble()
+        return blurredMask
+//        display = blurredMask
     }
 
     private fun colorMask(frame: Mat, lowValue: DoubleArray, highValue: DoubleArray): Mat {
