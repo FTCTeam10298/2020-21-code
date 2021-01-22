@@ -39,22 +39,23 @@ class AimBotAuto: LinearOpMode() {
 
         waitForStart()
 
-        ringDetector.init(opencv.frame)
-        //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
-            robot.driveRobotPosition(1.0, -112.0, true)
-            hardware.wobbleArm.power = 1.0
-            sleep(5000)
-            hardware.wobbleArm.power = 0.0
-            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-            hardware.wobbleArm.power = -1.0
-            sleep(5000)
-            hardware.wobbleArm.power = 0.0
-            robot.driveRobotPosition(1.0, 45.0, true)
-
-
-
-            console.display(1, "Cupertino, The Wobble Is Down")
+//        ringDetector.init(opencv.frame)
+//        //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
+//            robot.driveRobotPosition(1.0, -112.0, true)
+//            hardware.wobbleArm.power = 1.0
+//            sleep(5000)
+//            hardware.wobbleArm.power = 0.0
+//            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+//            hardware.wobbleArm.power = -1.0
+//            sleep(5000)
+//            hardware.wobbleArm.power = 0.0
+//            robot.driveRobotPosition(1.0, 45.0, true)
+//
+//
+//
+//            console.display(1, "Cupertino, The Wobble Is Down")
         //}
+    robot.driveSidewaysTime(1.0 1.0)
     }
 
     fun shoot() {
