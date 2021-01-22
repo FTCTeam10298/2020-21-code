@@ -24,8 +24,6 @@ class PipelineAbstraction: OpenCvPipeline() {
     val frame: Mat = Mat()
     var newFrame: Mat = Mat()
     var rtn = Mat()
-    
-    lateinit var userFun: (Mat) -> Mat
 
     override fun processFrame(input: Mat): Mat {
         input.copyTo(frame)
@@ -34,17 +32,12 @@ class PipelineAbstraction: OpenCvPipeline() {
             return input
         }
 
-//        newFrame = frame
-//
-//        if (rtn.empty())
-//            rtn = frame
-//
-//        return rtn
-        return userFun.invoke(input)
-    }
+        newFrame = frame
 
-    fun asdf(function: (Mat) -> Mat) {
-        userFun = function
+        if (rtn.empty())
+            rtn = frame
+
+        return rtn
     }
 
     fun setReturn(input: Mat) {
@@ -61,7 +54,6 @@ class OpencvAbstraction(private val opmode: OpMode) {
     var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
     var optimizeView = false
     var openCameraDeviceAsync = false
-
 
     fun init() {
         val cameraMonitorViewId: Int = opmode.hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", opmode.hardwareMap.appContext.packageName)
@@ -82,10 +74,6 @@ class OpencvAbstraction(private val opmode: OpMode) {
     }
 
     val frame get() = pipeline.newFrame
-
-    fun asdf(function: (Mat) -> Mat) {
-        pipeline.asdf(function)
-    }
 
     fun setReturn(input: Mat) {
         pipeline.setReturn(input)
