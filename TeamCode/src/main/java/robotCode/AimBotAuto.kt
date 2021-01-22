@@ -85,6 +85,7 @@ class AimBotAuto: LinearOpMode() {
         shoot()
         robot.driveRobotTurn(0.5, -45.0)
         shoot()
+        robot.driveRobotTurn(0.5, 22.5)
         robot.driveRobotPosition(1.0, 7.0, true)
 
     }
