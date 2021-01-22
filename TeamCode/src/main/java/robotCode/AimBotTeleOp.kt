@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import pid.MotorWithPID
 import telemetryWizard.TelemetryConsole
 import robotCode.hardwareClasses.MecanumDriveTrain
+import robotCode.hardwareClasses.ShooterInterface
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
@@ -18,7 +19,6 @@ class AimBotTeleOp: OpMode() {
     val robot = MecanumDriveTrain(hardware)
     val console = TelemetryConsole(telemetry)
 
-    val shooterPID = MotorWithPID()
     val highGoalPreset = 4450
     val powerShotsPreset = 3000
     var shooterRpm: Double = highGoalPreset.toDouble()
@@ -91,7 +91,7 @@ class AimBotTeleOp: OpMode() {
         } else if (triggerHeld && !isVelocityCorrect()) {
             hardware.belt.power = 0.0
             hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-            hardware.shooter.power = 0.3   // Idle Shooter
+            hardware.shooter.power = 0.3    // Idle Shooter
             hardware.gate.position = 0.0
             triggerHeld = false
         }
