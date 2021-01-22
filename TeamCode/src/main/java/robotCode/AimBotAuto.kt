@@ -36,11 +36,14 @@ class AimBotAuto: LinearOpMode() {
         opencv.init()
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
-        opencv.start()
+//        opencv.start()
 
         waitForStart()
 
-        ringDetector.init(opencv.frame)
+        robot.driveRobotTurn(0.5, 360.0, false)
+        sleep(30000)
+
+//        ringDetector.init(opencv.frame)
 //        when (ringDetector.position) {
 //            NewRingDetector.RingPosition.FOUR -> {
 //        robot.driveRobotPosition(1.0, -126.0, true)

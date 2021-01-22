@@ -22,7 +22,7 @@ import org.openftc.easyopencv.*
 
 class PipelineAbstraction: OpenCvPipeline() {
     var isFirstFrame = true
-    val frame: Mat = Mat()
+    private val frame: Mat = Mat()
     
     var userFun: (Mat) -> Mat = {it}
     var onFirstFrame: (Mat) -> Unit = {}
@@ -34,15 +34,14 @@ class PipelineAbstraction: OpenCvPipeline() {
             return input
         }
 
-        if (isFirstFrame) {
+        return if (isFirstFrame) {
             isFirstFrame = false
-
-    fun setReturn(input: Mat) {
-        if (!frame.empty())
-            rtn = input
+            onFirstFrame(frame)
+            Mat()
+        } else {
+            userFun(frame)
         }
 
-        return userFun(frame)
     }
 
 }
@@ -50,6 +49,7 @@ class PipelineAbstraction: OpenCvPipeline() {
 class OpencvAbstraction(private val opmode: OpMode) {
 
     private val pipeline = PipelineAbstraction()
+    val frame = Mat()
 
     private lateinit var camera: OpenCvInternalCamera
     var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
