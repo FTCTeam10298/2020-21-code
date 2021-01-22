@@ -50,10 +50,16 @@ class AimBotAuto: LinearOpMode() {
             sleep(5000)
             hardware.wobbleArm.power = 0.0
             robot.driveRobotPosition(1.0, 45.0, true)
+//        else if (ringDetector.position == NewRingDetector.RingPosition.ONE) {
+//            pass
+//            }
+//        else if (ringDetector.position == NewRingDetector.RingPosition.NONE) {
+//            pass
+//            }
 
 
 
-            console.display(1, "Cupertino, The Wobble Is Down")
+            console.display(1, "Cupertino, The Wobble Is Down /n POS FOUR")
         //}
     }
 
