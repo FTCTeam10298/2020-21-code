@@ -25,7 +25,7 @@ class PipelineAbstraction: OpenCvPipeline() {
     private val frame: Mat = Mat()
     
     var userFun: (Mat) -> Mat = {it}
-    var onFirstFrame: (Mat) -> Unit = {}
+    var onFirstFrame: ((Mat) -> Unit)? = null
 
     override fun processFrame(input: Mat): Mat {
         input.copyTo(frame)
@@ -34,10 +34,10 @@ class PipelineAbstraction: OpenCvPipeline() {
             return input
         }
 
-        return if (isFirstFrame) {
+        return if (onFirstFrame != null && isFirstFrame) {
             isFirstFrame = false
-            onFirstFrame(frame)
-            Mat()
+            onFirstFrame?.invoke(frame)
+            input
         } else {
             userFun(frame)
         }
@@ -73,6 +73,10 @@ class OpencvAbstraction(private val opmode: OpMode) {
 
         if (openCameraDeviceAsync)
             camera.openCameraDeviceAsync(OpenCvCamera.AsyncCameraOpenListener { camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
+    }
+
+    fun stop() {
+        camera.stopStreaming()
     }
 
     fun onFirstFrame(function: (Mat) -> Unit) {

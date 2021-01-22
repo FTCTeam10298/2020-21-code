@@ -15,7 +15,7 @@ class AimBotAuto: LinearOpMode() {
     val wizard = TelemetryWizard(console)
 
     val opencv = OpencvAbstraction(this)
-    val ringDetector = NewRingDetector(150, 135)
+    val ringDetector = NewRingDetector(150, 135, console)
 
     val hardware = AimBotHardware()
     val robot = EncoderDriveMovement(console, hardware)
@@ -36,11 +36,15 @@ class AimBotAuto: LinearOpMode() {
         opencv.init()
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
-//        opencv.start()
+        opencv.start()
 
+        opencv.onFirstFrame{ ringDetector.init(it) }
+        opencv.onNewFrame{ ringDetector.processFrame(it) }
+        
         waitForStart()
 
-//        ringDetector.init(opencv.frame)
+        opencv.stop()
+
 //        when (ringDetector.position) {
 //            NewRingDetector.RingPosition.FOUR -> {
 //        robot.driveRobotPosition(1.0, -126.0, true)

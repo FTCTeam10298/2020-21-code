@@ -15,7 +15,7 @@ class RingDetectorTest: LinearOpMode()  {
     val console = TelemetryConsole(telemetry)
 
     val opencv = OpencvAbstraction(this)
-    val ringDetector = NewRingDetector(150, 135)
+    val ringDetector = NewRingDetector(150, 135, console)
 
     override fun runOpMode() {
         opencv.init()
@@ -38,7 +38,7 @@ class RingDetectorTest: LinearOpMode()  {
     }
 }
 
-class NewRingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int) {
+class NewRingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, private val console: TelemetryConsole) {
     /*
      * An enum to define the ring position
      */
@@ -83,6 +83,7 @@ class NewRingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : In
 
 
     fun processFrame(input: Mat): Mat {
+        console.display(1, position.toString())
         inputToCb(input)
         analysis = Core.mean(region1_Cb).`val`[0].toInt()
         Imgproc.rectangle(
