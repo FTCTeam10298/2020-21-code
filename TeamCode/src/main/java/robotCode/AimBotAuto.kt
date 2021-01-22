@@ -25,11 +25,11 @@ class AimBotAuto: LinearOpMode() {
         wizard.newMenu("gameType", "Which kind of game is it?", listOf("Remote", "In-Person"), "alliance", true)
         wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"), "startPos")
         wizard.newMenu("startPos", "Which line are we starting in?", listOf("Closer to you", "Closer to the middle"), "ourWobble")
-        wizard.newMenu("ourWobble", "Will we do our wobble", listOf("Yes", "No"),"theirWobble")
+        wizard.newMenu("ourWobble", "Will we do our wobble", listOf("Yes", "No"), "theirWobble")
         wizard.newMenu("theirWobble", "Will we do our partner's wobble", listOf("Yes", "No"))
 //        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"))
 //        wizard.newMenu("powerShot", "Will we do the power shots?", listOf("Yes", "No"))
-        
+
 //        wizard.summonWizard(gamepad1)
 
         opencv.init()
@@ -40,30 +40,50 @@ class AimBotAuto: LinearOpMode() {
         waitForStart()
 
         ringDetector.init(opencv.frame)
-        //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
-            robot.driveRobotPosition(1.0, -112.0, true)
-            hardware.wobbleArm.power = 1.0
-            sleep(5000)
-            hardware.wobbleArm.power = 0.0
-            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-            hardware.wobbleArm.power = -1.0
-            sleep(5000)
-            hardware.wobbleArm.power = 0.0
-            robot.driveRobotPosition(1.0, 45.0, true)
-//        else if (ringDetector.position == NewRingDetector.RingPosition.ONE) {
-//            pass
+//        when (ringDetector.position) {
+//            NewRingDetector.RingPosition.FOUR -> {
+                robot.driveRobotPosition(1.0, -100.0, true)
+                hardware.wobbleArm.power = 0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+                hardware.wobbleArm.power = -0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                robot.driveRobotPosition(1.0, 45.0, true)
 //            }
-//        else if (ringDetector.position == NewRingDetector.RingPosition.NONE) {
-//            pass
+//            NewRingDetector.RingPosition.ONE -> {
+//                robot.driveRobotPosition(1.0, -98.0, true)
+//                hardware.wobbleArm.power = 0.8
+//                sleep(1000)
+//                hardware.wobbleArm.power = 0.0
+//                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+//                hardware.wobbleArm.power = -0.8
+//                sleep(1000)
+//                hardware.wobbleArm.power = 0.0
+//                robot.driveRobotPosition(1.0, 37.0, true)
 //            }
+//            NewRingDetector.RingPosition.NONE -> {
+//                robot.driveRobotPosition(1.0, -48.0, true)
+//                hardware.wobbleArm.power = 0.8
+//                sleep(1000)
+//                hardware.wobbleArm.power = 0.0
+//                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+//                hardware.wobbleArm.power = -0.8
+//                sleep(1000)
+//                hardware.wobbleArm.power = 0.0
+//                robot.driveRobotPosition(1.0, 17.0, true)
 
-
-
-            console.display(1, "Cupertino, The Wobble Is Down /n POS FOUR")
-        //}
+        console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
     }
 
     fun shoot() {
         hardware.belt.power = 1.0
     }
 }
+
+
+
+
+
+
