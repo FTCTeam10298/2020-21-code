@@ -40,31 +40,53 @@ class AimBotAuto: LinearOpMode() {
 
         waitForStart()
 
-//        ringDetector.init(opencv.frame)
-//        //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
-//            robot.driveRobotPosition(1.0, -112.0, true)
-//            hardware.wobbleArm.power = 1.0
-//            sleep(5000)
+        ringDetector.init(opencv.frame)
+//        when (ringDetector.position) {
+//            NewRingDetector.RingPosition.FOUR -> {
+        robot.driveRobotPosition(1.0, -128.0, true)
+        hardware.wobbleArm.power = 0.8
+        sleep(1000)
+        hardware.wobbleArm.power = 0.0
+        hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+        hardware.wobbleArm.power = -0.8
+        sleep(1000)
+        hardware.wobbleArm.power = 0.0
+        robot.driveRobotPosition(1.0, 54.0, true)
+//        }
+//        NewRingDetector.RingPosition.ONE -> {
+//            robot.driveRobotPosition(1.0, -105.0, true)
+//            hardware.wobbleArm.power = 0.8
+//            sleep(1000)
 //            hardware.wobbleArm.power = 0.0
 //            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-//            hardware.wobbleArm.power = -1.0
-//            sleep(5000)
+//            hardware.wobbleArm.power = -0.8
+//            sleep(1000)
 //            hardware.wobbleArm.power = 0.0
-//            robot.driveRobotPosition(1.0, 45.0, true)
-//
-//
-//
-//            console.display(1, "Cupertino, The Wobble Is Down")
-        //}
-    //    robot.driveRobotPosition(1.0, -7.0, true)
+//            robot.driveRobotPosition(1.0, 31.0, true)
+//        }
+//        NewRingDetector.RingPosition.NONE -> {
+//            robot.driveRobotPosition(1.0, -79.0, true)
+//            hardware.wobbleArm.power = 0.8
+//            sleep(1000)
+//            hardware.wobbleArm.power = 0.0
+//            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+//            hardware.wobbleArm.power = -0.8
+//            sleep(1000)
+//            hardware.wobbleArm.power = 0.0
+//        }
+
+        console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
+
         robot.driveSidewaysTime(1.0, 1.0)
         shoot()
         robot.driveRobotTurn(0.5, 22.5)
         shoot()
         robot.driveRobotTurn(0.5, -45.0)
         shoot()
-      //  robot.driveRobotPosition(1.0, 7.0, true)
+        //  robot.driveRobotPosition(1.0, 7.0, true)
+
     }
+
     fun shoot() {
         goToVelocity()
         if (isVelocityCorrect()) {

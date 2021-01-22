@@ -68,8 +68,8 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
         val frOrigTarget: Int = hardware.rFDrive.targetPosition
         val blOrigTarget: Int = hardware.lBDrive.targetPosition
         val brOrigTarget: Int = hardware.rBDrive.targetPosition
-        driveAddTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
         driveSetRunToPosition()
+        driveAddTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {

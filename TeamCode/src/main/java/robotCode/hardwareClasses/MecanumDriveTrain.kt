@@ -44,7 +44,13 @@ open class MecanumDriveTrain(private val hardware: MecanumHardware) {
 
 
     fun driveSetRunToPosition() {
-        driveSetMode(DcMotor.RunMode.RUN_TO_POSITION)
+        if (hardware.lFDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || hardware.rFDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || hardware.lBDrive.mode != DcMotor.RunMode.RUN_TO_POSITION || hardware.rBDrive.mode != DcMotor.RunMode.RUN_TO_POSITION) {
+            driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
+            // When the encoder is reset, also reset the target position, so it doesn't add an old
+            // target position when using driveAddTargetPosition().
+            driveSetTargetPosition(0, 0, 0, 0)
+            driveSetMode(DcMotor.RunMode.RUN_TO_POSITION)
+        }
     }
 
     /**
