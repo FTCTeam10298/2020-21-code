@@ -54,7 +54,8 @@ class AimBotAuto: LinearOpMode() {
 //        robot.driveRobotPosition(1.0, 52.0, true)
 //        }
 //        NewRingDetector.RingPosition.ONE -> {
-            robot.driveRobotPosition(1.0, -105.0, true)
+            robot.driveRobotPosition(1.0, -95.0, true)
+            robot.driveRobotTurn(0.5, 180.0)
             hardware.wobbleArm.power = 0.8
             sleep(1000)
             hardware.wobbleArm.power = 0.0
@@ -62,6 +63,7 @@ class AimBotAuto: LinearOpMode() {
             hardware.wobbleArm.power = -0.8
             sleep(1000)
             hardware.wobbleArm.power = 0.0
+            robot.driveRobotTurn(0.5, -180.0)
             robot.driveRobotPosition(1.0, 31.0, true)
 //        }
 //        NewRingDetector.RingPosition.NONE -> {
@@ -89,10 +91,14 @@ class AimBotAuto: LinearOpMode() {
 
     fun shoot() {
         goToVelocity()
-        if (isVelocityCorrect()) {
-            hardware.gate.position = 1.0
-            hardware.belt.power = 0.8
+        while (!isVelocityCorrect()) {
+            sleep(50)
         }
+        hardware.gate.position = 1.0
+        hardware.belt.power = 0.8
+        sleep(500)
+        hardware.gate.position = 0.0
+        hardware.belt.power = 0.0
     }
     val highGoalPreset = 4150
     var shooterRpm: Double = highGoalPreset.toDouble()
