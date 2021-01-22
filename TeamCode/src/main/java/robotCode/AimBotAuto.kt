@@ -39,7 +39,7 @@ class AimBotAuto: LinearOpMode() {
 
         waitForStart()
 
-        ringDetector.init(opencv.frame)
+//        ringDetector.init(opencv.frame)
         //if (ringDetector.position == NewRingDetector.RingPosition.FOUR) {
             robot.driveRobotPosition(1.0, -112.0, true)
             hardware.wobbleArm.power = 1.0

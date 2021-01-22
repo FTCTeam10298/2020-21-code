@@ -24,7 +24,7 @@ class RingDetectorTest: LinearOpMode()  {
         opencv.start()
 
         waitForStart()
-        ringDetector.init(opencv.frame)
+        opencv.onFirstFrame{ ringDetector.init(it) }
 
         if (ringDetector.position == NewRingDetector.RingPosition.FOUR)
         while (opModeIsActive()) {
@@ -32,7 +32,8 @@ class RingDetectorTest: LinearOpMode()  {
             telemetry.addData("Position", ringDetector.position)
             telemetry.update()
 
-            opencv.setReturn(ringDetector.processFrame(opencv.frame))
+            opencv.onNewFrame { ringDetector.processFrame(it)}
+
         }
     }
 }
