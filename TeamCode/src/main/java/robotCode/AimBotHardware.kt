@@ -31,8 +31,8 @@ open class AimBotHardware: MecanumHardware {
     override lateinit var rFDrive: DcMotor
     override lateinit var lBDrive: DcMotor
     override lateinit var rBDrive: DcMotor
-    lateinit var shooter: DcMotorEx
 
+    lateinit var shooter: DcMotorEx
     lateinit var belt: DcMotor
     lateinit var collector: DcMotor
     lateinit var wobbleArm: DcMotor

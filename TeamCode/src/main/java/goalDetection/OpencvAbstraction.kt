@@ -21,9 +21,11 @@ import org.openftc.easyopencv.*
 //}
 
 class PipelineAbstraction: OpenCvPipeline() {
+    var isFirstFrame = true
     val frame: Mat = Mat()
-    var newFrame: Mat = Mat()
-    var rtn = Mat()
+    
+    var userFun: (Mat) -> Mat = {it}
+    var onFirstFrame: (Mat) -> Unit = {}
 
     override fun processFrame(input: Mat): Mat {
         input.copyTo(frame)
@@ -32,18 +34,17 @@ class PipelineAbstraction: OpenCvPipeline() {
             return input
         }
 
-        newFrame = frame
-
-        if (rtn.empty())
-            rtn = frame
-
-        return rtn
-    }
+        if (isFirstFrame) {
+            isFirstFrame = false
 
     fun setReturn(input: Mat) {
         if (!frame.empty())
             rtn = input
+        }
+
+        return userFun(frame)
     }
+
 }
 
 class OpencvAbstraction(private val opmode: OpMode) {
@@ -54,6 +55,7 @@ class OpencvAbstraction(private val opmode: OpMode) {
     var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
     var optimizeView = false
     var openCameraDeviceAsync = false
+
 
     fun init() {
         val cameraMonitorViewId: Int = opmode.hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", opmode.hardwareMap.appContext.packageName)
@@ -73,9 +75,11 @@ class OpencvAbstraction(private val opmode: OpMode) {
             camera.openCameraDeviceAsync(OpenCvCamera.AsyncCameraOpenListener { camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT) })
     }
 
-    val frame get() = pipeline.newFrame
+    fun onFirstFrame(function: (Mat) -> Unit) {
+        pipeline.onFirstFrame = function
+    }
 
-    fun setReturn(input: Mat) {
-        pipeline.setReturn(input)
+    fun onNewFrame(function: (Mat) -> Mat) {
+        pipeline.userFun = function
     }
 }
