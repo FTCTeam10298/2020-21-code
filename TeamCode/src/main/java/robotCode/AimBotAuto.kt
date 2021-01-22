@@ -81,14 +81,14 @@ class AimBotAuto: LinearOpMode() {
 //        }
 
         console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
-        //  robot.driveRobotPosition(1.0, -7.0, true)
+        robot.driveRobotPosition(1.0, -7.0, true)
         robot.driveSidewaysTime(1.0, 1.0)
         shoot()
         robot.driveRobotTurn(0.5, 22.5)
         shoot()
         robot.driveRobotTurn(0.5, -45.0)
         shoot()
-        //  robot.driveRobotPosition(1.0, 7.0, true)
+        robot.driveRobotPosition(1.0, 7.0, true)
 
     }
 
