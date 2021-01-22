@@ -40,9 +40,6 @@ class AimBotAuto: LinearOpMode() {
 
         waitForStart()
 
-        robot.driveRobotTurn(0.5, 360.0, false)
-        sleep(30000)
-
         ringDetector.init(opencv.frame)
 //        when (ringDetector.position) {
 //            NewRingDetector.RingPosition.FOUR -> {
