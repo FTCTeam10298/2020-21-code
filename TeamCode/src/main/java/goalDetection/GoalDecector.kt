@@ -8,7 +8,7 @@ import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Moments
 
 @TeleOp
-class GoalTracker: LinearOpMode() {
+class GoalTracker : LinearOpMode()  {
 
     val console = TelemetryConsole(telemetry)
 
@@ -20,8 +20,8 @@ class GoalTracker: LinearOpMode() {
         opencv.start()
 
         while (!isStarted) {
-//            goalDetector.detectTrapezoid(opencv.frame)
-            opencv.onNewFrame(goalDetector::detectTrapezoid)
+            goalDetector.detectTrapezoid(opencv.frame)
+            opencv.asdf{ goalDetector.detectTrapezoid(it) }
 //            opencv.setReturn(goalDetector.display)
         }
 

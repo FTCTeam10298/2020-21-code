@@ -27,7 +27,7 @@ class AutoAim(private val console: TelemetryConsole, opMode: OpMode, val robot: 
 
 //        fine tune aim
         while (!aimed) {
-//            detector.detectTrapezoid(opencv.frame)
+            detector.detectTrapezoid(opencv.frame)
             detector.goal
 //            if (detector.x = )
         }
