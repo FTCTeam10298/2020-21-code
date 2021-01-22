@@ -19,17 +19,18 @@ class AimBotTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
 
     val shooterPID = MotorWithPID()
-    val highGoalPreset = 4150
-    val powerShotsPreset = 2800
+    val highGoalPreset = 4450
+    val powerShotsPreset = 3000
     var shooterRpm: Double = highGoalPreset.toDouble()
     var triggerHeld = false
-
     var driveDirection: Int = 1
 
     val invertHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
-    val collectorHelp1 = ButtonHelper()
-    val collectorHelp2 = ButtonHelper()
+    val gamepad2RightBumperHelper = ButtonHelper()
+    val gamepad2LeftBumperHelper = ButtonHelper()
+    val gamepad1RightBumperHelper = ButtonHelper()
+    val gamepad1LeftBumperHelper = ButtonHelper()
     val gateHelp = ButtonHelper()
     val dUpHelp = ButtonHelper()
     val dDownHelp = ButtonHelper()
@@ -119,12 +120,12 @@ class AimBotTeleOp: OpMode() {
         }
 
 //        COLLECTOR
-        if (collectorHelp1.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper))
+        if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
             if (hardware.collector.power == 1.0)
                 hardware.collector.power = 0.0
             else
                 hardware.collector.power = 1.0
-        else if (collectorHelp2.stateChanged(gamepad1.left_bumper) && (gamepad1.left_bumper))
+        else if ((gamepad1LeftBumperHelper.stateChanged(gamepad1.left_bumper) && (gamepad1.left_bumper)) || (gamepad2LeftBumperHelper.stateChanged(gamepad2.left_bumper) && (gamepad2.left_bumper)))
             if (hardware.collector.power == -1.0)
                 hardware.collector.power = 0.0
             else
