@@ -67,8 +67,8 @@ class AimBotAuto: LinearOpMode() {
             hardware.wobbleArm.power = -0.8
             sleep(1000)
             hardware.wobbleArm.power = 0.0
+            robot.driveRobotPosition(1.0, -31.0, true)
             robot.driveRobotTurn(0.5, -180.0)
-            robot.driveRobotPosition(1.0, 31.0, true)
 //        }
 //        NewRingDetector.RingPosition.NONE -> {
 //            robot.driveRobotPosition(1.0, -79.0, true)
