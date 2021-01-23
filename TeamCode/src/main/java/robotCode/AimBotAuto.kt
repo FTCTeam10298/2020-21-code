@@ -83,15 +83,15 @@ class AimBotAuto: LinearOpMode() {
             }
         }
 
-        console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
-        robot.driveSidewaysTime(1.0, 1.0)
-        hardware.collector.power = 1.0
-        shoot()
-        robot.driveRobotTurn(0.5, 11.25)
-        shoot()
-        robot.driveRobotTurn(0.5, -22.5)
-        shoot()
-        robot.driveRobotTurn(0.5, 11.25)
+                console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
+                robot.driveSidewaysTime(1.0, 1.0)
+                hardware.collector.power = 1.0
+                shoot()
+                robot.driveRobotTurn(0.5, 11.25)
+                shoot()
+                robot.driveRobotTurn(0.5, -22.5)
+                shoot()
+                robot.driveRobotTurn(0.5, 11.25)
 
     }
 
@@ -102,7 +102,7 @@ class AimBotAuto: LinearOpMode() {
         }
         hardware.gate.position = 1.0
         hardware.belt.power = 0.8
-        sleep(500)
+        sleep(400)
         hardware.gate.position = 0.0
         hardware.belt.power = 0.0
     }

@@ -1,0 +1,49 @@
+Index: TeamCode/src/main/java/robotCode/AimBotAuto.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+> package robotCode\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.Autonomous\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode\r\nimport com.qualcomm.robotcore.hardware.DcMotor\r\nimport goalDetection.OpencvAbstraction\r\nimport telemetryWizard.TelemetryConsole\r\nimport telemetryWizard.TelemetryWizard\r\nimport robotCode.hardwareClasses.EncoderDriveMovement\r\n\r\n@Autonomous(name=\"Aim Bot Auto\", group=\"Aim Bot\")\r\nclass AimBotAuto: LinearOpMode() {\r\n\r\n    val console = TelemetryConsole(telemetry)\r\n    val wizard = TelemetryWizard(console)\r\n\r\n    val opencv = OpencvAbstraction(this)\r\n    val ringDetector = NewRingDetector(150, 135, console)\r\n\r\n    val hardware = AimBotHardware()\r\n    val robot = EncoderDriveMovement(console, hardware)\r\n\r\n    override fun runOpMode() {\r\n        hardware.init(hardwareMap)\r\n\r\n        wizard.newMenu(\"gameType\", \"Which kind of game is it?\", listOf(\"Remote\", \"In-Person\"), \"alliance\", true)\r\n        wizard.newMenu(\"alliance\", \"What alliance are we on?\", listOf(\"Red\", \"Blue\"), \"startPos\")\r\n        wizard.newMenu(\"startPos\", \"Which line are we starting in?\", listOf(\"Closer to you\", \"Closer to the middle\"), \"ourWobble\")\r\n        wizard.newMenu(\"ourWobble\", \"Will we do our wobble\", listOf(\"Yes\", \"No\"), \"theirWobble\")\r\n        wizard.newMenu(\"theirWobble\", \"Will we do our partner's wobble\", listOf(\"Yes\", \"No\"))\r\n//        wizard.newMenu(\"starterStack\", \"Will we collect the starter stack\", listOf(\"Yes\", \"No\"))\r\n//        wizard.newMenu(\"powerShot\", \"Will we do the power shots?\", listOf(\"Yes\", \"No\"))\r\n\r\n//        wizard.summonWizard(gamepad1)\r\n\r\n        opencv.init()\r\n        opencv.optimizeView = true\r\n        opencv.openCameraDeviceAsync = true\r\n        opencv.start()\r\n\r\n        opencv.onFirstFrame{ ringDetector.init(it) }\r\n        opencv.onNewFrame{ ringDetector.processFrame(it) }\r\n        \r\n        waitForStart()\r\n\r\n        opencv.stop()\r\n\r\n//        when (ringDetector.position) {\r\n//            NewRingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble\r\n//        robot.driveRobotPosition(1.0, -126.0, true)\r\n//        hardware.wobbleArm.power = 0.8\r\n//        sleep(1000)\r\n//        hardware.wobbleArm.power = 0.0\r\n//        hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0\r\n//        hardware.wobbleArm.power = -0.8\r\n//        sleep(1000)\r\n//        hardware.wobbleArm.power = 0.0\r\n//        robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots\r\n//        }\r\n//        NewRingDetector.RingPosition.ONE -> { // Step 1 deliver wobble\r\n            robot.driveRobotPosition(1.0, -95.0, true)\r\n            robot.driveRobotTurn(0.5, 180.0)\r\n            hardware.wobbleArm.power = 0.8\r\n            sleep(1000)\r\n            hardware.wobbleArm.power = 0.0\r\n            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0\r\n            hardware.wobbleArm.power = -0.8\r\n            sleep(1000)\r\n            hardware.wobbleArm.power = 0.0\r\n            robot.driveRobotPosition(1.0, -31.0, true)\r\n            robot.driveRobotTurn(0.5, -180.0) // Step 2 shoot power shots\r\n//        }\r\n//        NewRingDetector.RingPosition.NONE -> { // Step 1 deliver wobble\r\n//            robot.driveRobotPosition(1.0, -79.0, true)\r\n//            hardware.wobbleArm.power = 0.8\r\n//            sleep(1000)\r\n//            hardware.wobbleArm.power = 0.0\r\n//            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0\r\n//            hardware.wobbleArm.power = -0.8\r\n//            sleep(1000)\r\n//            hardware.wobbleArm.power = 0.0\r\n//            robot.driveRobotPosition(1.0, -12.0, true)\r\n//        }\r\n\r\n        console.display(1, \"Cupertino, The Wobble Is Down ${ringDetector.position}\")\r\n        robot.driveSidewaysTime(1.0, 1.0)\r\n        hardware.collector.power = 1.0\r\n        shoot()\r\n        robot.driveRobotTurn(0.5, 11.25)\r\n        shoot()\r\n        robot.driveRobotTurn(0.5, -22.5)\r\n        shoot()\r\n        robot.driveRobotTurn(0.5, 11.25)\r\n\r\n    }\r\n\r\n    fun shoot() {\r\n        goToVelocity()\r\n        while (!isVelocityCorrect()) {\r\n            sleep(50)\r\n        }\r\n        hardware.gate.position = 1.0\r\n        hardware.belt.power = 0.8\r\n        sleep(500)\r\n        hardware.gate.position = 0.0\r\n        hardware.belt.power = 0.0\r\n    }\r\n    val highGoalPreset = 4150\r\n    var shooterRpm: Double = highGoalPreset.toDouble()\r\n\r\n    fun goToVelocity() {\r\n        hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;\r\n        hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0, 0.0)\r\n        hardware.shooter.velocity = (shooterRpm / 60.0 * 28)\r\n    }\r\n    fun percentage(percent: Double, value: Double): Double = (value / 100) * percent\r\n    fun toRPM(tps: Double): Double = tps * 60 / 28\r\n\r\n    fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0, shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0, shooterRpm)\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- TeamCode/src/main/java/robotCode/AimBotAuto.kt	(revision f086fa127655e6ac152366531dc7d418118f9816)
++++ TeamCode/src/main/java/robotCode/AimBotAuto.kt	(date 1611374480048)
+@@ -58,6 +58,7 @@
+ //        robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
+ //        }
+ //        NewRingDetector.RingPosition.ONE -> { // Step 1 deliver wobble
++
+             robot.driveRobotPosition(1.0, -95.0, true)
+             robot.driveRobotTurn(0.5, 180.0)
+             hardware.wobbleArm.power = 0.8
+@@ -69,6 +70,16 @@
+             hardware.wobbleArm.power = 0.0
+             robot.driveRobotPosition(1.0, -31.0, true)
+             robot.driveRobotTurn(0.5, -180.0) // Step 2 shoot power shots
++
++            robot.driveSidewaysTime(1.0, 1.0)
++            hardware.collector.power = 1.0
++            shoot()
++            robot.driveRobotTurn(0.5, 11.25)
++            shoot()
++            robot.driveRobotTurn(0.5, -22.5)
++            shoot()
++            robot.driveRobotTurn(0.5, 11.25)
++
+ //        }
+ //        NewRingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
+ //            robot.driveRobotPosition(1.0, -79.0, true)
+@@ -83,14 +94,6 @@
+ //        }
+ 
+         console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
+-        robot.driveSidewaysTime(1.0, 1.0)
+-        hardware.collector.power = 1.0
+-        shoot()
+-        robot.driveRobotTurn(0.5, 11.25)
+-        shoot()
+-        robot.driveRobotTurn(0.5, -22.5)
+-        shoot()
+-        robot.driveRobotTurn(0.5, 11.25)
+ 
+     }
+ 
