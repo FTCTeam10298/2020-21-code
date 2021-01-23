@@ -46,7 +46,7 @@ class AimBotAuto: LinearOpMode() {
         opencv.stop()
 
 //        when (ringDetector.position) {
-//            NewRingDetector.RingPosition.FOUR -> {
+//            NewRingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
 //        robot.driveRobotPosition(1.0, -126.0, true)
 //        hardware.wobbleArm.power = 0.8
 //        sleep(1000)
@@ -55,9 +55,9 @@ class AimBotAuto: LinearOpMode() {
 //        hardware.wobbleArm.power = -0.8
 //        sleep(1000)
 //        hardware.wobbleArm.power = 0.0
-//        robot.driveRobotPosition(1.0, 52.0, true)
+//        robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
 //        }
-//        NewRingDetector.RingPosition.ONE -> {
+//        NewRingDetector.RingPosition.ONE -> { // Step 1 deliver wobble
             robot.driveRobotPosition(1.0, -95.0, true)
             robot.driveRobotTurn(0.5, 180.0)
             hardware.wobbleArm.power = 0.8
@@ -68,9 +68,9 @@ class AimBotAuto: LinearOpMode() {
             sleep(1000)
             hardware.wobbleArm.power = 0.0
             robot.driveRobotPosition(1.0, -31.0, true)
-            robot.driveRobotTurn(0.5, -180.0)
+            robot.driveRobotTurn(0.5, -180.0) // Step 2 shoot power shots
 //        }
-//        NewRingDetector.RingPosition.NONE -> {
+//        NewRingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
 //            robot.driveRobotPosition(1.0, -79.0, true)
 //            hardware.wobbleArm.power = 0.8
 //            sleep(1000)
@@ -78,7 +78,7 @@ class AimBotAuto: LinearOpMode() {
 //            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
 //            hardware.wobbleArm.power = -0.8
 //            sleep(1000)
-//            hardware.wobbleArm.power = 0.0
+//            hardware.wobbleArm.power = 0.0 // Step 2 shoot power shots
 //        }
 
         console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
