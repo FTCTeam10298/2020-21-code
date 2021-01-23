@@ -20,7 +20,7 @@ class AimBotTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
 
     val highGoalPreset = 4450
-    val powerShotsPreset = 3000
+    val powerShotsPreset = 4000
     var shooterRpm: Double = highGoalPreset.toDouble()
     var triggerHeld = false
     var driveDirection: Int = 1
