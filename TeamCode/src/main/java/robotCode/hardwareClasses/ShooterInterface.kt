@@ -1,33 +1,54 @@
 package robotCode.hardwareClasses
 
 import android.os.SystemClock.sleep
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Servo
 import pid.MotorWithPID
+import robotCode.AimBotHardware
 
-class ShooterInterface(private val shooter: DcMotorEx, private val belt: DcMotor, private val gate: Servo) {
+@Autonomous
+class shooterTest(): OpMode() {
+
+    val hardware = AimBotHardware()
+    val shooterInterface = ShooterInterface(hardware.shooter, hardware.belt, hardware.gate, hardware.collector)
+
+    override fun init() {
+        hardware.init(hardwareMap)
+    }
+
+    override fun loop() {
+        shooterInterface.shootOne()
+    }
+
+}
+
+class ShooterInterface(private val shooter: DcMotorEx, private val belt: DcMotor, private val gate: Servo, private val collector: DcMotor) {
+
     private val shooterPID = MotorWithPID()
 
     val highGoalPreset = 4150
     var shooterRpm: Double = highGoalPreset.toDouble()
 
-    fun shootOne() {
-        startShooting()
+    fun shootOne(useCollector: Boolean = false) {
+        startShooting(useCollector)
         sleep(500)
+        collector.power = 0.0
         gate.position = 0.0
         belt.power = 0.0
     }
 
-    fun startShooting() {
+    fun startShooting(useCollector: Boolean = false) {
         goToVelocity()
-        while (!isVelocityCorrect()) {
-            sleep(50)
+        if (isVelocityCorrect()) {
+            gate.position = 1.0
+            belt.power = 0.8
+            if (useCollector)
+                collector.power = 0.8
         }
-        gate.position = 1.0
-        belt.power = 0.8
     }
-
 
     fun goToVelocity() {
         shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
