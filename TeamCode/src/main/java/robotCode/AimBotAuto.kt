@@ -69,6 +69,15 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 robot.driveRobotPosition(1.0, -31.0, true)
                 robot.driveRobotTurn(0.5, -180.0) // Step 2 shoot power shots
+                console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
+                robot.driveSidewaysTime(1.0, 1.0)
+                hardware.collector.power = 1.0
+                shoot()
+                robot.driveRobotTurn(0.5, 11.25)
+                shoot()
+                robot.driveRobotTurn(0.5, -22.5)
+                shoot()
+                robot.driveRobotTurn(0.5, 11.25)
             }
             RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -79.0, true)
@@ -83,15 +92,7 @@ class AimBotAuto: LinearOpMode() {
             }
         }
 
-        console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
-        robot.driveSidewaysTime(1.0, 1.0)
-        hardware.collector.power = 1.0
-        shoot()
-        robot.driveRobotTurn(0.5, 11.25)
-        shoot()
-        robot.driveRobotTurn(0.5, -22.5)
-        shoot()
-        robot.driveRobotTurn(0.5, 11.25)
+
 
     }
 
