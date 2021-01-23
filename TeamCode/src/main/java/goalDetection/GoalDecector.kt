@@ -7,28 +7,28 @@ import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Moments
 
-@TeleOp
-class GoalTracker: LinearOpMode() {
-
-    val console = TelemetryConsole(telemetry)
-
-    val opencv = OpencvAbstraction(this)
-    val goalDetector = GoalDetector(console)
-
-    override fun runOpMode() {
-        opencv.init()
-        opencv.start()
-
-        while (!isStarted) {
-//            goalDetector.detectTrapezoid(opencv.frame)
-            opencv.onNewFrame(goalDetector::detectTrapezoid)
-//            opencv.setReturn(goalDetector.display)
-        }
-
-        waitForStart()
-
-    }
-}
+//@TeleOp
+//class GoalTracker: LinearOpMode() {
+//
+//    val console = TelemetryConsole(telemetry)
+//
+//    val opencv = OpencvAbstraction(this)
+//    val goalDetector = GoalDetector(console)
+//
+//    override fun runOpMode() {
+//        opencv.init(hardwareMap)
+//        opencv.start()
+//
+//        while (!isStarted) {
+////            goalDetector.detectTrapezoid(opencv.frame)
+//            opencv.onNewFrame(goalDetector::detectTrapezoid)
+////            opencv.setReturn(goalDetector.display)
+//        }
+//
+//        waitForStart()
+//
+//    }
+//}
 
 class GoalDetector(private val console: TelemetryConsole) {
 

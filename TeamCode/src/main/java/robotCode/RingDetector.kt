@@ -18,7 +18,7 @@ class RingDetectorTest: LinearOpMode()  {
     val ringDetector = RingDetector(150, 135, console)
 
     override fun runOpMode() {
-        opencv.init()
+        opencv.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
