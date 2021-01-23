@@ -33,7 +33,7 @@ class AimBotAuto: LinearOpMode() {
 
 //        wizard.summonWizard(gamepad1)
 
-        opencv.init()
+        opencv.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()

@@ -2,6 +2,8 @@ package goalDetection
 
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.Mat
 import org.openftc.easyopencv.*
 
@@ -49,17 +51,18 @@ class PipelineAbstraction: OpenCvPipeline() {
 class OpencvAbstraction(private val opmode: OpMode) {
 
     private val pipeline = PipelineAbstraction()
-    val frame = Mat()
 
-    private lateinit var camera: OpenCvInternalCamera
-    var cameraDirection: OpenCvInternalCamera.CameraDirection = OpenCvInternalCamera.CameraDirection.FRONT
+    private lateinit var camera: OpenCvWebcam
+
     var optimizeView = false
     var openCameraDeviceAsync = false
 
 
-    fun init() {
+    fun init(hardwareMap: HardwareMap) {
         val cameraMonitorViewId: Int = opmode.hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", opmode.hardwareMap.appContext.packageName)
-        camera = OpenCvCameraFactory.getInstance().createInternalCamera(cameraDirection, cameraMonitorViewId)
+        val webcamName = hardwareMap.get(WebcamName::class.java, "Webcam 1")
+
+        camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId)
         camera.openCameraDevice()
         camera.setPipeline(pipeline)
     }
