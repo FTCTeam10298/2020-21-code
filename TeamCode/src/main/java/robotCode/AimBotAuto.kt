@@ -15,7 +15,7 @@ class AimBotAuto: LinearOpMode() {
     val wizard = TelemetryWizard(console)
 
     val opencv = OpencvAbstraction(this)
-    val ringDetector = NewRingDetector(150, 135, console)
+    val ringDetector = RingDetector(150, 135, console)
 
     val hardware = AimBotHardware()
     val robot = EncoderDriveMovement(console, hardware)
@@ -46,7 +46,7 @@ class AimBotAuto: LinearOpMode() {
         opencv.stop()
 
         when (ringDetector.position) {
-            NewRingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
+            RingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -126.0, true)
                 hardware.wobbleArm.power = 0.8
                 sleep(1000)
@@ -57,7 +57,7 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
             }
-            NewRingDetector.RingPosition.ONE -> { // Step 1 deliver wobble
+            RingDetector.RingPosition.ONE -> { // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -95.0, true)
                 robot.driveRobotTurn(0.5, 180.0)
                 hardware.wobbleArm.power = 0.8
@@ -70,7 +70,7 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotPosition(1.0, -31.0, true)
                 robot.driveRobotTurn(0.5, -180.0) // Step 2 shoot power shots
             }
-            NewRingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
+            RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -79.0, true)
                 hardware.wobbleArm.power = 0.8
                 sleep(1000)
