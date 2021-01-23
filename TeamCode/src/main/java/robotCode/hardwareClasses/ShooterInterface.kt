@@ -10,7 +10,7 @@ import pid.MotorWithPID
 import robotCode.AimBotHardware
 
 @Autonomous
-class shooterTest(): OpMode() {
+class ShooterTest(): OpMode() {
 
     val hardware = AimBotHardware()
     val shooterInterface = ShooterInterface(hardware.shooter, hardware.belt, hardware.gate, hardware.collector)
