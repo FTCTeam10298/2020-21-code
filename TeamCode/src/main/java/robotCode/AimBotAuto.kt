@@ -92,7 +92,7 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = -0.8
                 sleep(1000)
                 hardware.wobbleArm.power = 0.0
-                robot.driveRobotPosition(1.0, 12.0, true)
+                //robot.driveRobotPosition(1.0, 12.0, true)
             }
         }
 
