@@ -64,12 +64,13 @@ class OpencvAbstraction(private val opmode: OpMode) {
 
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId)
         camera.openCameraDevice()
+        sleep(100)
         camera.setPipeline(pipeline)
     }
 
     fun start() {
         camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-        sleep(100)
+        sleep(200)
 
 //        if (optimizeView)
 //            camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW)
