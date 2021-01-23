@@ -75,6 +75,7 @@ class AimBotAuto: LinearOpMode() {
                 // Step 2 shoot power shots
                 robot.driveRobotStrafe(1.0, 48.0, true)
                 hardware.collector.power = 1.0
+                robot.driveRobotTurn(1.0, 1.0)
                 shoot()
                 robot.driveRobotTurn(0.5, 5.625)
                 shoot()
