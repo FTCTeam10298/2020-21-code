@@ -79,15 +79,7 @@ class AimBotAuto: LinearOpMode() {
 //            hardware.wobbleArm.power = -0.8
 //            sleep(1000)
 //            hardware.wobbleArm.power = 0.0
-            robot.driveRobotPosition(1.0, -79.0, true)
-            hardware.wobbleArm.power = 0.8
-            sleep(1000)
-            hardware.wobbleArm.power = 0.0
-            hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-            hardware.wobbleArm.power = -0.8
-            sleep(1000)
-            hardware.wobbleArm.power = 0.0
-            robot.driveRobotPosition(1.0, -12.0, true)
+//            robot.driveRobotPosition(1.0, -12.0, true)
 //        }
 
         console.display(1, "Cupertino, The Wobble Is Down ${ringDetector.position}")
