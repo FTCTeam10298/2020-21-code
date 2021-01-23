@@ -83,6 +83,7 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotTurn(0.5, -22.5)
                 shoot(600)
                 robot.driveRobotTurn(0.5, 11.25)
+                robot.driveRobotPosition(1.0,-12.0,true)
             }
             RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -76.0, true)
