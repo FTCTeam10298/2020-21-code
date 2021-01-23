@@ -45,19 +45,19 @@ class AimBotAuto: LinearOpMode() {
 
         opencv.stop()
 
-//        when (ringDetector.position) {
-//            RingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
-//                robot.driveRobotPosition(1.0, -126.0, true)
-//                hardware.wobbleArm.power = 0.8
-//                sleep(1000)
-//                hardware.wobbleArm.power = 0.0
-//                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-//                hardware.wobbleArm.power = -0.8
-//                sleep(1000)
-//                hardware.wobbleArm.power = 0.0
-//                robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
-//            }
-//            RingDetector.RingPosition.ONE -> {
+        when (ringDetector.position) {
+            RingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
+                robot.driveRobotPosition(1.0, -126.0, true)
+                hardware.wobbleArm.power = 0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+                hardware.wobbleArm.power = -0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
+            }
+            RingDetector.RingPosition.ONE -> {
                 // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -95.0, true)
                 robot.driveRobotTurn(0.5, 180.0)
@@ -83,20 +83,19 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotTurn(0.5, -22.5)
                 shoot(600)
                 robot.driveRobotTurn(0.5, 11.25)
-                robot.driveRobotPosition(1.0,6.0,true)
-//            }
-//            RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
-//                robot.driveRobotPosition(1.0, -79.0, true)
-//                hardware.wobbleArm.power = 0.8
-//                sleep(1000)
-//                hardware.wobbleArm.power = 0.0
-//                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
-//                hardware.wobbleArm.power = -0.8
-//                sleep(1000)
-//                hardware.wobbleArm.power = 0.0
-//                robot.driveRobotPosition(1.0, 12.0, true)
-//            }
-//        }
+            }
+            RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
+                robot.driveRobotPosition(1.0, -76.0, true)
+                hardware.wobbleArm.power = 0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
+                hardware.wobbleArm.power = -0.8
+                sleep(1000)
+                hardware.wobbleArm.power = 0.0
+                robot.driveRobotPosition(1.0, 12.0, true)
+            }
+        }
 
 
 

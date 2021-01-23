@@ -124,7 +124,7 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
      * The core values which define the location and size of the sample regions
      */
 //        Camera is landscape top left is 0,0
-        val REGION1_TOPLEFT_ANCHOR_POINT = Point(90.0, 197.0)
+        val REGION1_TOPLEFT_ANCHOR_POINT = Point(220.0, 197.0)
         const val REGION_WIDTH = 35
         const val REGION_HEIGHT = 25
     }
