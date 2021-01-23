@@ -70,6 +70,7 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 robot.driveRobotStrafe(1.0, 3.0, true)
                 robot.driveRobotPosition(1.0, -31.0, true)
+                sleep(100)
                 robot.driveRobotTurn(0.5, -180.0)
 
                 // Step 2 shoot power shots
@@ -82,6 +83,7 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotTurn(0.5, -22.5)
                 shoot(600)
                 robot.driveRobotTurn(0.5, 11.25)
+                robot.driveRobotPosition(1.0,6.0,true)
 //            }
 //            RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
 //                robot.driveRobotPosition(1.0, -79.0, true)
