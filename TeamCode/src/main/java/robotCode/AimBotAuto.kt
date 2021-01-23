@@ -75,13 +75,12 @@ class AimBotAuto: LinearOpMode() {
                 // Step 2 shoot power shots
                 robot.driveRobotStrafe(1.0, 48.0, true)
                 hardware.collector.power = 1.0
-                robot.driveRobotTurn(1.0, 1.0)
-                shoot()
-                robot.driveRobotTurn(0.5, 5.625)
-                shoot()
-                robot.driveRobotTurn(0.5, -11.25)
-                shoot()
-                robot.driveRobotTurn(0.5, 5.625)
+                shoot(400)
+                robot.driveRobotTurn(0.5, 11.25)
+                shoot(400)
+                robot.driveRobotTurn(0.5, -22.5)
+                shoot(500)
+                robot.driveRobotTurn(0.5, 11.25)
 //            }
 //            RingDetector.RingPosition.NONE -> { // Step 1 deliver wobble
 //                robot.driveRobotPosition(1.0, -79.0, true)
@@ -100,14 +99,14 @@ class AimBotAuto: LinearOpMode() {
 
     }
 
-    fun shoot() {
+    fun shoot(shootTime: Int) {
         goToVelocity()
         while (!isVelocityCorrect()) {
             sleep(50)
         }
         hardware.gate.position = 1.0
         hardware.belt.power = 0.8
-        sleep(400)
+        sleep(shootTime.toLong())
         hardware.gate.position = 0.0
         hardware.belt.power = 0.0
     }
