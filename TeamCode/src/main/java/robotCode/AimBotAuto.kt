@@ -46,7 +46,8 @@ class AimBotAuto: LinearOpMode() {
         opencv.stop()
 
         when (ringDetector.position) {
-            RingDetector.RingPosition.FOUR -> { // Step 1 deliver wobble
+            RingDetector.RingPosition.FOUR -> {
+                // Step 1 deliver wobble
                 robot.driveRobotPosition(1.0, -126.0, true)
                 hardware.wobbleArm.power = 0.8
                 sleep(1000)
@@ -55,7 +56,19 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = -0.8
                 sleep(1000)
                 hardware.wobbleArm.power = 0.0
-                robot.driveRobotPosition(1.0, 52.0, true) // Step 2 shoot power shots
+                robot.driveRobotPosition(1.0, 52.0, true)
+                
+                // Step 2 shoot power shots
+                robot.driveRobotStrafe(1.0, 76.0, true)
+                robot.driveRobotStrafe(1.0,-30.0,true)
+                hardware.collector.power = 1.0
+                shoot(400)
+                robot.driveRobotTurn(0.5, 11.25)
+                shoot(400)
+                robot.driveRobotTurn(0.5, -22.5)
+                shoot(600)
+                robot.driveRobotTurn(0.5, 11.25)
+                robot.driveRobotPosition(1.0,-12.0,true)
             }
             RingDetector.RingPosition.ONE -> {
                 // Step 1 deliver wobble
