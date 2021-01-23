@@ -64,6 +64,7 @@ class OpencvAbstraction(private val opmode: OpMode) {
 
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId)
         camera.openCameraDevice()
+        sleep(100)
         camera.setPipeline(pipeline)
     }
 
