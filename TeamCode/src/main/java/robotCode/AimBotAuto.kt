@@ -54,19 +54,19 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
                 hardware.wobbleArm.power = -0.8
-                sleep(1000)
+                sleep(1500)
                 hardware.wobbleArm.power = 0.0
-                robot.driveRobotPosition(1.0, 52.0, true)
+                robot.driveRobotPosition(1.0, 54.0, true)
                 
                 // Step 2 shoot power shots
                 robot.driveRobotStrafe(1.0, 76.0, true)
-                robot.driveRobotStrafe(1.0,-30.0,true)
+                robot.driveRobotStrafe(1.0,-40.0,true)
                 hardware.collector.power = 1.0
                 shoot(400)
-                robot.driveRobotTurn(0.5, 11.25)
+                robot.driveRobotTurn(0.5, 11.00)
                 shoot(400)
                 robot.driveRobotTurn(0.5, -22.5)
-                shoot(600)
+                shoot(1000)
                 robot.driveRobotTurn(0.5, 11.25)
                 robot.driveRobotPosition(1.0,-12.0,true)
             }
