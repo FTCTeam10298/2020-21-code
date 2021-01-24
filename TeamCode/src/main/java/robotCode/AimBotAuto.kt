@@ -47,10 +47,11 @@ class AimBotAuto: LinearOpMode() {
 
         when (ringDetector.position) {
             RingDetector.RingPosition.FOUR -> {
+
                 // Step 1 deliver wobble
-                robot.driveRobotPosition(1.0, -126.0, true)
+                robot.driveRobotPosition(1.0, -124.0, true)
                 hardware.wobbleArm.power = 0.8
-                sleep(1000)
+                sleep(700)
                 hardware.wobbleArm.power = 0.0
                 hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
                 hardware.wobbleArm.power = -0.8
@@ -59,15 +60,20 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotPosition(1.0, 54.0, true)
                 
                 // Step 2 shoot power shots
+//                square up to wall
                 robot.driveRobotStrafe(1.0, 76.0, true)
+                sleep(100)
+//                aim
                 robot.driveRobotStrafe(1.0,-40.0,true)
                 hardware.collector.power = 1.0
-                shoot(400)
-                robot.driveRobotTurn(0.5, 11.00)
-                shoot(400)
-                robot.driveRobotTurn(0.5, -22.5)
-                shoot(1000)
-                robot.driveRobotTurn(0.5, 11.25)
+                shoot(400, 4090)
+//                aim
+                robot.driveRobotTurn(0.5, 4.00)
+                shoot(400, 4090)
+//                aim
+                robot.driveRobotTurn(0.5, -15.0)
+                shoot(1000, 4090)
+//                robot.driveRobotTurn(0.5, 1.0)
                 robot.driveRobotPosition(1.0,-12.0,true)
             }
             RingDetector.RingPosition.ONE -> {
@@ -90,11 +96,11 @@ class AimBotAuto: LinearOpMode() {
                 robot.driveRobotStrafe(1.0, 76.0, true)
                 robot.driveRobotStrafe(1.0,-30.0,true)
                 hardware.collector.power = 1.0
-                shoot(400)
+                shoot(400, 4090)
                 robot.driveRobotTurn(0.5, 11.25)
-                shoot(400)
+                shoot(400, 4090)
                 robot.driveRobotTurn(0.5, -22.5)
-                shoot(600)
+                shoot(600, 4090)
                 robot.driveRobotTurn(0.5, 11.25)
                 robot.driveRobotPosition(1.0,-12.0,true)
             }
@@ -115,8 +121,8 @@ class AimBotAuto: LinearOpMode() {
 
     }
 
-    fun shoot(shootTime: Int) {
-        goToVelocity()
+    fun shoot(shootTime: Int, velocity: Int) {
+        goToVelocity(velocity)
         while (!isVelocityCorrect()) {
             sleep(50)
         }
@@ -129,10 +135,10 @@ class AimBotAuto: LinearOpMode() {
     val highGoalPreset = 4150
     var shooterRpm: Double = highGoalPreset.toDouble()
 
-    fun goToVelocity() {
+    fun goToVelocity(velocity: Int) {
         hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
         hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0, 0.0)
-        hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
+        hardware.shooter.velocity = (velocity.toDouble() / 60.0 * 28)
     }
     fun percentage(percent: Double, value: Double): Double = (value / 100) * percent
     fun toRPM(tps: Double): Double = tps * 60 / 28
