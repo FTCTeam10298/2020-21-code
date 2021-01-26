@@ -55,7 +55,7 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
                 hardware.wobbleArm.power = -0.8
-                sleep(1500)
+                sleep(600)
                 hardware.wobbleArm.power = 0.0
                 robot.driveRobotPosition(1.0, 54.0, true)
                 
@@ -72,8 +72,7 @@ class AimBotAuto: LinearOpMode() {
                 shoot(400, 4090)
 //                aim
                 robot.driveRobotTurn(0.5, -15.0)
-                shoot(1000, 4090)
-//                robot.driveRobotTurn(0.5, 1.0)
+                shoot(2000, 4090)
                 robot.driveRobotPosition(1.0,-12.0,true)
             }
             RingDetector.RingPosition.ONE -> {
@@ -112,12 +111,24 @@ class AimBotAuto: LinearOpMode() {
                 hardware.wobbleArm.power = 0.0
                 hardware.lClaw.position = 0.0; hardware.rClaw.position = 0.0
                 hardware.wobbleArm.power = -0.8
-                sleep(1000)
+                sleep(600)
                 hardware.wobbleArm.power = 0.0
                 robot.driveRobotPosition(1.0, 12.0, true)
 
                 // Step 2 shoot power shots
-
+                robot.driveRobotStrafe(1.0, 76.0, true)
+                sleep(100)
+//                aim
+                robot.driveRobotStrafe(1.0,-40.0,true)
+                hardware.collector.power = 1.0
+                shoot(400, 4090)
+//                aim
+                robot.driveRobotTurn(0.5, 6.00)
+                shoot(400, 4090)
+//                aim
+                robot.driveRobotTurn(0.5, -15.0)
+                shoot(2000, 4090)
+                robot.driveRobotPosition(1.0,-12.0,true)
             }
         }
     }
