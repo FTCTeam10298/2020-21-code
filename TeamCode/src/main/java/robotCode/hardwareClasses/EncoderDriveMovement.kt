@@ -260,14 +260,15 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
 
         val position: Double = inches * COUNTS_PER_INCH
 
-        driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
-        driveSetMode(DcMotor.RunMode.RUN_TO_POSITION)
+        driveSetRunToPosition()
         if (!hugLeft && inches > 0 || hugLeft && inches < 0) {
             driveSetPower(power * .5, power, power, power * .5)
+            driveAddTargetPosition(position.toInt() / 2, position.toInt(), position.toInt(), position.toInt() / 2)
         } else if (!hugLeft && inches < 0 || hugLeft && inches > 0) {
             driveSetPower(power, power * .5, power * .5, power)
+            driveAddTargetPosition(position.toInt(), position.toInt() / 2, position.toInt() / 2, position.toInt())
         }
-        driveSetTargetPosition(position.toInt(), position.toInt(), position.toInt(), position.toInt())
+
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             while (driveAllAreBusy()) {
@@ -300,7 +301,16 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
             hardware.lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
             hardware.lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         }
-        if (difference > 0 && inches > 0) driveSetPower(abs(power), abs(power * difference), abs(power), abs(power * difference)) else if (difference > 0 && inches < 0) driveSetPower(abs(power), -abs(power * difference), abs(power), -abs(power * difference)) else if (difference < 0 && inches > 0) driveSetPower(abs(power * difference), abs(power), abs(power * difference), abs(power)) else if (difference < 0 && inches < 0) driveSetPower(-abs(power * difference), abs(power), -abs(power * difference), abs(power))
+
+        if (difference > 0 && inches > 0)
+            driveSetPower(abs(power), abs(power * difference), abs(power), abs(power * difference))
+        else if (difference > 0 && inches < 0)
+            driveSetPower(abs(power), -abs(power * difference), abs(power), -abs(power * difference))
+        else if (difference < 0 && inches > 0)
+            driveSetPower(abs(power * difference), abs(power), abs(power * difference), abs(power))
+        else if (difference < 0 && inches < 0)
+            driveSetPower(-abs(power * difference), abs(power), -abs(power * difference), abs(power))
+
         if (difference > 0) {
             hardware.lFDrive.targetPosition = position.toInt()
             hardware.lBDrive.targetPosition = position.toInt()
@@ -308,6 +318,65 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
             hardware.rFDrive.targetPosition = position.toInt()
             hardware.rBDrive.targetPosition = position.toInt()
         }
+        for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
+            // as isBusy can be a bit unreliable
+            if (difference > 0) {
+                while (hardware.lFDrive.isBusy && hardware.lBDrive.isBusy) {
+                    val flDrive: Int = hardware.lFDrive.currentPosition
+                    val blDrive: Int = hardware.lBDrive.currentPosition
+                    console.display(3, "Front left encoder: $flDrive")
+                    console.display(4, "Back left encoder: $blDrive")
+                }
+            } else {
+                while (hardware.rFDrive.isBusy && hardware.rBDrive.isBusy) {
+                    val frDrive: Int = hardware.rFDrive.currentPosition
+                    val brDrive: Int = hardware.rBDrive.currentPosition
+                    console.display(3, "Front left encoder: $frDrive")
+                    console.display(4, "Back left encoder: $brDrive")
+                }
+            }
+            sleep(10)
+        }
+        drivePowerAll(0.0)
+    }
+
+    fun driveRobotArcStrafe(power: Double, inches: Double, difference: Double) {
+
+        var difference = difference
+        val position: Double = inches * COUNTS_PER_INCH
+
+        difference = Range.clip(difference, -1.0, 1.0)
+        //power 1, inches -48, difference -.5
+        driveSetMode(RunMode.STOP_AND_RESET_ENCODER)
+        if (difference > 0) {
+            hardware.rFDrive.mode = RunMode.RUN_USING_ENCODER
+            hardware.rBDrive.mode = RunMode.RUN_USING_ENCODER
+            hardware.lFDrive.mode = RunMode.RUN_TO_POSITION
+            hardware.lBDrive.mode = RunMode.RUN_TO_POSITION
+        } else {
+            hardware.rFDrive.mode = RunMode.RUN_TO_POSITION
+            hardware.rBDrive.mode = RunMode.RUN_TO_POSITION
+            hardware.lFDrive.mode = RunMode.RUN_USING_ENCODER
+            hardware.lBDrive.mode = RunMode.RUN_USING_ENCODER
+        }
+
+        if (difference > 0 && inches > 0)
+            driveSetPower(-abs(power), abs(power * difference), abs(power), -abs(power * difference))
+        else if (difference > 0 && inches < 0)
+            driveSetPower(-abs(power), -abs(power * difference), abs(power), abs(power * difference))
+        else if (difference < 0 && inches > 0)
+            driveSetPower(-abs(power * difference), abs(power), abs(power * difference), -abs(power))
+        else if (difference < 0 && inches < 0)
+            driveSetPower(abs(power * difference), abs(power), -abs(power * difference), -abs(power))
+
+        if (difference > 0) {
+            hardware.lFDrive.targetPosition = -position.toInt()
+            hardware.lBDrive.targetPosition = position.toInt()
+        } else {
+            hardware.rFDrive.targetPosition = position.toInt()
+            hardware.rBDrive.targetPosition = -position.toInt()
+        }
+
         for (i in 0..4) {    // Repeat check 5 times, sleeping 10ms between,
             // as isBusy can be a bit unreliable
             if (difference > 0) {
