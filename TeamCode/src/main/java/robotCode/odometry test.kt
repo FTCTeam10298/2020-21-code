@@ -48,6 +48,7 @@ class odometryTest: LinearOpMode() {
     override fun runOpMode() {
 
         waitForStart()
-
+        
+        console.display(1, robot.current.toString())
     }
 }
