@@ -27,7 +27,12 @@ class odometryHardware: MecOdometryHardware {
         rFDrive = hwMap.get("right drive f") as DcMotor
         rBDrive = hwMap.get("right drive b") as DcMotor
 
-        
+        lOdom = hwMap.dcMotor.get("left collector");
+        cOdom = hwMap.dcMotor.get("tape");
+        rOdom = hwMap.dcMotor.get("left drive b");
+
+
+
 
 
     }
