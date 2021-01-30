@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import robotCode.hardwareClasses.MecOdometryHardware
@@ -39,6 +40,7 @@ class odometryHardware: MecOdometryHardware {
 
 }
 
+@TeleOp(name="CuriousAnachronism ODOM", group="Aim Bot")
 class odometryTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
@@ -50,5 +52,6 @@ class odometryTest: LinearOpMode() {
         waitForStart()
         
         console.display(1, robot.current.toString())
+        sleep(10000)
     }
 }
