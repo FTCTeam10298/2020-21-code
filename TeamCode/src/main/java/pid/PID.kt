@@ -2,73 +2,28 @@ package pid
 
 import com.qualcomm.robotcore.hardware.DcMotor
 
-open class PID(var p: Double, var i: Double, var d: Double) {
+open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.0) {
 
-    constructor(): this(0.0, 0.0, 0.0)
+    private val kp = p
+    private val ki = i
+    private val kd = d
+    private val kf = f
+    var p: Double = 0.0
+    var i: Double = 0.0
+    var d: Double = 0.0
+    var f: Double = 0.0
 
-    private var errorP: Double = 0.0
-    private var errorI: Double = 0.0
-    private var errorD: Double = 0.0
-
-    private var gainP: Double = 1.0
-    private var gainI: Double = 0.0
-    private var gainD: Double = 1.0
-
-    fun calcP(feedback: Double, goal: Double): Double {
-
-        errorP = goal - feedback
-        p = errorP
-
-        return gainP * p
-    }
+    fun calcPID(target: Double, feedback: Double): Double {
+        val error: Double = target - feedback
 
 
-    private var lastI: Double = 0.0
-    private var startTimeI= 0.0
-    private var endTimeI= 0.0
-    private var durationI= 0.0
 
-    fun calcI(feedback: Double, goal: Double): Double {
-        endTimeI = System.nanoTime().toDouble()
-        durationI = endTimeI - startTimeI
-        startTimeI = System.nanoTime().toDouble()
+        p = kp * error
+        i = 0.0
+        d = 0.0
+        f= 0.0
 
-        errorI = goal - feedback
-        i = lastI + errorI * durationI
-        lastI = i
-
-        return gainI * i
-    }
-
-
-    private var lastError: Double = 0.0
-    private var startTimeD= 0.0
-    private var endTimeD= 0.0
-    private var durationD= 0.0
-
-    fun calcD(feedback: Double, goal: Double): Double {
-        endTimeD = System.nanoTime().toDouble()
-        durationD = endTimeD - startTimeD
-        startTimeD = System.nanoTime().toDouble()
-
-        errorD = goal - feedback
-        d = (errorD - lastError) / durationD
-        lastError = errorD
-
-
-        return gainD * d
-    }
-
-    fun calcPI(feedback: Double, goal: Double): Double {
-        return calcP(feedback, goal) + calcI(feedback, goal)
-    }
-
-    fun calcPD(feedback: Double, goal: Double): Double {
-        return calcP(feedback, goal) + calcD(feedback, goal)
-    }
-
-    fun calcPID(feedback: Double, goal: Double): Double {
-        return calcP(feedback, goal) + calcI(feedback, goal) + calcD(feedback, goal)
+        return p * i * d * f
     }
 
     override fun toString(): String {
