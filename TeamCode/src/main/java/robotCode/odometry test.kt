@@ -22,7 +22,14 @@ class odometryHardware: MecOdometryHardware {
 
         hwMap = ahwMap
 
-        lOdom = hwMap.get("______") as DcMotor
+        lFDrive = hwMap.get("left drive f") as DcMotor
+        lBDrive = hwMap.get("left drive b") as DcMotor
+        rFDrive = hwMap.get("right drive f") as DcMotor
+        rBDrive = hwMap.get("right drive b") as DcMotor
+
+        
+
+
     }
 
 }
