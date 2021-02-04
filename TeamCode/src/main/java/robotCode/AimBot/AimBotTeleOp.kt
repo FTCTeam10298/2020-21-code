@@ -1,14 +1,12 @@
- package robotCode
+ package robotCode.AimBot
 
 //import buttonHelper.Gamepad1
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
-import pid.MotorWithPID
 import telemetryWizard.TelemetryConsole
 import robotCode.hardwareClasses.MecanumDriveTrain
-import robotCode.hardwareClasses.ShooterInterface
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 

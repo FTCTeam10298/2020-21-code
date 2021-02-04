@@ -1,9 +1,10 @@
- package robotCode
+ package robotCode.AimBot
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import goalDetection.OpencvAbstraction
+import robotCode.RingDetector
 import telemetryWizard.TelemetryConsole
 import telemetryWizard.TelemetryWizard
 import robotCode.hardwareClasses.EncoderDriveMovement

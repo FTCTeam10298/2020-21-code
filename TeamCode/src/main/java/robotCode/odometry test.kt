@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -28,30 +29,25 @@ class odometryHardware: MecOdometryHardware {
         rFDrive = hwMap.get("right drive f") as DcMotor
         rBDrive = hwMap.get("right drive b") as DcMotor
 
-        lOdom = hwMap.dcMotor.get("left collector");
-        cOdom = hwMap.dcMotor.get("tape");
-        rOdom = hwMap.dcMotor.get("left drive b");
-
-
-
-
+        lOdom = hwMap.dcMotor.get("left collector")
+        cOdom = hwMap.dcMotor.get("tape")
+        rOdom = hwMap.dcMotor.get("left drive b")
 
     }
-
 }
 
 @TeleOp(name="CuriousAnachronism ODOM", group="Aim Bot")
-class odometryTest: LinearOpMode() {
+class odometryTest: OpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = odometryHardware()
-    val robot = OdometryDriveMovement(console,hardware)
+    val robot = OdometryDriveMovement(console, hardware)
 
-    override fun runOpMode() {
+    override fun init() {
+        hardware.init(hardwareMap)
+    }
 
-        waitForStart()
-        
+    override fun loop() {
         console.display(1, robot.current.toString())
-        sleep(10000)
     }
 }
