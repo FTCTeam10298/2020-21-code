@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
+import locationTracking.Coordinate
 import robotCode.hardwareClasses.MecOdometryHardware
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
@@ -49,5 +50,6 @@ class odometryTest: OpMode() {
 
     override fun loop() {
         console.display(1, robot.current.toString())
+        robot.straightGoToPosition(Coordinate(0.0, 0.0, 0.0), )
     }
 }
