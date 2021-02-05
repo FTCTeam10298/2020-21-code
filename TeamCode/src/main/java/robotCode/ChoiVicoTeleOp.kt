@@ -10,7 +10,6 @@ class ChoiVicoTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
     
     val hardware = ChoiVicoHardware()
-    val robot = OdometryDriveMovement(console, hardware)
 
     override fun init() {
     }

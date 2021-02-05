@@ -13,6 +13,8 @@ class GoalDetector(private val console: TelemetryConsole) {
     var display: Mat = Mat()
     var goal: Mat = Mat()
 
+    val recDetec = UGRectDetector()
+
     fun detectTrapezoid(frame: Mat): Mat {
 
 //        To be tuned
