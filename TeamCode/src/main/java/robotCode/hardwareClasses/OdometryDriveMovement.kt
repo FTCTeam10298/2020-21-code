@@ -1,6 +1,7 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.util.Range
 import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate

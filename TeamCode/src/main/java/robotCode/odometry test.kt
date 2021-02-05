@@ -38,18 +38,18 @@ class odometryHardware: MecOdometryHardware {
 }
 
 @TeleOp(name="CuriousAnachronism ODOM", group="Aim Bot")
-class odometryTest: OpMode() {
+class odometryTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = odometryHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
-    override fun init() {
+    override fun runOpMode() {
         hardware.init(hardwareMap)
-    }
 
-    override fun loop() {
+        waitForStart()
+
         console.display(1, robot.current.toString())
-        robot.straightGoToPosition(Coordinate(0.0, 0.0, 0.0), )
+        robot.straightGoToPosition(Coordinate(0.0, 10.0, 0.0),1.0,1.0,this)
     }
 }
