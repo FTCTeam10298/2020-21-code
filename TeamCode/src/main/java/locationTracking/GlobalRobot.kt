@@ -17,14 +17,19 @@ class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
         var robotX: Double = x
         var robotY: Double = y
         var robotA: Double = r
+
         robotA += 1 / (2 * xnot) * (deltaR - deltaL)
+
         val deltaY = .5 * (deltaR + deltaL)
         val deltaX = ynot / (2 * xnot) * (deltaL - deltaR) + deltaC
+
         robotY += deltaX * -cos(robotA) + deltaY * sin(robotA)
         robotX += deltaX * sin(robotA) + deltaY * cos(robotA)
+
         x = robotX
         y = robotY
         r = robotA % (2 * Math.PI)
+
         if (r > Math.PI)
             r -= 2 * Math.PI
     }

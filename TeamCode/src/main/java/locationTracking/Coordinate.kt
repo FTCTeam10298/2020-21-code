@@ -20,7 +20,7 @@ open class Coordinate(var x: Double, var y: Double, var r: Double) {
      * Sets all of the parameters of the Coordinate.
      * @param x The x value that we want to set.
      * @param y The y value that we want to set.
-     * @param r The angle that we want to set.
+     * @param r The angle that we want to set in degrees
      */
     fun setCoordinate(x: Double, y: Double, r: Double) {
         this.x = x

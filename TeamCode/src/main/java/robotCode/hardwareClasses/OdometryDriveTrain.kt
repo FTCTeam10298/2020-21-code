@@ -90,12 +90,17 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val 
         val currentL = hardware.lOdom.currentPosition.toDouble() / 1144.0
         val currentC = hardware.cOdom.currentPosition.toDouble() / 1144.0
         val currentR = hardware.rOdom.currentPosition.toDouble() / 1144.0
+
         deltaL = currentL - previousL
         deltaC = currentC - previousC
         deltaR = currentR - previousR
+
         previousL = currentL
         previousC = currentC
         previousR = currentR
+
+        console.display(20, globalRobot.toString())
+
         globalRobot.updatePosition(deltaL, deltaC, deltaR)
         console.display(20, globalRobot.toString())
     }

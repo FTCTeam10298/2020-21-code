@@ -8,6 +8,7 @@ import locationTracking.Coordinate
 import robotCode.hardwareClasses.MecOdometryHardware
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
+import kotlin.math.pow
 
 class odometryHardware: MecOdometryHardware {
     override lateinit var lOdom: DcMotor
@@ -36,19 +37,37 @@ class odometryHardware: MecOdometryHardware {
     }
 }
 
-@Autonomous(name="odometryTest", group="Aim Bot")
+@Autonomous(name = "odometryTest", group = "Aim Bot")
 class odometryTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = odometryHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
+    val target = Coordinate()
+
     override fun runOpMode() {
         hardware.init(hardwareMap)
 
         waitForStart()
 
-        //console.display(1, robot.current.toString())
-        robot.straightGoToPosition(Coordinate(0.0, 100.0, 0.0),1.0,1.0,this)
+        while (true) {
+            val yInput = gamepad1.left_stick_y.toDouble()
+            val xInput = gamepad1.left_stick_x.toDouble()
+            val rInput = gamepad1.right_stick_x.toDouble()
+
+            val y = yInput.pow(5)
+            val x = xInput.pow(5)
+            val r = rInput.pow(5) * 0.5 + 0.5 * rInput
+
+            hardware.motors(
+                    -(y - x - r),
+                    -(y + x + r),
+                    -(y + x - r),
+                    -(y - x + r)
+            )
+        }
+        target.setCoordinate(target.x, target.y - 72, target.r)
+        robot.straightGoToPosition(target, .5, 1.0, this)
     }
 }
