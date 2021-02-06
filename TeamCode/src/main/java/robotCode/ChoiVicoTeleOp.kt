@@ -2,7 +2,6 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 
 @TeleOp

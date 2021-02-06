@@ -2,8 +2,9 @@ package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.util.Range
 import locationTracking.GlobalRobot
+import telemetryWizard.TelemetryConsole
 
-class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriveTrain(hardware) {
+class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
     var deltaL = 0.0
     var deltaC = 0.0
@@ -96,5 +97,6 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriv
         previousC = currentC
         previousR = currentR
         globalRobot.updatePosition(deltaL, deltaC, deltaR)
+        console.display(20, globalRobot.toString())
     }
 }

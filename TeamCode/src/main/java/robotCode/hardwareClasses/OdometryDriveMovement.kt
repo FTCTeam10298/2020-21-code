@@ -1,7 +1,6 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.util.Range
 import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate
@@ -9,12 +8,12 @@ import locationTracking.GlobalRobot
 import pid.PID
 import kotlin.math.*
 
-class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): EncoderDriveMovement(console, hardware) {
-    enum class State {
-        INIT, BUSY, DONE, TIMEOUT
-    }
+class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement {
+//    enum class State {
+//        INIT, BUSY, DONE, TIMEOUT
+//    }
 
-    private val drive = OdometryDriveTrain(hardware)
+    private val drive = OdometryDriveTrain(hardware, console)
 
     private var prevErrorX = 0.0
     private var prevErrorY = 0.0
@@ -38,18 +37,19 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param state The current State of the robot.
      * @return The new State of the robot.
      */
-    fun goToPosition(target: Coordinate,
-                     maxPower: Double,
-                     distancePID: PID,
-                     anglePID: PID,
-                     distanceMin: Double,
-                     angleDegMin: Double,
-                     state: State
-    ): State {
+    override fun goToPosition(
+            target: Coordinate,
+            maxPower: Double,
+            distancePID: PID,
+            anglePID: PID,
+            distanceMin: Double,
+            angleDegMin: Double,
+            state: DriveMovement.State
+    ): DriveMovement.State {
         // Start by setting all speeds and error values to 0 and moving into the next state
         var state = state
         when (state) {
-            State.INIT -> {
+            DriveMovement.State.INIT -> {
                 drive.drivePowerZero()
                 prevErrorX = 0.0
                 prevErrorY = 0.0
@@ -57,9 +57,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 sumErrorX = 0.0
                 sumErrorY = 0.0
                 sumErrorA = 0.0
-                state = State.BUSY
+                state = DriveMovement.State.BUSY
             }
-            State.BUSY -> {
+            DriveMovement.State.BUSY -> {
                 // Set the current position
                 current.setCoordinate(globalRobot.x, globalRobot.y,
                         Math.toDegrees(globalRobot.r))
@@ -78,7 +78,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 val angleMin = Math.toRadians(angleDegMin)
                 // Check to see if we've reached the desired position already
                 if (distanceError <= distanceMin && abs(angleError) <= angleMin) {
-                    state = State.DONE
+                    state = DriveMovement.State.DONE
                 }
                 // Calculate the error in x and y and use the PID to find the error in angle
                 val errx = -sin(absAngleError) * distanceError
@@ -116,10 +116,10 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 console.display(12, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
                 drive.setSpeedAll(newSpeedx, newSpeedy, newSpeedA, .16, maxPower)
             }
-            State.DONE -> {
+            DriveMovement.State.DONE -> {
                 drive.drivePowerZero()
             }
-            State.TIMEOUT -> {
+            DriveMovement.State.TIMEOUT -> {
             }
         }
         return state
@@ -135,24 +135,32 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param distanceMin The minimum allowed distance away from the target to terminate.
      * @param angleDegMin The minimum allowed angle away from the target to terminate.
      * @param state The current State of the robot.
-     * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
+     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      * @return The new State of the robot.
      */
-    fun doGoToPosition(target: Coordinate,
-                       maxPower: Double,
-                       distancePID: PID,
-                       anglePID: PID,
-                       distanceMin: Double,
-                       angleDegMin: Double,
-                       state: State,
-                       opmodeisactive: LinearOpMode
-    ): State {
+    override fun doGoToPosition(
+            target: Coordinate,
+            maxPower: Double,
+            distancePID: PID,
+            anglePID: PID,
+            distanceMin: Double,
+            angleDegMin: Double,
+            state: DriveMovement.State,
+            opmode: LinearOpMode
+    ): DriveMovement.State {
         var current = state
-        while (current != State.DONE && current != State.TIMEOUT && opmodeisactive.opModeIsActive()) {
+        while (current != DriveMovement.State.DONE && current != DriveMovement.State.TIMEOUT && opmode.opModeIsActive()) {
             drive.updatePosition()
-            current = goToPosition(target, maxPower, distancePID, anglePID, distanceMin,
-                    angleDegMin, current)
+            current = goToPosition(
+                    target,
+                    maxPower,
+                    distancePID,
+                    anglePID,
+                    distanceMin,
+                    angleDegMin,
+                    current
+            )
         }
         drive.drivePowerZero()
         drive.updatePosition()
@@ -164,16 +172,25 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param target The target Coordinate to drive to.
      * @param maxPower The maximum power allowed on the drive motors.
      * @param distanceMin The minimum allowed distance away from the target to terminate.
-     * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
+     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
-    fun straightGoToPosition(target: Coordinate,
-                             maxPower: Double,
-                             distanceMin: Double,
-                             opmodeisactive: LinearOpMode
+    override fun straightGoToPosition(
+            target: Coordinate,
+            maxPower: Double,
+            distanceMin: Double,
+            opmode: LinearOpMode
     ) {
-        doGoToPosition(target, maxPower, PID(.1, 0.0, 0.0),
-                PID(2.0, 0.0, 0.0), distanceMin, 5.0, State.INIT, opmodeisactive)
+        doGoToPosition(
+                target,
+                maxPower,
+                PID(.1, 0.0, 0.0),
+                PID(2.0, 0.0, 0.0),
+                distanceMin,
+                5.0,
+                DriveMovement.State.INIT,
+                opmode
+        )
     }
 
     /**
@@ -181,15 +198,62 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param target The target Coordinate to drive to.
      * @param maxPower The maximum power allowed on the drive motors.
      * @param angleDegMin The minimum allowed distance away from the target to terminate.
-     * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
+     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
-    fun turnGoToPosition(target: Coordinate,
-                         maxPower: Double,
-                         angleDegMin: Double,
-                         opmodeisactive: LinearOpMode
+    override fun turnGoToPosition(
+            target: Coordinate,
+            maxPower: Double,
+            angleDegMin: Double,
+            opmode: LinearOpMode
     ) {
-        doGoToPosition(target, maxPower, PID(0.01, 0.0, 0.0),
-                PID(.5, 0.0, 0.0), 8.0, angleDegMin, State.INIT, opmodeisactive)
+        doGoToPosition(
+                target,
+                maxPower,
+                PID(0.01, 0.0, 0.0),
+                PID(.5, 0.0, 0.0),
+                8.0,
+                angleDegMin,
+                DriveMovement.State.INIT,
+                opmode
+        )
     }
+
+
+    override fun driveRobotTime(ms: Int, power: Double) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotDistanceToObject(power: Double, inches: Double, smartAccel: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotPosition(power: Double, inches: Double, smartAccel: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotTurn(power: Double, degree: Double, smartAccel: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotStrafe(power: Double, inches: Double, smartAccel: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveSidewaysTime(time: Double, power: Double) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotHug(power: Double, inches: Int, hugLeft: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotArc(power: Double, inches: Double, difference: Double) {
+        TODO("Not yet implemented")
+    }
+
+    override fun driveRobotArcStrafe(power: Double, inches: Double, difference: Double) {
+        TODO("Not yet implemented")
+    }
+
 }

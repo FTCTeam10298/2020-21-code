@@ -1,8 +1,7 @@
 package robotCode
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import locationTracking.Coordinate
@@ -37,7 +36,7 @@ class odometryHardware: MecOdometryHardware {
     }
 }
 
-@TeleOp(name="CuriousAnachronism ODOM", group="Aim Bot")
+@Autonomous(name="odometryTest", group="Aim Bot")
 class odometryTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
@@ -49,7 +48,7 @@ class odometryTest: LinearOpMode() {
 
         waitForStart()
 
-        console.display(1, robot.current.toString())
-        robot.straightGoToPosition(Coordinate(0.0, 10.0, 0.0),1.0,1.0,this)
+        //console.display(1, robot.current.toString())
+        robot.straightGoToPosition(Coordinate(0.0, 100.0, 0.0),1.0,1.0,this)
     }
 }

@@ -25,6 +25,7 @@ class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
         x = robotX
         y = robotY
         r = robotA % (2 * Math.PI)
-        if (r > Math.PI) r -= 2 * Math.PI
+        if (r > Math.PI)
+            r -= 2 * Math.PI
     }
 }

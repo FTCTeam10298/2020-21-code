@@ -1,4 +1,4 @@
-package robotCode.hardwareClasses.newhardwareImplementation
+package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import locationTracking.Coordinate
