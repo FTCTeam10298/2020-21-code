@@ -1,31 +1,34 @@
 package locationTracking
 
-open class Coordinate(var x: Double, var y: Double, var r: Double) {
+import kotlin.math.hypot
 
-    /**
-     * Creates a Coordinate with given values. All alternate constructors assume 0 for unstated variables.
-     * @param x X position
-     * @param y Y position
-     * @param r Angle
-     */
-    constructor(x: Double, y: Double): this(x, y, 0.0)
-    constructor(r: Double): this(0.0, 0.0, r)
-    constructor(): this(0.0, 0.0, 0.0)
+/**
+ * Creates a Coordinate with given values. All alternate constructors assume 0 for unstated variables.
+ * @param x X position
+ * @param y Y position
+ * @param r Angle
+ */
+open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0) {
 
     init {
         r = Math.toRadians(r)
     }
 
     /**
-     * Sets all of the parameters of the Coordinate.
+     * Sets the parameters of the Coordinate.
      * @param x The x value that we want to set.
      * @param y The y value that we want to set.
      * @param r The angle that we want to set in degrees
      */
-    fun setCoordinate(x: Double, y: Double, r: Double) {
-        this.x = x
-        this.y = y
-        this.r = Math.toRadians(r)
+    fun setCoordinate(x: Double? = null, y: Double? = null, r: Double? = null) {
+        if (x != null)
+            this.x = x
+
+        if (y != null)
+            this.y = y
+
+        if (r != null)
+            this.r = Math.toRadians(r)
     }
 
     /**
@@ -43,7 +46,7 @@ open class Coordinate(var x: Double, var y: Double, var r: Double) {
      * @return distance from current Coordinate
      */
     fun distance(coordinate: Coordinate): Double {
-        return Math.hypot(coordinate.x - x, coordinate.y - y)
+        return hypot(coordinate.x - x, coordinate.y - y)
     }
 
     /**
@@ -53,7 +56,7 @@ open class Coordinate(var x: Double, var y: Double, var r: Double) {
      * @return distance from current Coordinate
      */
     fun distance(targetX: Double, targetY: Double): Double {
-        return Math.hypot(targetX - x, targetY - y)
+        return hypot(targetX - x, targetY - y)
     }
 
     /**

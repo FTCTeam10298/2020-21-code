@@ -8,12 +8,7 @@ import locationTracking.GlobalRobot
 import pid.PID
 import kotlin.math.*
 
-class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement {
-//    enum class State {
-//        INIT, BUSY, DONE, TIMEOUT
-//    }
-
-    private val drive = OdometryDriveTrain(hardware, console)
+class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement, OdometryDriveTrain(hardware, console) {
 
     private var prevErrorX = 0.0
     private var prevErrorY = 0.0
@@ -49,7 +44,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         var state = state
         when (state) {
             DriveMovement.State.INIT -> {
-                drive.drivePowerZero()
+                drivePowerZero()
                 prevErrorX = 0.0
                 prevErrorY = 0.0
                 prevErrorA = 0.0
@@ -59,12 +54,14 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 state = DriveMovement.State.BUSY
             }
             DriveMovement.State.BUSY -> {
+                distancePID.calcPID(100.0, 2.0)
+                anglePID.calcPID(100.0, 2.0)
 
                 // Set the current position
                 current.setCoordinate(
-                        drive.globalRobot.x,
-                        drive.globalRobot.y,
-                        Math.toDegrees(drive.globalRobot.r)
+                        globalRobot.x,
+                        globalRobot.y,
+                        Math.toDegrees(globalRobot.r)
                 )
 
                 // Find the error in distance and angle, ensuring angle does not exceed 2*Math.PI
@@ -98,7 +95,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 // Calculate the error in x and y and use the PID to find the error in angle
                 val errx = -sin(absAngleError) * distanceError
                 val erry = cos(absAngleError) * distanceError
-
+                
                 val dx: Double = errx * distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
                 val dy: Double = erry * distancePID.p
                 val da: Double = angleError * anglePID.p
@@ -126,18 +123,18 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 //            dx += (errx - prevErrorX) * distancePID.getDeriv()/ getElapsedTime();
 //            dy += (erry - prevErrorY) * distancePID.getDeriv()/ getElapsedTime();
 //            da += (angleError - prevErrorA) * anglePID.getDeriv()/ getElapsedTime();
+//            val dTotal = abs(dx) + abs(dy) + 1E-6
 
-                val dTotal = abs(dx) + abs(dy) + 1E-6
                 val newSpeedx = Range.clip(dx, -1.0, 1.0) // / dTotal;
                 val newSpeedy = Range.clip(dy, -1.0, 1.0) // / dTotal;
                 val newSpeedA = Range.clip(da, -1.0, 1.0)
 
                 console.display(12, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
 
-                drive.setSpeedAll(newSpeedx, newSpeedy, newSpeedA, .16, maxPower)
+                setSpeedAll(newSpeedx, newSpeedy, newSpeedA, .16, maxPower)
             }
             DriveMovement.State.DONE -> {
-                drive.drivePowerZero()
+                drivePowerZero()
             }
             DriveMovement.State.TIMEOUT -> {
             }
@@ -171,7 +168,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     ): DriveMovement.State {
         var current = state
         while (current != DriveMovement.State.DONE && current != DriveMovement.State.TIMEOUT && opmode.opModeIsActive()) {
-            drive.updatePosition()
+            updatePosition()
             current = goToPosition(
                     target,
                     maxPower,
@@ -182,8 +179,8 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                     current
             )
         }
-        drive.drivePowerZero()
-        drive.updatePosition()
+        drivePowerZero()
+        updatePosition()
         return current
     }
 

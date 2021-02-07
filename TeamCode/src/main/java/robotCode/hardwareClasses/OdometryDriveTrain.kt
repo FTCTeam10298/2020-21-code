@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.util.Range
 import locationTracking.GlobalRobot
 import telemetryWizard.TelemetryConsole
 
-class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
+open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
     var deltaL = 0.0
     var deltaC = 0.0
@@ -12,7 +12,7 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val 
     var previousC = 0.0
     var previousL = 0.0
     var previousR = 0.0
-    var globalRobot: GlobalRobot = GlobalRobot(0.0, 0.0, 180.0)
+    var globalRobot: GlobalRobot = GlobalRobot(0.0, 0.0, 0.0)
 
     /**
      * Sets the speed of the four drive motors given desired speeds in the robot's x, y, and angle.
@@ -99,9 +99,6 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val 
         previousC = currentC
         previousR = currentR
 
-        console.display(20, globalRobot.toString())
-
         globalRobot.updatePosition(deltaL, deltaC, deltaR)
-        console.display(20, globalRobot.toString())
     }
 }
