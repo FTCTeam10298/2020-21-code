@@ -59,30 +59,6 @@ interface DriveMovement {
 
     fun driveRobotArcStrafe(power: Double, inches: Double, difference: Double)
 
-    enum class State {
-        INIT, BUSY, DONE, TIMEOUT
-    }
-
-    /**
-     * Sets the motor powers to the correct power to go to the target position.
-     * @param target The target Coordinate to drive to.
-     * @param maxPower The maximum power allowed on the drive motors.
-     * @param distancePID The PID for the x-y error.
-     * @param anglePID The PID for the theta error.
-     * @param distanceMin The minimum allowed distance away from the target to terminate.
-     * @param angleDegMin The minimum allowed angle away from the target to terminate.
-     * @param state The current State of the robot.
-     * @return The new State of the robot.
-     */
-    fun goToPosition(target: Coordinate,
-                     maxPower: Double,
-                     distancePID: PID,
-                     anglePID: PID,
-                     distanceMin: Double,
-                     angleDegMin: Double,
-                     state: State
-    ): State
-
     /**
      * Executes goToPosition in LinearOpMode. Uses a while loop to continue updating position and
      * error to drive.
@@ -103,9 +79,9 @@ interface DriveMovement {
                        anglePID: PID,
                        distanceMin: Double,
                        angleDegMin: Double,
-                       state: State,
-                       opmodeisactive: LinearOpMode
-    ): State
+                       reset: Boolean,
+                       opmode: LinearOpMode
+    )
 
     /**
      * Executes DoGoToPosition with set PIDs optimized for straight driving.
