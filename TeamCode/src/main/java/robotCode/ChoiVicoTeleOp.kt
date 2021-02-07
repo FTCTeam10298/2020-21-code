@@ -11,9 +11,10 @@ class ChoiVicoTeleOp: OpMode() {
     val hardware = ChoiVicoHardware()
 
     override fun init() {
+        hardware.init(hardwareMap)
     }
 
     override fun loop() {
-        console.display(1, "It's a ctrl hb!!!")
+        hardware.rBDrive.power = 1.0
     }
 }

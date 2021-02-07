@@ -20,9 +20,13 @@ class ChoiVicoHardware: MecOdometryHardware {
         hwMap = ahwMap
 
 //        ODOMETRY
-        lOdom = hwMap.dcMotor.get("left collector")
-        cOdom = hwMap.dcMotor.get("tape")
-        rOdom = hwMap.dcMotor.get("left drive b")
+
+        lOdom = hwMap.dcMotor.get("lFDrive")
+        cOdom = hwMap.dcMotor.get("rFDrive")
+        rOdom = hwMap.dcMotor.get("lBDrive")
+//        lOdom = hwMap.dcMotor.get("left collector")
+//        cOdom = hwMap.dcMotor.get("tape")
+//        rOdom = hwMap.dcMotor.get("left drive b")
 
 //        DRIVE TRAIN
         lFDrive = hwMap.get("lFDrive") as DcMotor
