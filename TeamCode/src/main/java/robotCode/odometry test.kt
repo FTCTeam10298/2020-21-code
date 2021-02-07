@@ -32,9 +32,9 @@ class odometryHardware: MecOdometryHardware {
         rBDrive = hwMap.get("right drive b") as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
-        lFDrive.direction = DcMotorSimple.Direction.FORWARD
+        lFDrive.direction = DcMotorSimple.Direction.REVERSE
         rBDrive.direction = DcMotorSimple.Direction.FORWARD
-        lBDrive.direction = DcMotorSimple.Direction.FORWARD
+        lBDrive.direction = DcMotorSimple.Direction.REVERSE
 
         rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
@@ -87,7 +87,7 @@ class odometryTest: LinearOpMode() {
 //            console.display(1, robot.globalRobot.toString())
 //            console.display(5, robot.current.toString())
 //        }
-        target.setCoordinate(y = target.y - 72)
+        target.setCoordinate(y = target.y + 1)
         robot.straightGoToPosition(target, .5, 1.0, this)
     }
 }

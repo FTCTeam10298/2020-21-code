@@ -54,8 +54,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 state = DriveMovement.State.BUSY
             }
             DriveMovement.State.BUSY -> {
-                distancePID.calcPID(100.0, 2.0)
-                anglePID.calcPID(100.0, 2.0)
 
                 // Set the current position
                 current.setCoordinate(
@@ -95,18 +93,20 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 // Calculate the error in x and y and use the PID to find the error in angle
                 val errx = -sin(absAngleError) * distanceError
                 val erry = cos(absAngleError) * distanceError
-                
-                val dx: Double = errx * distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
-                val dy: Double = erry * distancePID.p
-                val da: Double = angleError * anglePID.p
 
-                console.display(5, "Target Robot X, Error X: ${target.x}, $errx")
-                console.display(6, "Target Robot Y, Error Y: ${target.y}, $erry")
-                console.display(7, "Distance Error: $distanceError")
-                console.display(8, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
-                console.display(9, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
-                console.display(10, "absAngleError: ${Math.toDegrees(absAngleError)}")
-                console.display(11, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
+                distancePID.calcPID(errx)
+                val dx: Double = distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
+
+                distancePID.calcPID(erry)
+                val dy: Double = distancePID.p
+
+                anglePID.calcPID(angleError)
+                val da: Double = anglePID.p
+
+//                val dx: Double = errx * distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
+//                val dy: Double = erry * distancePID.p
+//                val da: Double = angleError * anglePID.p
+
 
                 // I and D terms are not being currently used
 
@@ -125,10 +125,18 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 //            da += (angleError - prevErrorA) * anglePID.getDeriv()/ getElapsedTime();
 //            val dTotal = abs(dx) + abs(dy) + 1E-6
 
+
                 val newSpeedx = Range.clip(dx, -1.0, 1.0) // / dTotal;
                 val newSpeedy = Range.clip(dy, -1.0, 1.0) // / dTotal;
                 val newSpeedA = Range.clip(da, -1.0, 1.0)
 
+                console.display(5, "Target Robot X, Error X: ${target.x}, $errx")
+                console.display(6, "Target Robot Y, Error Y: ${target.y}, $erry")
+                console.display(7, "Distance Error: $distanceError")
+                console.display(8, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
+                console.display(9, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
+                console.display(10, "absAngleError: ${Math.toDegrees(absAngleError)}")
+                console.display(11, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
                 console.display(12, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
 
                 setSpeedAll(newSpeedx, newSpeedy, newSpeedA, .16, maxPower)

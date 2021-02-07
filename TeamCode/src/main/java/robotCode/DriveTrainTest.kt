@@ -1,6 +1,7 @@
 package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -22,6 +23,10 @@ open class DTTHardware {
         hwMap = ahwMap
 
 //        DRIVE TRAIN
+//        lFDrive = hwMap.get("left drive f") as DcMotor
+//        rFDrive = hwMap.get("right drive f") as DcMotor
+//        lBDrive = hwMap.get("left drive b") as DcMotor
+//        rBDrive = hwMap.get("right drive b") as DcMotor
         lFDrive = hwMap.get("lFDrive") as DcMotor
         rFDrive = hwMap.get("rFDrive") as DcMotor
         lBDrive = hwMap.get("lBDrive") as DcMotor
@@ -49,7 +54,7 @@ open class DTTHardware {
     }
 }
 
-//@TeleOp(name="Drive Train Test", group="Aim Bot")
+@TeleOp(name="Drive Train Test", group="0")
 class DriveTrainTest: OpMode()  {
 
     val robot = DTTHardware()

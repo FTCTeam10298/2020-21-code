@@ -21,6 +21,16 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
     var d: Double = 1.0
     var f: Double = 1.0
 
+    fun calcPID(error: Double): Double {
+
+        p = kp * error
+        i = ki * 1.0
+        d = kd * 1.0
+        f = kf * 1.0
+
+        return p * i * d * f
+    }
+
     /**
      * Calculates pidf in a loop.
      * @param target the target value for the controller
