@@ -54,6 +54,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 current.x - target.x,
                 current.y - target.y
         )
+
         var angleError: Double = target.r - current.r
 
         while (angleError > 180)
@@ -78,14 +79,10 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val errx = -sin(absAngleError) * distanceError
-        val erry = cos(absAngleError) * distanceError
 
-        distancePID.calcPID(errx)
-        val dx: Double = distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
-
-        distancePID.calcPID(erry)
-        val dy: Double = distancePID.p
+        distancePID.calcPID(distanceError)
+        val dx: Double = -sin(absAngleError) * distancePID.p * (10.0 / 7.0) // Constant to scale strafing up
+        val dy: Double = cos(absAngleError) * distancePID.p
 
         anglePID.calcPID(angleError)
         val da: Double = anglePID.p
@@ -111,8 +108,8 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         val newSpeedy = Range.clip(dy, -1.0, 1.0) // / dTotal;
         val newSpeedA = Range.clip(da, -1.0, 1.0)
 
-        console.display(5, "Target Robot X, Error X: ${target.x}, $errx")
-        console.display(6, "Target Robot Y, Error Y: ${target.y}, $erry")
+        console.display(5, "Target Robot X, Error X: ${target.x}, $dx")
+        console.display(6, "Target Robot Y, Error Y: ${target.y}, $dy")
         console.display(7, "Distance Error: $distanceError")
         console.display(8, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
         console.display(9, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
