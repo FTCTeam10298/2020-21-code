@@ -151,8 +151,10 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
             reset()
 
         var state = State.Running
-        while (state != State.Done && opmode.opModeIsActive())
+        while (state != State.Done && opmode.opModeIsActive()){
             state = goToPosition(target, maxPower, distancePID, anglePID, distanceMin, angleDegMin)
+            updatePosition()
+        }
 
         drivePowerZero()
         updatePosition()
