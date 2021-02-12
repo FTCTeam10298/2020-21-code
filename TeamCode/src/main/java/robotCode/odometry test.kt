@@ -87,7 +87,7 @@ class odometryTest: LinearOpMode() {
 //            console.display(1, robot.globalRobot.toString())
 //            console.display(5, robot.current.toString())
 //        }
-        target.setCoordinate(y = target.y + 1)
+        target.setCoordinate(y = target.y + 10)
         robot.straightGoToPosition(target, .5, 1.0, this)
     }
 }

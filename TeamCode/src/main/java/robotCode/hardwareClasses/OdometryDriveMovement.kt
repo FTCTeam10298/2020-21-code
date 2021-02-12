@@ -1,5 +1,6 @@
 package robotCode.hardwareClasses
 
+import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.Range
 import telemetryWizard.TelemetryConsole
