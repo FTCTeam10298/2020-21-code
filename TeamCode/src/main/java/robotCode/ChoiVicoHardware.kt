@@ -10,10 +10,13 @@ class ChoiVicoHardware: MecOdometryHardware {
     override lateinit var lOdom: DcMotor
     override lateinit var rOdom: DcMotor
     override lateinit var cOdom: DcMotor
+
     override lateinit var lFDrive: DcMotor
     override lateinit var rFDrive: DcMotor
     override lateinit var lBDrive: DcMotor
     override lateinit var rBDrive: DcMotor
+    lateinit var collector: DcMotor
+
     override lateinit var hwMap: HardwareMap
 
     override fun init(ahwMap: HardwareMap) {
@@ -48,5 +51,13 @@ class ChoiVicoHardware: MecOdometryHardware {
         lFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+
+//        COLLECTOR
+        collector = hwMap.get("collector") as DcMotor
+
+        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        collector.direction = DcMotorSimple.Direction.FORWARD
+
     }
 }

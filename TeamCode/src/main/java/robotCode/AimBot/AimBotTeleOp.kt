@@ -47,7 +47,6 @@ class AimBotTeleOp: OpMode() {
     }
     override fun loop() {
 
-
 //        DRONE DRIVE
 //        Invert
         if (invertHelp.stateChanged(gamepad1.left_stick_button) && gamepad1.left_stick_button) {
