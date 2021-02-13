@@ -51,13 +51,13 @@ class odometryHardware: MecOdometryHardware {
         rOdom = hwMap.dcMotor.get("left drive b")
 
         lOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        lOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        lOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
         cOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        cOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        cOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
         rOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        rOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }
 }
 
@@ -94,7 +94,12 @@ class odometryTest: LinearOpMode() {
 //            console.display(1, robot.globalRobot.toString())
 //            console.display(5, robot.current.toString())
 //        }
-        target.setCoordinate(y = target.y + 5)
-        robot.straightGoToPosition(target, .5, 1.0, this)
+//        while (true)
+//            robot.setSpeedAll(0.0, 1.0, 0.0, 0.1, 1.0)
+//        target.setCoordinate(robot.globalRobot.x, robot.globalRobot.y, Math.toDegrees(robot.globalRobot.r))
+        target.setCoordinate(x = 25.0, y = 15.0)
+        robot.straightGoToPosition(target, .5, 0.2, this)
+//        robot.driveSetPower(0.5, 0.5,0.5,0.5)
+//        sleep(10000)
     }
 }
