@@ -9,7 +9,6 @@ import locationTracking.Coordinate
 import robotCode.hardwareClasses.MecOdometryHardware
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
-import kotlin.math.pow
 
 class odometryHardware: MecOdometryHardware {
     override lateinit var lOdom: DcMotor
@@ -36,10 +35,10 @@ class odometryHardware: MecOdometryHardware {
         rBDrive.direction = DcMotorSimple.Direction.FORWARD
         lBDrive.direction = DcMotorSimple.Direction.REVERSE
 
-        rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
         rFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
@@ -51,6 +50,14 @@ class odometryHardware: MecOdometryHardware {
         cOdom = hwMap.dcMotor.get("tape")
         rOdom = hwMap.dcMotor.get("left drive b")
 
+        lOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        lOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
+
+        cOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        cOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
+
+        rOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        rOdom.mode = DcMotor.RunMode.RUN_USING_ENCODER
     }
 }
 
