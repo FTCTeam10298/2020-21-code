@@ -1,6 +1,6 @@
 package pid
 
-import com.qualcomm.robotcore.hardware.DcMotor
+
 
 /**
  * Sets pidf coefficients/multipliers.
@@ -19,17 +19,11 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
     var p: Double = 1.0
     var i: Double = 1.0
     var d: Double = 1.0
-    var f: Double = 1.0
+    var f: Double = 0.0
 
-    fun calcPID(error: Double): Double {
-
-        p = kp * error
-        i = ki * 1.0
-        d = kd * 1.0
-        f = kf * 1.0
-
-        return p * i * d * f
-    }
+    private var time: Double = 0.0
+    private var lastTime: Double = 0.0
+    private var lastError: Double = 0.0
 
     /**
      * Calculates pidf in a loop.
@@ -41,6 +35,20 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
         val error: Double = target - feedback
 
         return calcPID(error)
+    }
+
+    fun calcPID(error: Double): Double {
+
+        time = System.nanoTime() - lastTime
+        lastTime = System.nanoTime().toDouble()
+
+        p = error
+        i += (error / time)
+        d = (error - lastError) / time
+
+        lastError = error
+
+        return (kp * p) + (ki * i) + (kd * d) + (kf * f)
     }
 
     override fun toString(): String {
