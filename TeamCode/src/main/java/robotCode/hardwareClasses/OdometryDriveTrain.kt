@@ -62,7 +62,9 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
         max = Math.max(max, Math.abs(bl))
         max = Math.max(max, Math.abs(br))
         max = Math.max(max, Math.abs(fr))
-        if (max < 1) max = 1.0
+        if (max < 1)
+            max = 1.0
+
         fl /= max + 1E-6
         bl /= max + 1E-6
         br /= max + 1E-6
