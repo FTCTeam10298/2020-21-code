@@ -1,14 +1,15 @@
- package robotCode
+ package robotCode.AimBot
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import goalDetection.OpencvAbstraction
+import robotCode.RingDetector
+import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 import telemetryWizard.TelemetryWizard
-import robotCode.hardwareClasses.EncoderDriveMovement
 
-@Autonomous(name="Aim Bot Auto", group="Aim Bot")
+ @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
@@ -18,7 +19,7 @@ class AimBotAuto: LinearOpMode() {
     val ringDetector = RingDetector(150, 135, console)
 
     val hardware = AimBotHardware()
-    val robot = EncoderDriveMovement(console, hardware)
+    val robot = EncoderDriveMovement(hardware, console)
 
     override fun runOpMode() {
         hardware.init(hardwareMap)

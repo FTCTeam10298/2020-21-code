@@ -2,8 +2,9 @@ package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.util.Range
 import locationTracking.GlobalRobot
+import telemetryWizard.TelemetryConsole
 
-class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriveTrain(hardware) {
+open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
     var deltaL = 0.0
     var deltaC = 0.0
@@ -11,7 +12,7 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriv
     var previousC = 0.0
     var previousL = 0.0
     var previousR = 0.0
-    var globalRobot: GlobalRobot = GlobalRobot(0.0, 0.0, 180.0)
+    var globalRobot: GlobalRobot = GlobalRobot(0.0, 0.0, 0.0)
 
     /**
      * Sets the speed of the four drive motors given desired speeds in the robot's x, y, and angle.
@@ -61,7 +62,9 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriv
         max = Math.max(max, Math.abs(bl))
         max = Math.max(max, Math.abs(br))
         max = Math.max(max, Math.abs(fr))
-        if (max < 1) max = 1.0
+        if (max < 1)
+            max = 1.0
+
         fl /= max + 1E-6
         bl /= max + 1E-6
         br /= max + 1E-6
@@ -89,12 +92,15 @@ class OdometryDriveTrain(private val hardware: MecOdometryHardware): MecanumDriv
         val currentL = hardware.lOdom.currentPosition.toDouble() / 1144.0
         val currentC = hardware.cOdom.currentPosition.toDouble() / 1144.0
         val currentR = hardware.rOdom.currentPosition.toDouble() / 1144.0
+
         deltaL = currentL - previousL
         deltaC = currentC - previousC
         deltaR = currentR - previousR
+
         previousL = currentL
         previousC = currentC
         previousR = currentR
+
         globalRobot.updatePosition(deltaL, deltaC, deltaR)
     }
 }

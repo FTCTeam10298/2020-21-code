@@ -3,20 +3,18 @@
 //import com.qualcomm.robotcore.eventloop.opmode.OpMode
 //import telemetryWizard.TelemetryConsole
 //import locationTracking.Coordinate
+//import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion
 //import robotCode.hardwareClasses.EncoderDriveMovement
 //
 ////@TeleOp
-//class AutoAim(private val console: TelemetryConsole, opMode: OpMode, val robot: EncoderDriveMovement) {
+//class AutoAim(private val console: TelemetryConsole, private val opMode: OpMode, val robot: EncoderDriveMovement) {
 //
-//    val detector = GoalDetector(console)
-//    val opencv = OpencvAbstraction(opMode)
-//    var aimed = false
-//    val robotPos = Coordinate(0.0)
-//    val goalPos = Coordinate(21.0)
 //
-//    fun init() {
-//        opencv.init(hardwareMap)
-//        opencv.start()
+//    lateinit var uGRectDetector: UGRectDetector
+//
+//    fun init(webcamName: String) {
+//        uGRectDetector = UGRectDetector(opMode.hardwareMap, webcamName)
+//        public void setTopRectangle(double topRectHeightPercentage, double topRectWidthPercentage)
 //    }
 //
 //    fun aim() {

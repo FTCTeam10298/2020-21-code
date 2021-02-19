@@ -1,16 +1,18 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotor.RunMode
 import com.qualcomm.robotcore.util.Range
-import telemetryWizard.TelemetryConsole
+import locationTracking.Coordinate
+import locationTracking.GlobalRobot
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
-import java.lang.Thread.sleep
+import pid.PID
+import telemetryWizard.TelemetryConsole
 import kotlin.math.PI
 import kotlin.math.abs
 
-open class EncoderDriveMovement(private val console: TelemetryConsole, private val hardware: MecanumHardware): MecanumDriveTrain(hardware) {
+class EncoderDriveMovement(private val hardware: MecanumHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware), DriveMovement {
 
     lateinit var rangeSensor: ModernRoboticsI2cRangeSensor
 
@@ -27,10 +29,10 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
      * @param ms How long to drive
      * @param power Power level to set motors to, negative will drive the robot backwards
      */
-    fun driveRobotTime(ms: Int, power: Double) {
+    override fun driveRobotTime(ms: Int, power: Double) {
         driveSetMode(DcMotor.RunMode.RUN_USING_ENCODER)
         drivePowerAll(power)
-        sleep(ms.toLong())
+        Thread.sleep(ms.toLong())
         drivePowerAll(0.0)
         driveSetTargetPosition(0, 0, 0, 0)
     }
@@ -41,18 +43,19 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
      * @param inches How many inches away to the object to go to
      * @param power Power level to set motors to
      */
-    fun driveRobotDistanceToObject(power: Double, inches: Double, smartAccel: Boolean) {
+    override fun driveRobotDistanceToObject(power: Double, inches: Double, smartAccel: Boolean) {
         val target = rangeSensor.getDistance(DistanceUnit.INCH).toFloat() - inches // FIXME: how accurate is sensor?
         console.display(10, "Range Sensor: ${rangeSensor.getDistance(DistanceUnit.INCH)}")
         driveRobotPosition(abs(power), target, smartAccel) // Use abs() to make sure power is positive
     }
+
 
     /**
      * DriveRobotPosition drives the robot the set number of inches at the given power level.
      * @param inches How far to drive, can be negative
      * @param power Power level to set motors to
      */
-    fun driveRobotPosition(power: Double, inches: Double, smartAccel: Boolean) {
+    override fun driveRobotPosition(power: Double, inches: Double, smartAccel: Boolean) {
 
         var state = 0 // 0 = NONE, 1 = ACCEL, 2 = DRIVE, 3 = DECEL
         val position: Double = inches * COUNTS_PER_INCH
@@ -100,7 +103,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                 }
                 console.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
         // Clear used section of dashboard
@@ -112,7 +115,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
     }
 
 
-    fun driveRobotTurn(power: Double, degree: Double, smartAccel: Boolean = false) {
+    override fun driveRobotTurn(power: Double, degree: Double, smartAccel: Boolean) {
 
         val position: Double = degree * COUNTS_PER_DEGREE
         var state = 0 // 0 = NONE, 1 = ACCEL, 2 = DRIVE, 3 = DECEL
@@ -155,7 +158,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                 }
                 console.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
         // Clear used section of dashboard
@@ -171,7 +174,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
      * @param inches How far to drive, can be negative
      * @param power Power level to set motors to
      */
-    fun driveRobotStrafe(power: Double, inches: Double, smartAccel: Boolean) {
+    override fun driveRobotStrafe(power: Double, inches: Double, smartAccel: Boolean) {
 
         var state = 0 // 0 = NONE, 1 = ACCEL, 2 = DRIVE, 3 = DECEL
         val position: Double = inches * COUNTS_PER_INCH
@@ -219,7 +222,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                 }
                 console.display(7, "State: $state (0=NONE,1=ACCEL,2=DRIVING,3=DECEL")
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
         // Clear used section of dashboard
@@ -236,13 +239,13 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
      * @param power The power to use while driving,
      * positive values go right and negative values go left
      */
-    fun driveSidewaysTime(time: Double, power: Double) {
-        driveSetMode(RunMode.RUN_USING_ENCODER)
+    override fun driveSidewaysTime(time: Double, power: Double) {
+        driveSetMode(DcMotor.RunMode.RUN_USING_ENCODER)
         driveSetPower(-power, power, power, -power)
 
         // Continue driving for the specified amount of time, then stop
         val ms = time * 1000
-        sleep(ms.toLong())
+        Thread.sleep(ms.toLong())
         drivePowerAll(0.0)
         driveSetRunToPosition()
         driveSetTargetPosition(0, 0, 0, 0)
@@ -256,7 +259,7 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
      * @param inches How many inches to drive
      * @param hugLeft Whether to hug left or right
      */
-    fun driveRobotHug(power: Double, inches: Int, hugLeft: Boolean) {
+    override fun driveRobotHug(power: Double, inches: Int, hugLeft: Boolean) {
 
         val position: Double = inches * COUNTS_PER_INCH
 
@@ -277,12 +280,12 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                 console.display(5, "Left back encoder: ${hardware.lBDrive.currentPosition}")
                 console.display(6, "Right back encoder: ${hardware.rBDrive.currentPosition}")
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
     }
 
-    fun driveRobotArc(power: Double, inches: Double, difference: Double) {
+    override fun driveRobotArc(power: Double, inches: Double, difference: Double) {
 
         var difference = difference
         val position: Double = inches * COUNTS_PER_INCH
@@ -335,29 +338,29 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                     console.display(4, "Back left encoder: $brDrive")
                 }
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
     }
 
-    fun driveRobotArcStrafe(power: Double, inches: Double, difference: Double) {
+    override fun driveRobotArcStrafe(power: Double, inches: Double, difference: Double) {
 
         var difference = difference
         val position: Double = inches * COUNTS_PER_INCH
 
         difference = Range.clip(difference, -1.0, 1.0)
         //power 1, inches -48, difference -.5
-        driveSetMode(RunMode.STOP_AND_RESET_ENCODER)
+        driveSetMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
         if (difference > 0) {
-            hardware.rFDrive.mode = RunMode.RUN_USING_ENCODER
-            hardware.rBDrive.mode = RunMode.RUN_USING_ENCODER
-            hardware.lFDrive.mode = RunMode.RUN_TO_POSITION
-            hardware.lBDrive.mode = RunMode.RUN_TO_POSITION
+            hardware.rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.lFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.lBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
         } else {
-            hardware.rFDrive.mode = RunMode.RUN_TO_POSITION
-            hardware.rBDrive.mode = RunMode.RUN_TO_POSITION
-            hardware.lFDrive.mode = RunMode.RUN_USING_ENCODER
-            hardware.lBDrive.mode = RunMode.RUN_USING_ENCODER
+            hardware.rFDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.rBDrive.mode = DcMotor.RunMode.RUN_TO_POSITION
+            hardware.lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+            hardware.lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
         }
 
         if (difference > 0 && inches > 0)
@@ -394,9 +397,24 @@ open class EncoderDriveMovement(private val console: TelemetryConsole, private v
                     console.display(4, "Back left encoder: $brDrive")
                 }
             }
-            sleep(10)
+            Thread.sleep(10)
         }
         drivePowerAll(0.0)
+    }
+
+    override fun doGoToPosition(target: Coordinate, maxPower: Double, distancePID: PID, anglePID: PID, distanceMin: Double, angleDegMin: Double, reset: Boolean, opmode: LinearOpMode) {
+        TODO("Not yet implemented")
+    }
+
+    private var robotCoordinate = GlobalRobot(0.0, 0.0, 0.0)
+
+    override fun straightGoToPosition(target: Coordinate, maxPower: Double, distanceMin: Double, opmodeisactive: LinearOpMode) {
+
+        driveRobotPosition((robotCoordinate.y - target.y), maxPower, true)
+    }
+
+    override fun turnGoToPosition(target: Coordinate, maxPower: Double, angleDegMin: Double, opmodeisactive: LinearOpMode) {
+        TODO("Not yet implemented")
     }
 
 }
