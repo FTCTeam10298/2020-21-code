@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 
-@Autonomous
+@Autonomous(name="Auto ChoiVico", group="ChoiVico")
 class ChoiVicoAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)

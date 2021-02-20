@@ -10,7 +10,7 @@ import robotCode.hardwareClasses.MecanumDriveTrain
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-@TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
+//@TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
 class AimBotTeleOp: OpMode() {
 
     val hardware = AimBotHardware()
@@ -176,6 +176,7 @@ class AimBotTeleOp: OpMode() {
         console.display(13, "LB: ${hardware.lBDrive.power}")
         console.display(14, "RB: ${hardware.rBDrive.power}")
     }
+
     fun toRPM(tps: Double): Double = tps * 60 / 28
 
     fun percentage(percent: Double, value: Double): Double = (value / 100) * percent

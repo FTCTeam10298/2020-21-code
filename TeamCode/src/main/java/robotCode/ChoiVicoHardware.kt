@@ -1,8 +1,6 @@
 package robotCode
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.*
 import robotCode.hardwareClasses.MecOdometryHardware
 
 class ChoiVicoHardware: MecOdometryHardware {
@@ -16,6 +14,11 @@ class ChoiVicoHardware: MecOdometryHardware {
     override lateinit var lBDrive: DcMotor
     override lateinit var rBDrive: DcMotor
     lateinit var collector: DcMotor
+    lateinit var shooter: DcMotorEx
+
+    lateinit var lift1: Servo
+    lateinit var lift2: Servo
+    lateinit var gate: Servo
 
     override lateinit var hwMap: HardwareMap
 
@@ -23,13 +26,9 @@ class ChoiVicoHardware: MecOdometryHardware {
         hwMap = ahwMap
 
 //        ODOMETRY
-
         lOdom = hwMap.dcMotor.get("lFDrive")
         cOdom = hwMap.dcMotor.get("rFDrive")
         rOdom = hwMap.dcMotor.get("lBDrive")
-//        lOdom = hwMap.dcMotor.get("left collector")
-//        cOdom = hwMap.dcMotor.get("tape")
-//        rOdom = hwMap.dcMotor.get("left drive b")
 
 //        DRIVE TRAIN
         lFDrive = hwMap.get("lFDrive") as DcMotor
@@ -52,6 +51,12 @@ class ChoiVicoHardware: MecOdometryHardware {
         rBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
+//        SHOOTER
+        shooter = hwMap.get("shooter") as DcMotorEx
+
+        shooter.direction = DcMotorSimple.Direction.REVERSE
+        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
 //        COLLECTOR
         collector = hwMap.get("collector") as DcMotor

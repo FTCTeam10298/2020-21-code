@@ -25,6 +25,8 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
     private var lastTime: Double = 0.0
     private var lastError: Double = 0.0
 
+    fun pidVals(): Double = (kp * p) + (ki * i) + (kd * d) + (kf * f)
+
     /**
      * Calculates pidf in a loop.
      * @param target the target value for the controller
@@ -46,9 +48,13 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
         i += (error / time)
         d = (error - lastError) / time
 
+        p *= kp
+        i *= ki
+        d *= kd
+
         lastError = error
 
-        return (kp * p) + (ki * i) + (kd * d) + (kf * f)
+        return pidVals()
     }
 
     override fun toString(): String {
