@@ -14,11 +14,13 @@ class ChoiVicoHardware: MecOdometryHardware {
     override lateinit var lBDrive: DcMotor
     override lateinit var rBDrive: DcMotor
     lateinit var collector: DcMotor
+    lateinit var wobble: DcMotor
     lateinit var shooter: DcMotorEx
 
-    lateinit var lift1: Servo
-    lateinit var lift2: Servo
+    lateinit var lift: Servo
     lateinit var gate: Servo
+    lateinit var claw1: Servo
+    lateinit var claw2: Servo
 
     override lateinit var hwMap: HardwareMap
 
@@ -26,15 +28,15 @@ class ChoiVicoHardware: MecOdometryHardware {
         hwMap = ahwMap
 
 //        ODOMETRY
-        lOdom = hwMap.dcMotor.get("lFDrive")
-        cOdom = hwMap.dcMotor.get("rFDrive")
-        rOdom = hwMap.dcMotor.get("lBDrive")
+        lOdom = hwMap.dcMotor["lFDrive"]
+        cOdom = hwMap.dcMotor["rFDrive"]
+        rOdom = hwMap.dcMotor["lBDrive"]
 
 //        DRIVE TRAIN
-        lFDrive = hwMap.get("lFDrive") as DcMotor
-        rFDrive = hwMap.get("rFDrive") as DcMotor
-        lBDrive = hwMap.get("lBDrive") as DcMotor
-        rBDrive = hwMap.get("rBDrive") as DcMotor
+        lFDrive = hwMap["lFDrive"] as DcMotor
+        rFDrive = hwMap["rFDrive"] as DcMotor
+        lBDrive = hwMap["lBDrive"] as DcMotor
+        rBDrive = hwMap["rBDrive"] as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
@@ -59,10 +61,34 @@ class ChoiVicoHardware: MecOdometryHardware {
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
 //        COLLECTOR
-        collector = hwMap.get("collector") as DcMotor
+        collector = hwMap["collector"] as DcMotor
 
         collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         collector.direction = DcMotorSimple.Direction.FORWARD
+        collector.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+//        WOBBLE
+        wobble = hwMap["wobble"] as DcMotor
+
+        wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        wobble.direction = DcMotorSimple.Direction.FORWARD
+        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
+
+//        SERVOS
+        lift = hwMap["lift1"] as Servo
+        claw1 = hwMap["claw1"] as Servo
+        claw2 = hwMap["claw2"] as Servo
+        gate = hwMap["gate"] as Servo
+
+        lift.direction = Servo.Direction.REVERSE
+        claw1.direction = Servo.Direction.FORWARD
+        claw2.direction = Servo.Direction.REVERSE
+        gate.direction = Servo.Direction.REVERSE
+
+        lift.position = 0.0
+        claw1.position = 0.8
+        claw2.position = 0.8
+        gate.position = 0.1
 
     }
 }
