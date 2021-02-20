@@ -33,7 +33,13 @@ while True:
 
     mask = cv2.inRange(hsv, lower_red, upper_red)
 
-    #Contours Detection
+    # Contours Detection
+
+    #values for Goal detection: L-H = 107, L-S = 000, L-V = 000, U-H = 255, U-S = 255, U-V = 255i
+    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    for cnt in contours:
+        cv2.drawContours(frame, [cnt], 0, (0, 0, 0), 5)
 
     cv2.imshow('Frame', frame)
     cv2.imshow("Mask", mask)
