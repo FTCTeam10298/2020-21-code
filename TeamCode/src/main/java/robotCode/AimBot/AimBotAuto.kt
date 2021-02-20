@@ -9,7 +9,7 @@ import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 import telemetryWizard.TelemetryWizard
 
-//@Autonomous(name="Aim Bot Auto", group="Aim Bot")
+ @Autonomous(name="Aim Bot Auto", group="Aim Bot")
 class AimBotAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
