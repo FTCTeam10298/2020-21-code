@@ -32,17 +32,20 @@ while True:
     upper_red = np.array([u_h, u_s, u_v])
 
     mask = cv2.inRange(hsv, lower_red, upper_red)
-
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.erode(mask, kernel)
     # Contours Detection
 
-    #values for Goal detection: L-H = 107, L-S = 000, L-V = 000, U-H = 255, U-S = 255, U-V = 255i
-    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    # values for Cam Calibrated Goal detection: L-H = 95, L-S = 105, L-V = 000, U-H = 255, U-S = 255, U-V = 255
+    contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     for cnt in contours:
-        cv2.drawContours(frame, [cnt], 0, (0, 0, 0), 5)
+        approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
+        cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
 
     cv2.imshow('Frame', frame)
     cv2.imshow("Mask", mask)
+    cv2.imshow("Kernel", kernel)
 
     key = cv2.waitKey(1)
     if key == 27:
