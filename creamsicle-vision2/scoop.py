@@ -1,3 +1,10 @@
+# This code is sponsored by Aperture Science Consumer Advocate Gabriel Fergesen, who would like to remind you that
+# turrets are your friends.
+
+# params that matter:  MaxArea --> Controls Size for Detection Canadates
+# lower_red and upper_red: --> Use StoreFront UI to train these... trip out on color values, man and doink with the sliders.
+# cap- needs to be set to whatever the index of the camera is... how to fix this will vary.
+
 import cv2
 import numpy as np
 
@@ -18,6 +25,7 @@ cv2.createTrackbar("U-S", "Trackbars", 255, 255, nothing)
 cv2.createTrackbar("U-V", "Trackbars", 255, 255, nothing)
 
 font = cv2.FONT_HERSHEY_COMPLEX
+
 while True:
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -42,13 +50,21 @@ while True:
 
     for cnt in contours:
         area = cv2.contourArea(cnt)
-        approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)
+        approx = cv2.approxPolyDP(cnt, 0.02*cv2.arcLength(cnt, True), True)
+        x = approx.ravel() [0]
+        y = approx.ravel() [1]
 
         if area > 400:
             cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
+            if len(approx) == 3:
+                cv2.putText(frame, "triangle", (x, y), font, 1, (22, 100, 100))
+            elif len(approx) == 4:
+                cv2.putText(frame, "rectangle", (x, y), font, 1, (22, 100, 100))
+            elif 10 < len(approx) < 20:
+                cv2.putText(frame, "circle", (x, y), font, 1, (22, 100, 100))
 
-            if len(approx) == 4:
-                cv2.putText(frame, "rectangle", (10, 10), font, 1, (22, 100, 100))
+
+
 
     cv2.imshow('Frame', frame)
     cv2.imshow("Mask", mask)
