@@ -14,7 +14,7 @@ def nothing(x):
     pass
 
     # CAUTION, THIS NUMBER MUST BE CHECKED AFTER EVERY BOOT.
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 cv2.namedWindow("Trackbars")
 cv2.createTrackbar("L-H", "Trackbars", 0, 255, nothing)
@@ -45,7 +45,7 @@ while True:
     mask = cv2.erode(mask, kernel)
     # Contours Detection
 
-    # values for Cam Calibrated Goal detection: L-H = 95, L-S = 105, L-V = 000, U-H = 255, U-S = 255, U-V = 255
+    # values for Cam Calibrated Goal detection: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
     contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     for cnt in contours:
@@ -62,6 +62,9 @@ while True:
                 cv2.putText(frame, "rectangle", (x, y), font, 1, (22, 100, 100))
             elif 10 < len(approx) < 20:
                 cv2.putText(frame, "circle", (x, y), font, 1, (22, 100, 100))
+            elif len(approx) == 8:
+                cv2.putText(frame, "goal", (x, y), font, 1, (22, 100, 100))
+
 
 
 
