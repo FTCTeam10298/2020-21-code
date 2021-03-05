@@ -50,6 +50,8 @@ font = cv2.FONT_HERSHEY_COMPLEX
 
 */
 
+val font = Imgproc.FONT_HERSHEY_COMPLEX
+
 while(true) {
     // _, frame = cap.read()
     val frame = Mat() // Mat == Matrix (a place/buffer to write image data)
@@ -117,12 +119,27 @@ while(true) {
         Imgproc.approxPolyDP(cnt2f, approx, 0.02 * Imgproc.arcLength(cnt2f, true), true)
 
 
+//        x = approx.ravel() [0]
+//        y = approx.ravel() [1]
+        val point = approx.toList()[0]
+        val x = point.x
+        val y = point.y
     /*
-        x = approx.ravel() [0]
-        y = approx.ravel() [1]
-
         if area > 400:
-            cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
+        */
+        if(area > 400){
+
+
+            fun convert(matOfPoint2f: MatOfPoint2f):MatOfPoint {
+                val foo = MatOfPoint()
+                matOfPoint2f.convertTo(foo, CvType.CV_32S)
+                return foo
+            }
+
+          // cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
+          Imgproc.drawContours(frame, mutableListOf(convert(approx)), 0, Scalar(0.0, 0.0, 0.0), 5)
+
+        /*
             if len(approx) == 3:
                 cv2.putText(frame, "triangle", (x, y), font, 1, (22, 100, 100))
             elif len(approx) == 4:
@@ -132,7 +149,19 @@ while(true) {
             elif len(approx) == 8:
                 cv2.putText(frame, "goal", (x, y), font, 1, (22, 100, 100))
 
-*/
+         */
+            if (approx.toArray().size == 3) {
+                // cv2.putText(frame, "triangle", (x, y), font, 1, (22, 100, 100))
+                Imgproc.putText(frame, "triangle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+            } else if(approx.toArray().size == 4) {
+                Imgproc.putText(frame, "rectangle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+            } else if(approx.toArray().size in 11..19) {
+                Imgproc.putText(frame, "circle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+            } else if(approx.toArray().size == 8){
+                Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+            }
+
+        }
 }
 /*
 
