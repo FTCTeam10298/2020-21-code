@@ -86,8 +86,8 @@ class ChoiVicoHardware: MecOdometryHardware {
         gate.direction = Servo.Direction.REVERSE
 
         lift.position = 0.0
-        claw1.position = 0.8
-        claw2.position = 0.8
+        claw1.position = 1.0
+        claw2.position = 1.0
         gate.position = 0.1
 
     }

@@ -76,7 +76,7 @@ class ChoiVicoTeleOp: OpMode() {
 
         fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0 , shooterRpm)
 
-        fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.1
+        fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
         fun shoot() {
             when(ringShooting) {
@@ -117,8 +117,9 @@ class ChoiVicoTeleOp: OpMode() {
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
-            if (isVelocityCorrect() && gamepad1.right_trigger > 0.2 && stateChanged()) {
-                shoot()
+            if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
+                for (i in (1..3))
+                    shoot()
             }
             triggerDown = gamepad1.right_trigger > 0.2
 
