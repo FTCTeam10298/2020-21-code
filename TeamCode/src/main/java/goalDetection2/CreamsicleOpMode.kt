@@ -21,7 +21,8 @@ class CreamsicleOpMode() : OpMode() {
     val YbuttonHelper = ButtonHelper()
     val DpadHelper = ButtonHelper()
     val RbumperHelper = ButtonHelper()
-    val LbumberHelper = ButtonHelper()
+    val LbumperHelper = ButtonHelper()
+    val AbuttonHelper = ButtonHelper()
 
     val console = TelemetryConsole(telemetry)
 
@@ -87,13 +88,25 @@ class CreamsicleOpMode() : OpMode() {
             varBeingEdited.value += 5
             render()
         }
-        if (LbumberHelper.stateChanged(gamepad1.left_bumper) && gamepad1.left_bumper) {
+        if (LbumperHelper.stateChanged(gamepad1.left_bumper) && gamepad1.left_bumper) {
             varBeingEdited.value -= 5
             render()
         }
+
+        if (AbuttonHelper.stateChanged(gamepad1.a) && gamepad1.a) {
+            L_H.value = 0.0
+            L_S.value = 0.0
+            L_V.value = 0.0
+            U_H.value = 255.0
+            U_S.value = 255.0
+            U_V.value = 255.0
+            console.display(1, "Vals Squonked")
+            render()
+        }++++++++++++++
     }
 
-
+// New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
+//ADD BROWSER FOR DECIMAL VALUES!!
 
 
     override fun loop() {
