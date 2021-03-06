@@ -1,5 +1,3 @@
-// This code is sponsored by Aperture Science Consumer Advocate Gabriel Fergesen, who would like to remind you that turrets are your friends.
-
 package goalDetection2
 
 import buttonHelper.ButtonHelper
@@ -18,7 +16,13 @@ class CreamsicleOpMode() : OpMode() {
 
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(this)
-    val buttonHelper = ButtonHelper()
+
+    val XbuttonHelper = ButtonHelper()
+    val YbuttonHelper = ButtonHelper()
+    val DpadHelper = ButtonHelper()
+    val RbumperHelper = ButtonHelper()
+    val LbumberHelper = ButtonHelper()
+
     val console = TelemetryConsole(telemetry)
 
 
@@ -32,16 +36,63 @@ class CreamsicleOpMode() : OpMode() {
 
 
     private var displayMode:String = "frame"
+    class NamedVar(val name:String, var value:Double)
 
+    var L_H = NamedVar("Low Hue", 95.0)
+    var L_S = NamedVar("Low Saturation", 105.0)
+    var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 0.0)
+    var U_H = NamedVar("Uppper Hue", 111.0)
+    var U_S = NamedVar("Upper Saturation", 255.0)
+    var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+
+    private var varBeingEdited:NamedVar = L_H
+    fun render(){
+        console.display(2, "Active Var; ${varBeingEdited.name}")
+        console.display(4,  "${varBeingEdited.value}")
+    }
     override fun init_loop() {
-        if (buttonHelper.stateChanged(gamepad1.b) && gamepad1.b) {
-           console.display(2, "TrainerMODE; $displayMode")
+        if (XbuttonHelper.stateChanged(gamepad1.x) && gamepad1.x) {
+            console.display(3, "TrainerMODE; $displayMode")
             if (displayMode == "frame") displayMode = "mask"
             else if (displayMode == "mask") displayMode = "kernel"
             else if (displayMode == "kernel") displayMode = "frame"
+            render()
         }
 
+
+        when {
+            DpadHelper.stateChanged(gamepad1.dpad_left) && gamepad1.dpad_left -> {
+                if (varBeingEdited == L_H) varBeingEdited = L_S
+                else if (varBeingEdited == L_S) varBeingEdited = L_V
+                else if (varBeingEdited == L_V) varBeingEdited = U_H
+                else if (varBeingEdited == U_H) varBeingEdited = U_S
+                else if (varBeingEdited == U_S) varBeingEdited = U_V
+                else if (varBeingEdited == U_V) varBeingEdited = L_H
+                render()
+            }
+        }
+
+        if (YbuttonHelper.stateChanged(gamepad1.y) && gamepad1.y) {
+            console.display(1, "Vals Zeroed")
+            L_H.value = 0.0
+            L_S.value =  0.0
+            L_V.value =  0.0
+            U_H.value = 0.0
+            U_S.value = 0.0
+            U_V.value = 0.0
+            render()
+        }
+
+        if (RbumperHelper.stateChanged(gamepad1.right_bumper) && gamepad1.right_bumper){
+            varBeingEdited.value += 5
+            render()
+        }
+        if (LbumberHelper.stateChanged(gamepad1.left_bumper) && gamepad1.left_bumper) {
+            varBeingEdited.value -= 5
+            render()
+        }
     }
+
 
 
 
@@ -64,12 +115,6 @@ class CreamsicleOpMode() : OpMode() {
             u_s = cv2.getTrackbarPos("U-S", "Trackbars")
             u_v = cv2.getTrackbarPos("U-V", "Trackbars")
         */
-        var L_H = 95.0
-        val L_S = 105.0
-        val L_V = 0.0
-        val U_H = 111.0
-        val U_S = 255.0
-        val U_V = 255.0
         /*
 
             lower_red = np.array([l_h, l_s, l_v])
@@ -77,8 +122,8 @@ class CreamsicleOpMode() : OpMode() {
 
             mask = cv2.inRange(hsv, lower_red, upper_red)
         */
-        val lower_red = Scalar(L_H, L_S, L_V)
-        val upper_red = Scalar(U_H, U_S, U_V)
+        val lower_red = Scalar(L_H.value, L_S.value, L_V.value)
+        val upper_red = Scalar(U_H.value, U_S.value, U_V.value)
         val maskA = Mat()
         Core.inRange(hsv, lower_red, upper_red, maskA)
 

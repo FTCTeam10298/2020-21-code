@@ -5,7 +5,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread('calibrate-crust.jpg')
+img = cv2.imread('your-image-here.jpg')
 # this is a stack, the goal is to simplify the image by first blasting everything and then grayscaling it.
 retval, threshold = cv2.threshold(img, 150, 255, cv2.THRESH_BINARY)
 grayscaled = cv2.cvtColor(threshold, cv2.COLOR_BGR2GRAY)
