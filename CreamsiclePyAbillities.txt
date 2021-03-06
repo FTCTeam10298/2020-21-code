@@ -1,0 +1,17 @@
+GOALS: Build a library designed for Minimal Entry game developers (usually informally educated) that provides a fun openCV port that follows LOVE, Python, and Java Principles, glossing over algebraic terms with ice-cream related terminology 
+RESEARCH: 
+ARuCO markers: https://aliyasineser.medium.com/aruco-marker-tracking-with-opencv-8cb844c26628
+
+Face Landmarks: https://www.youtube.com/watch?v=MrRGVOhARYY
+
+Eye Motion Tracking: https://www.youtube.com/watch?v=kbdbZFT9NQI
+
+Body Detection: (Further Research Required) https://www.youtube.com/watch?v=gPeeFCvJOWA
+
+Useful Tuts: Pysource, The Coding Train
+
+Hand Detection: (Further Research Required) https://www.youtube.com/watch?v=s66w28knp80
+
+Human Pose Detection: (Further Research Required) (https://www.youtube.com/watch?v=9jQGsUidKHs)  
+
+
