@@ -223,12 +223,18 @@ class CreamsicleOpMode() : OpMode() {
                 } else if (approx.toArray().size in 11..19) {
                     Imgproc.putText(frame, "circle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 } else if (approx.toArray().size == 8) {
+
                     Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
 
-                    console.display(6, "goallastX $x, $y")
+                    var turnDir: String= "FWARRRRP"
+
                     //determine Trajectory
-                    if (x <= 500)  Imgproc.putText(frame, "TurnL", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
-                    else if (x >= 0) Imgproc.putText(frame, "TurnR", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    if (x <= 50)  turnDir = "Right"
+                    else if (x >= 0)  turnDir = "Left"
+
+                    console.display(6, "goallastX $x, $y")
+                    console.display(7,"Analysis says to $turnDir")
+
                 }
 
             }
