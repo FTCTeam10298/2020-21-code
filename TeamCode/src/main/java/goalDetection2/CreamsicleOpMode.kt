@@ -39,10 +39,17 @@ class CreamsicleOpMode() : OpMode() {
     private var displayMode:String = "frame"
     class NamedVar(val name:String, var value:Double)
 
-    var L_H = NamedVar("Low Hue", 95.0)
-    var L_S = NamedVar("Low Saturation", 105.0)
-    var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 0.0)
-    var U_H = NamedVar("Uppper Hue", 111.0)
+    /*
+    # values for Cam Calibrated Goal detection DURING THE DAY: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
+    # values for Cam Calibrated Goal detection DURING THE NIGHT: L-H = 0, L-S = 65, L-V = 70, U-H = 105, U-S = 255, U-V = 255
+    # contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    */
+
+
+    var L_H = NamedVar("Low Hue", 0.0)
+    var L_S = NamedVar("Low Saturation", 65.0)
+    var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+    var U_H = NamedVar("Uppper Hue", 105.0)
     var U_S = NamedVar("Upper Saturation", 255.0)
     var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
@@ -102,7 +109,7 @@ class CreamsicleOpMode() : OpMode() {
             U_V.value = 255.0
             console.display(1, "Vals Squonked")
             render()
-        }++++++++++++++
+        }
     }
 
 // New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
@@ -151,7 +158,8 @@ class CreamsicleOpMode() : OpMode() {
         /*
             # Contours Detection
 
-            # values for Cam Calibrated Goal detection: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
+            # values for Cam Calibrated Goal detection DURING THE DAY: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
+            # values for Cam Calibrated Goal detection DURING THE NIGHT: L-H = 0, L-S = 65, L-V = 70, U-H = 105, U-S = 255, U-V = 255
             contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         */
         val contours = mutableListOf<MatOfPoint>()
@@ -216,6 +224,11 @@ class CreamsicleOpMode() : OpMode() {
                     Imgproc.putText(frame, "circle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 } else if (approx.toArray().size == 8) {
                     Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+
+                    console.display(6, "goallastX $x, $y")
+                    //determine Trajectory
+                    if (x <= 500)  Imgproc.putText(frame, "TurnL", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    else if (x >= 0) Imgproc.putText(frame, "TurnR", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 }
 
             }
