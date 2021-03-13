@@ -228,8 +228,8 @@ class CreamsicleOpMode() : OpMode() {
                     var turnDir: String= "FWARRRRP"
 
                     // Determine trajectory
-                    if (x <= 50)  turnDir = "Right"
-                    else if (x >= 0)  turnDir = "Left"
+                    if (x < 250)  turnDir = "Right"
+                    else if (x >= 250)  turnDir = "Left"
 
                     console.display(6, "goallastX $x, $y")
                     console.display(7,"Analysis says to $turnDir")
