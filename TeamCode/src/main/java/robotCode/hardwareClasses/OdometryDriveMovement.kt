@@ -109,12 +109,12 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $dx")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $dy")
-        console.display(7, "Distance Error: $distanceError")
-        console.display(8, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
-        console.display(9, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
-        console.display(10, "absAngleError: ${Math.toDegrees(absAngleError)}")
-        console.display(11, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
-        console.display(12, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
+        console.display(7, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
+        console.display(8, "Distance Error: $distanceError")
+        console.display(9, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
+        console.display(10, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
+        console.display(11, "absAngleError: ${Math.toDegrees(absAngleError)}")
+        console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
         setSpeedAll(newSpeedx, newSpeedy, newSpeedA, 0.0, maxPower)
 
