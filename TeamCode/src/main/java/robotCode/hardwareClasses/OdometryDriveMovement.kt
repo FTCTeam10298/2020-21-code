@@ -175,7 +175,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.05, 0.01, 0.0),
+                PID(0.1, 0.01, 0.0),
                 PID(0.45, 0.02, 0.0),
                 distanceMin,
                 5.0,
