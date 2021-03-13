@@ -81,7 +81,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 
         // Calculate the error in x and y and use the PID to find the error in angle
         distancePID.calcPID(distanceError)
-        val dxp: Double = -sin(absAngleError) * (10.0 / 7.0) * distancePID.p// Constant to scale strafing up
+        val dxp: Double = -sin(absAngleError) /** (10.0 / 7.0) */* distancePID.p// Constant to scale strafing up
         val dx: Double = dxp * distancePID.i + distancePID.d
         val dy: Double = cos(absAngleError) * distancePID.pidVals()
 
@@ -201,8 +201,8 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.03, 0.01, 0.0),
-                PID(1.0, 0.5, 0.0),
+                PID(0.0, 0.0, 0.0),
+                PID(0.0, 0.0, 0.0),
                 0.2,
                 angleDegMin,
                 true,

@@ -11,9 +11,9 @@ package pid
  * */
 open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.0) {
 
-    private val kp = p
-    private val ki = i
-    private val kd = d
+    private val k_p = p
+    private val k_i = i
+    private val k_d = d
     private val kf = f
 
     var p: Double = 1.0
@@ -21,11 +21,11 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
     var d: Double = 1.0
     var f: Double = 0.0
 
-    private var time: Double = 0.0
+    private var deltaTime: Double = 0.0
     private var lastTime: Double = 0.0
     private var lastError: Double = 0.0
 
-    fun pidVals(): Double = (kp * p) + (ki * i) + (kd * d) + (kf * f)
+    fun pidVals(): Double = p + i + d + f
 
     /**
      * Calculates pidf in a loop.
@@ -41,16 +41,12 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
 
     fun calcPID(error: Double): Double {
 
-        time = System.nanoTime() - lastTime
+        deltaTime = System.nanoTime() - lastTime
         lastTime = System.nanoTime().toDouble()
 
-        p = error
-        i += (error / time)
-        d = (error - lastError) / time
-
-        p *= kp
-        i *= ki
-        d *= kd
+        p = k_p * error
+        i += k_i * (error * deltaTime)
+        d = k_d * (error - lastError) / deltaTime
 
         lastError = error
 

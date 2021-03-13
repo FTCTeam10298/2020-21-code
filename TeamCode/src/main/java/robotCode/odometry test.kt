@@ -50,7 +50,7 @@ class odometryTest: LinearOpMode() {
 //            robot.setSpeedAll(0.0, 1.0, 0.0, 0.1, 1.0)
 //        target.setCoordinate(robot.globalRobot.x, robot.globalRobot.y, Math.toDegrees(robot.globalRobot.r))
         target.setCoordinate(x = 0.0, y = 0.0, r = 90.0)
-        robot.turnGoToPosition(target, 1.0, 1.0, this)
+        robot.turnGoToPosition(target, 0.3, 1.0, this)
 //        robot.driveSetPower(0.5, 0.5,0.5,0.5)
 //        sleep(10000)
     }
