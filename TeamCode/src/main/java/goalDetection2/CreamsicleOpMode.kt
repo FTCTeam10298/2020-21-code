@@ -1,5 +1,6 @@
 package goalDetection2
 
+import android.media.MediaPlayer
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -8,12 +9,15 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.OpenCvCameraFactory
+import robotCode.ChoiVicoHardware
 import robotCode.RingDetector
+import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 
 @Autonomous
 class CreamsicleOpMode() : OpMode() {
 
+    val hardware = ChoiVicoHardware()
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(this)
 
@@ -27,17 +31,21 @@ class CreamsicleOpMode() : OpMode() {
     val console = TelemetryConsole(telemetry)
 
 
+    val movement = EncoderDriveMovement(hardware, console)
+
     override fun init() {
         opencv.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
         opencv.onNewFrame(::scoopFrame)
+
     }
 
 
-    private var displayMode:String = "frame"
-    class NamedVar(val name:String, var value:Double)
+    private var displayMode: String = "frame"
+
+    class NamedVar(val name: String, var value: Double)
 
     /*
     # values for Cam Calibrated Goal detection DURING THE DAY: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
@@ -53,11 +61,12 @@ class CreamsicleOpMode() : OpMode() {
     var U_S = NamedVar("Upper Saturation", 255.0)
     var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
-    private var varBeingEdited:NamedVar = L_H
-    fun render(){
+    private var varBeingEdited: NamedVar = L_H
+    fun render() {
         console.display(2, "Active Var; ${varBeingEdited.name}")
-        console.display(4,  "${varBeingEdited.value}")
+        console.display(4, "${varBeingEdited.value}")
     }
+
     override fun init_loop() {
         if (XbuttonHelper.stateChanged(gamepad1.x) && gamepad1.x) {
             console.display(3, "TrainerMODE; $displayMode")
@@ -83,15 +92,15 @@ class CreamsicleOpMode() : OpMode() {
         if (YbuttonHelper.stateChanged(gamepad1.y) && gamepad1.y) {
             console.display(1, "Vals Zeroed")
             L_H.value = 0.0
-            L_S.value =  0.0
-            L_V.value =  0.0
+            L_S.value = 0.0
+            L_V.value = 0.0
             U_H.value = 0.0
             U_S.value = 0.0
             U_V.value = 0.0
             render()
         }
 
-        if (RbumperHelper.stateChanged(gamepad1.right_bumper) && gamepad1.right_bumper){
+        if (RbumperHelper.stateChanged(gamepad1.right_bumper) && gamepad1.right_bumper) {
             varBeingEdited.value += 5
             render()
         }
@@ -112,14 +121,10 @@ class CreamsicleOpMode() : OpMode() {
         }
     }
 
-// New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
-//ADD BROWSER FOR DECIMAL VALUES!!
+    // New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
+    //ADD BROWSER FOR DECIMAL VALUES!!
 
-
-    override fun loop() {
-    }
-
-    fun scoopFrame(frame:Mat):Mat {
+    fun scoopFrame(frame: Mat): Mat {
         // hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         val hsv = Mat()
@@ -225,26 +230,39 @@ class CreamsicleOpMode() : OpMode() {
                 } else if (approx.toArray().size == 8) {
                     Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
 
-                    var turnDir: String= "FWARRRRP"
+                    var turnDir = "FWARRRRP"
 
                     // Determine trajectory
-                    if (x < 250)  turnDir = "Right"
-                    else if (x >= 250)  turnDir = "Left"
+                    if (x < 245) {
+                        turnDir = "Right"
+                        movement.driveRobotTurn(1.0, -3.0, false)
+                    }
+
+                    if (x > 245 && x < 255) turnDir = "There You Are [gunfire]"
+                    else if (x >= 255) {
+                        turnDir = "Left"
+                        movement.driveRobotTurn(1.0, 3.0, false)
+                    }
+
 
                     console.display(6, "goallastX $x, $y")
-                    console.display(7,"Analysis says to $turnDir")
+                    console.display(7, "Analysis says to $turnDir")
+
+
                 }
 
             }
 
         }
-
-        return when(displayMode){
+        return when (displayMode) {
             "frame" -> frame
             "kernel" -> kernel
             "mask" -> maskB
             else -> frame
         }
+    }
+    override fun loop() {
+
 
     }
 }
