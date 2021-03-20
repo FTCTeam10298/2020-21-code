@@ -1,6 +1,4 @@
 package goalDetection2
-
-import android.media.MediaPlayer
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -17,7 +15,7 @@ import telemetryWizard.TelemetryConsole
 @Autonomous
 class CreamsicleOpMode() : OpMode() {
 
-    val hardware = ChoiVicoHardware()
+    val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(this)
 
@@ -35,6 +33,7 @@ class CreamsicleOpMode() : OpMode() {
 
     override fun init() {
         opencv.init(hardwareMap)
+        hardware.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
@@ -235,13 +234,13 @@ class CreamsicleOpMode() : OpMode() {
                     // Determine trajectory
                     if (x < 245) {
                         turnDir = "Right"
-                        movement.driveRobotTurn(1.0, -3.0, false)
+                        movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
                     }
 
                     if (x > 245 && x < 255) turnDir = "There You Are [gunfire]"
                     else if (x >= 255) {
                         turnDir = "Left"
-                        movement.driveRobotTurn(1.0, 3.0, false)
+                        movement.driveSetPower(-1.0, +1.0, -1.0, +1.0)
                     }
 
 
