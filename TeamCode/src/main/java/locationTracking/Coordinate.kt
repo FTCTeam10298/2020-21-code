@@ -27,8 +27,13 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
         if (y != null)
             this.y = y
 
-        if (r != null)
-            this.r = Math.toRadians(r)
+        if (r != null) {
+            var r_abs:Double = r
+            while (r_abs < 0)
+                r_abs += 360.0
+
+            this.r = Math.toRadians(r_abs)
+        }
     }
 
     /**
