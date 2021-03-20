@@ -1,9 +1,10 @@
 package robotCode
 
 import com.qualcomm.robotcore.hardware.*
+import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType
 import robotCode.hardwareClasses.MecOdometryHardware
 
-class ChoiVicoHardware: MecOdometryHardware {
+class ChoiVicoHardware(): MecOdometryHardware {
 
     override lateinit var lOdom: DcMotor
     override lateinit var rOdom: DcMotor
@@ -33,10 +34,11 @@ class ChoiVicoHardware: MecOdometryHardware {
         rOdom = hwMap.dcMotor["lBDrive"]
 
 //        DRIVE TRAIN
-        lFDrive = hwMap["lFDrive"] as DcMotor
-        rFDrive = hwMap["rFDrive"] as DcMotor
-        lBDrive = hwMap["lBDrive"] as DcMotor
-        rBDrive = hwMap["rBDrive"] as DcMotor
+
+        lFDrive = hwMap.get("left drive f") as DcMotor
+        rFDrive = hwMap["right drive f"] as DcMotor
+        lBDrive = hwMap["left drive b"] as DcMotor
+        rBDrive = hwMap["right drive b"] as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
