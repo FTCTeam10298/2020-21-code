@@ -13,6 +13,7 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+apply from: '../build.dependencies.gradle'
 apply plugin: 'kotlin-android'
 
 repositories {
@@ -21,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
