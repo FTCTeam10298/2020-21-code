@@ -9,16 +9,11 @@ package pid
  * @param d derivative coefficient
  * @param f feed-forward coefficient
  * */
-open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.0) {
+open class PID(private val k_p: Double = 0.0, private val k_i: Double = 0.0, private val k_d: Double = 0.0, private val k_f: Double = 0.0) {
 
-    private val k_p = p
-    private val k_i = i
-    private val k_d = d
-    private val kf = f
-
-    var p: Double = 1.0
-    var i: Double = 1.0
-    var d: Double = 1.0
+    var p: Double = 0.0
+    var i: Double = 0.0
+    var d: Double = 0.0
     var f: Double = 0.0
 
     private var deltaTime: Double = 0.0
@@ -40,7 +35,6 @@ open class PID(p: Double = 0.0, i: Double = 0.0, d: Double = 0.0, f: Double = 0.
     }
 
     fun calcPID(error: Double): Double {
-
         deltaTime = System.nanoTime() - lastTime
         lastTime = System.nanoTime().toDouble()
 
