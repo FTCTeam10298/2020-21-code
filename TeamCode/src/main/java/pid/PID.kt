@@ -42,6 +42,11 @@ open class PID(private val k_p: Double = 0.0, private val k_i: Double = 0.0, pri
         i += k_i * (error * deltaTime)
         d = k_d * (error - lastError) / deltaTime
 
+        if (i > 0.1)
+            i = 0.1
+        else if (i < -0.1)
+            i = -0.1
+
         lastError = error
 
         return pidVals()
