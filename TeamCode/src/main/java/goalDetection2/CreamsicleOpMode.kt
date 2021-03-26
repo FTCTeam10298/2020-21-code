@@ -1,4 +1,5 @@
 package goalDetection2
+import android.os.SystemClock.sleep
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -15,6 +16,7 @@ import telemetryWizard.TelemetryConsole
 @Autonomous
 class CreamsicleOpMode() : OpMode() {
 
+//    val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(this)
@@ -122,7 +124,7 @@ class CreamsicleOpMode() : OpMode() {
 
     // New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
     //ADD BROWSER FOR DECIMAL VALUES!!
-
+    var turnDir: String = "STUFF"
     fun scoopFrame(frame: Mat): Mat {
         // hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -229,18 +231,21 @@ class CreamsicleOpMode() : OpMode() {
                 } else if (approx.toArray().size == 8) {
                     Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
 
-                    var turnDir = "FWARRRRP"
+                    // GOAL: IMPLEMENT ROTATIONS
+                    // HOTZONE LOGIC SO THAT ROTATION DOESN'T BOUNCE
+                    // DO IT FAST ENOUGH FOR ODOM, marker,
+                    // DO IT HARDER, BETTER, FASTER, STRONGER
 
                     // Determine trajectory
                     if (x < 245) {
                         turnDir = "Right"
-                        movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
+
                     }
 
                     if (x > 245 && x < 255) turnDir = "There You Are [gunfire]"
                     else if (x >= 255) {
                         turnDir = "Left"
-                        movement.driveSetPower(-1.0, +1.0, -1.0, +1.0)
+
                     }
 
 
@@ -249,10 +254,9 @@ class CreamsicleOpMode() : OpMode() {
 
 
                 }
-
             }
-
         }
+
         return when (displayMode) {
             "frame" -> frame
             "kernel" -> kernel
@@ -261,6 +265,20 @@ class CreamsicleOpMode() : OpMode() {
         }
     }
     override fun loop() {
+        console.display(9, "All These are bound to the wheel...")
+        console.display(12, turnDir)
+        if (turnDir == "Left") {
+            console.display(9, "A Strange and Mighty Universe")
+            movement.driveSetPower(-1.0, 1.0, -1.0, 1.0)
+//            sleep(250)
+//            movement.driveSetPower(1.0, 1.0, 1.0, 1.0)
+        }
+        if (turnDir == "Right") {
+            console.display(9, "My God, It's Full of Stars")
+            movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
+//            sleep(250)
+//            movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
+        }
 
 
     }

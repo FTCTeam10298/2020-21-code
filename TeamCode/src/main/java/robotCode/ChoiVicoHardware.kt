@@ -29,9 +29,9 @@ class ChoiVicoHardware(): MecOdometryHardware {
         hwMap = ahwMap
 
 //        ODOMETRY
-        lOdom = hwMap.dcMotor["lFDrive"]
-        cOdom = hwMap.dcMotor["rFDrive"]
-        rOdom = hwMap.dcMotor["lBDrive"]
+//        lOdom = hwMap.dcMotor["lFDrive"]
+//        cOdom = hwMap.dcMotor["rFDrive"]
+//        rOdom = hwMap.dcMotor["lBDrive"]
 
 //        DRIVE TRAIN
 
@@ -56,41 +56,41 @@ class ChoiVicoHardware(): MecOdometryHardware {
         lBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
 //        SHOOTER
-        shooter = hwMap.get("shooter") as DcMotorEx
-
-        shooter.direction = DcMotorSimple.Direction.REVERSE
-        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
-
-//        COLLECTOR
-        collector = hwMap["collector"] as DcMotor
-
-        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        collector.direction = DcMotorSimple.Direction.FORWARD
-        collector.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-
-//        WOBBLE
-        wobble = hwMap["wobble"] as DcMotor
-
-        wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        wobble.direction = DcMotorSimple.Direction.FORWARD
-        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
-
-//        SERVOS
-        lift = hwMap["lift1"] as Servo
-        claw1 = hwMap["claw1"] as Servo
-        claw2 = hwMap["claw2"] as Servo
-        gate = hwMap["gate"] as Servo
-
-        lift.direction = Servo.Direction.REVERSE
-        claw1.direction = Servo.Direction.FORWARD
-        claw2.direction = Servo.Direction.REVERSE
-        gate.direction = Servo.Direction.REVERSE
-
-        lift.position = 0.0
-        claw1.position = 1.0
-        claw2.position = 1.0
-        gate.position = 0.1
+//        shooter = hwMap.get("shooter") as DcMotorEx
+//
+//        shooter.direction = DcMotorSimple.Direction.REVERSE
+//        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
+//        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
+//
+////        COLLECTOR
+//        collector = hwMap["collector"] as DcMotor
+//
+//        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+//        collector.direction = DcMotorSimple.Direction.FORWARD
+//        collector.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+//
+////        WOBBLE
+//        wobble = hwMap["wobble"] as DcMotor
+//
+//        wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+//        wobble.direction = DcMotorSimple.Direction.FORWARD
+//        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
+//
+////        SERVOS
+//        lift = hwMap["lift1"] as Servo
+//        claw1 = hwMap["claw1"] as Servo
+//        claw2 = hwMap["claw2"] as Servo
+//        gate = hwMap["gate"] as Servo
+//
+//        lift.direction = Servo.Direction.REVERSE
+//        claw1.direction = Servo.Direction.FORWARD
+//        claw2.direction = Servo.Direction.REVERSE
+//        gate.direction = Servo.Direction.REVERSE
+//
+//        lift.position = 0.0
+//        claw1.position = 1.0
+//        claw2.position = 1.0
+//        gate.position = 0.1
 
     }
 }
