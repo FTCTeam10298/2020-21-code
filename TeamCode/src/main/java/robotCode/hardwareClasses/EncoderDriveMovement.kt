@@ -402,7 +402,7 @@ class EncoderDriveMovement(private val hardware: MecanumHardware, private val co
         drivePowerAll(0.0)
     }
 
-    override fun doGoToPosition(target: Coordinate, maxPower: Double, distancePID: PID, anglePID: PID, distanceMin: Double, angleDegMin: Double, reset: Boolean, opmode: LinearOpMode) {
+    override fun doGoToPosition(target: Coordinate, maxPower: Double, distancePIDX: PID, distancePIDY: PID, anglePID: PID, distanceMin: Double, angleDegMin: Double, reset: Boolean, opmode: LinearOpMode) {
         TODO("Not yet implemented")
     }
 

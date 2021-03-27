@@ -75,7 +75,8 @@ interface DriveMovement {
      */
     fun doGoToPosition(target: Coordinate,
                        maxPower: Double,
-                       distancePID: PID,
+                       distancePIDX: PID,
+                       distancePIDY: PID,
                        anglePID: PID,
                        distanceMin: Double,
                        angleDegMin: Double,
