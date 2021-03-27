@@ -50,8 +50,10 @@ class odometryTest: LinearOpMode() {
 //        while (true)
 //            robot.setSpeedAll(0.0, 1.0, 0.0, 0.1, 1.0)
 
-        target.setCoordinate(x = 0.0, y = 0.0, r = 270.0)
-        robot.turnGoToPosition(target, 10.0, 0.5, this)
+        target.setCoordinate(x = 0.0, y = 12.0, r = 0.0)
+        robot.straightGoToPosition(target,1.0,0.5,this)
+        robot.turnGoToPosition(target, 1.0, 0.5, this)
+        robot.updatePosition() // For viewing accurate numbers on telemetry console
 
 //        robot.driveSetPower(0.5, 0.5,0.5,0.5)
 //        sleep(10000)
