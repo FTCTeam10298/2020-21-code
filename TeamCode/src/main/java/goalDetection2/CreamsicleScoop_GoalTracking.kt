@@ -1,33 +1,47 @@
+//This code was written by your friendly Aperture Science Consumer Associate Gabriel Fergesen, who would like to remind you that only the truest peace lovers can make a living writing code to slaughter people garishly. Join the Turret Project today!
+
+//This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies.
+//It has four calls to run.
+
+//creamsicle.turret.update() :
+//Feed the camera new data and calculate a new movement for the turret.
+
+
+//turret.stow() :
+// Lock up shop. Set motor to lock the turret so it is flush with the bot.
+
+//turret.initialize() :
+//Set up a camera and the calculations. Allows the library to run.
+
+//turret.aimNoScope() :
+//Move the turret onto the target's heading consistantly. Sometimes overkill.
+
+//turret.aimAndWait() :
+//Move the turret onto the target's deadzone (the "there you are *gunshots*" message)
+
+//THERES PROBLEMS??
+//Don't be a stupid Alternian, go run a camera.bake with the special pattern to make it work!
+//Or run a cam-calibration with front_GoalDetection (Calibrate)
+//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!
+
+//*this has been an Aperture Science Innovators notification.*
+
+
+
 package goalDetection2
+
 import buttonHelper.ButtonHelper
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import goalDetection.OpencvAbstraction
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
-import org.openftc.easyopencv.OpenCvCameraFactory
-import robotCode.ChoiVicoHardware
-import robotCode.RingDetector
 import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 
-//OK GABE, SO THERE'S STUFF TO DO.
-//Calls Needed: creamsicle.turret.update()
-//turret.stow()
-//turret.initialize()
-//turret.aimNoScope()
-//turret.aimAndWait()
+class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, private val opmode: OpMode){
 
-
-@Autonomous
-class CreamsicleOpMode() : OpMode() {
-
-//    val hardware:ChoiVicoHardware = ChoiVicoHardware()
-    val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val font = Imgproc.FONT_HERSHEY_COMPLEX
-    val opencv = OpencvAbstraction(this)
-
+    val opencv = OpencvAbstraction(opmode)
     val XbuttonHelper = ButtonHelper()
     val YbuttonHelper = ButtonHelper()
     val DpadHelper = ButtonHelper()
@@ -35,14 +49,8 @@ class CreamsicleOpMode() : OpMode() {
     val LbumperHelper = ButtonHelper()
     val AbuttonHelper = ButtonHelper()
 
-    val console = TelemetryConsole(telemetry)
-
-
-    val movement = EncoderDriveMovement(hardware, console)
-
-    override fun init() {
+    fun init() {
         opencv.init(hardwareMap)
-        hardware.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
@@ -68,68 +76,7 @@ class CreamsicleOpMode() : OpMode() {
     var U_S = NamedVar("Upper Saturation", 255.0)
     var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
-    private var varBeingEdited: NamedVar = L_H
-    fun render() {
-        console.display(2, "Active Var; ${varBeingEdited.name}")
-        console.display(4, "${varBeingEdited.value}")
-    }
 
-    override fun init_loop() {
-        if (XbuttonHelper.stateChanged(gamepad1.x) && gamepad1.x) {
-            console.display(3, "TrainerMODE; $displayMode")
-            if (displayMode == "frame") displayMode = "mask"
-            else if (displayMode == "mask") displayMode = "kernel"
-            else if (displayMode == "kernel") displayMode = "frame"
-            render()
-        }
-
-
-        when {
-            DpadHelper.stateChanged(gamepad1.dpad_left) && gamepad1.dpad_left -> {
-                if (varBeingEdited == L_H) varBeingEdited = L_S
-                else if (varBeingEdited == L_S) varBeingEdited = L_V
-                else if (varBeingEdited == L_V) varBeingEdited = U_H
-                else if (varBeingEdited == U_H) varBeingEdited = U_S
-                else if (varBeingEdited == U_S) varBeingEdited = U_V
-                else if (varBeingEdited == U_V) varBeingEdited = L_H
-                render()
-            }
-        }
-
-        if (YbuttonHelper.stateChanged(gamepad1.y) && gamepad1.y) {
-            console.display(1, "Vals Zeroed")
-            L_H.value = 0.0
-            L_S.value = 0.0
-            L_V.value = 0.0
-            U_H.value = 0.0
-            U_S.value = 0.0
-            U_V.value = 0.0
-            render()
-        }
-
-        if (RbumperHelper.stateChanged(gamepad1.right_bumper) && gamepad1.right_bumper) {
-            varBeingEdited.value += 5
-            render()
-        }
-        if (LbumperHelper.stateChanged(gamepad1.left_bumper) && gamepad1.left_bumper) {
-            varBeingEdited.value -= 5
-            render()
-        }
-
-        if (AbuttonHelper.stateChanged(gamepad1.a) && gamepad1.a) {
-            L_H.value = 0.0
-            L_S.value = 0.0
-            L_V.value = 0.0
-            U_H.value = 255.0
-            U_S.value = 255.0
-            U_V.value = 255.0
-            console.display(1, "Vals Squonked")
-            render()
-        }
-    }
-
-    // New Android Values, Quality Unknown: L_H = 0.0, L_S = 55.0, L_V = 135.0, U_H = 85.0, U_S = 210.0, U_V = 215.0
-    //ADD BROWSER FOR DECIMAL VALUES!!
     var turnDir: String = "STUFF"
     fun scoopFrame(frame: Mat): Mat {
         // hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -269,23 +216,5 @@ class CreamsicleOpMode() : OpMode() {
             "mask" -> maskB
             else -> frame
         }
-    }
-    override fun loop() {
-        console.display(9, "All These are bound to the wheel...")
-        console.display(12, turnDir)
-        if (turnDir == "Left") {
-            console.display(9, "A Strange and Mighty Universe")
-            movement.driveSetPower(-0.3, 0.3, -0.3, 0.3)
-//            sleep(250)
-//            movement.driveSetPower(1.0, 1.0, 1.0, 1.0)
-        }
-        if (turnDir == "Right") {
-            console.display(9, "My God, It's Full of Stars")
-            movement.driveSetPower(0.3, -0.3, 0.3, 0.3)
-//            sleep(250)
-//            movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
-        }
-
-
     }
 }

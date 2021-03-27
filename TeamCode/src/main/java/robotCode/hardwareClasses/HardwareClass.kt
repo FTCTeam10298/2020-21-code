@@ -32,3 +32,7 @@ interface MecOdometryHardware: MecanumHardware {
     val rOdom: DcMotor
     val cOdom: DcMotor
 }
+
+interface WebcamHardware: HardwareClass {
+
+}
