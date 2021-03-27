@@ -1,13 +1,18 @@
 //This code was written by your friendly Aperture Science Consumer Associate Gabriel Fergesen, who would like to remind you that only the truest peace lovers can make a living writing code to slaughter people garishly. Join the Turret Project today!
 
+//This stuff allows *you*, a nerd land-locked amid queer pixels, to outline key elements (if they are goals) and put a big 'ol tag on them. The days of FOUR, ONE, or NONE are ended.. but it took a while.
+
+
 //This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies.
 //It has four calls to run.
 
-//creamsicle.turret.update() :
+//HEY! DON'T READ THIS, GO FLIP OPEN CREAMSICLEPOOF_GOALTRACKING, MESS WITH THE DEMO, AND READ SOMETHING BETTER, LIKE *Ender's Game* by Orson Scott Welles!
+
+//turret.update() : IN PROGRESS
 //Feed the camera new data and calculate a new movement for the turret.
 
 
-//turret.stow() :
+//turret.stow() : TO DO
 // Lock up shop. Set motor to lock the turret so it is flush with the bot.
 
 //turret.initialize() :
@@ -42,15 +47,10 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
 
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(opmode)
-    val XbuttonHelper = ButtonHelper()
-    val YbuttonHelper = ButtonHelper()
-    val DpadHelper = ButtonHelper()
-    val RbumperHelper = ButtonHelper()
-    val LbumperHelper = ButtonHelper()
-    val AbuttonHelper = ButtonHelper()
+    var goalCenterPoint: Double = 0.0
 
     fun init() {
-        opencv.init(hardwareMap)
+        opencv.init(opmode.hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
@@ -189,18 +189,7 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
                     // DO IT FAST ENOUGH FOR ODOM, marker,
                     // DO IT HARDER, BETTER, FASTER, STRONGER
 
-                    // Determine trajectory
-                    if (x < 245) {
-                        turnDir = "Right"
-
-                    }
-
-                    if (x > 245 && x < 255) turnDir = "There You Are [gunfire]"
-                    else if (x >= 255) {
-                        turnDir = "Left"
-
-                    }
-
+                    goalCenterPoint = x
 
                     console.display(6, "goallastX $x, $y")
                     console.display(7, "Analysis says to $turnDir")
