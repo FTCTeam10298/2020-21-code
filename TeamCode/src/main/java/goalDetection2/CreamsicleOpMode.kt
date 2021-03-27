@@ -1,5 +1,4 @@
 package goalDetection2
-import android.os.SystemClock.sleep
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -12,6 +11,14 @@ import robotCode.ChoiVicoHardware
 import robotCode.RingDetector
 import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
+
+//OK GABE, SO THERE'S STUFF TO DO.
+//Calls Needed: creamsicle.turret.update()
+//turret.stow()
+//turret.initialize()
+//turret.aimNoScope()
+//turret.aimAndWait()
+
 
 @Autonomous
 class CreamsicleOpMode() : OpMode() {
@@ -42,7 +49,6 @@ class CreamsicleOpMode() : OpMode() {
         opencv.onNewFrame(::scoopFrame)
 
     }
-
 
     private var displayMode: String = "frame"
 
@@ -269,13 +275,13 @@ class CreamsicleOpMode() : OpMode() {
         console.display(12, turnDir)
         if (turnDir == "Left") {
             console.display(9, "A Strange and Mighty Universe")
-            movement.driveSetPower(-1.0, 1.0, -1.0, 1.0)
+            movement.driveSetPower(-0.3, 0.3, -0.3, 0.3)
 //            sleep(250)
 //            movement.driveSetPower(1.0, 1.0, 1.0, 1.0)
         }
         if (turnDir == "Right") {
             console.display(9, "My God, It's Full of Stars")
-            movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
+            movement.driveSetPower(0.3, -0.3, 0.3, 0.3)
 //            sleep(250)
 //            movement.driveSetPower(1.0, -1.0, 1.0, -1.0)
         }
