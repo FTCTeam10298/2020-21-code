@@ -9,11 +9,7 @@ import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 
 //OK GABE, SO THERE'S STUFF TO DO.
-//Calls Needed: creamsicle.turret.update()
-//turret.stow()
-//turret.initialize()
-//turret.aimNoScope()
-//turret.aimAndWait()
+//ACTUALLY THIS IS IN ANOTHER FILE, GO TO IT!!
 
 
 @Autonomous

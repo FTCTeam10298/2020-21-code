@@ -3,33 +3,7 @@
 //This stuff allows *you*, a nerd land-locked amid queer pixels, to outline key elements (if they are goals) and put a big 'ol tag on them. The days of FOUR, ONE, or NONE are ended.. but it took a while.
 
 
-//This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies.
-//It has four calls to run.
 
-//HEY! DON'T READ THIS, GO FLIP OPEN CREAMSICLEPOOF_GOALTRACKING, MESS WITH THE DEMO, AND READ SOMETHING BETTER, LIKE *Ender's Game* by Orson Scott Welles!
-
-//turret.update() : IN PROGRESS
-//Feed the camera new data and calculate a new movement for the turret.
-
-
-//turret.stow() : TO DO
-// Lock up shop. Set motor to lock the turret so it is flush with the bot.
-
-//turret.initialize() :
-//Set up a camera and the calculations. Allows the library to run.
-
-//turret.aimNoScope() :
-//Move the turret onto the target's heading consistantly. Sometimes overkill.
-
-//turret.aimAndWait() :
-//Move the turret onto the target's deadzone (the "there you are *gunshots*" message)
-
-//THERES PROBLEMS??
-//Don't be a stupid Alternian, go run a camera.bake with the special pattern to make it work!
-//Or run a cam-calibration with front_GoalDetection (Calibrate)
-//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!
-
-//*this has been an Aperture Science Innovators notification.*
 
 
 
@@ -38,6 +12,7 @@ package goalDetection2
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import goalDetection.OpencvAbstraction
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import robotCode.hardwareClasses.EncoderDriveMovement
@@ -45,18 +20,10 @@ import telemetryWizard.TelemetryConsole
 
 class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, private val opmode: OpMode){
 
-    val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(opmode)
+
+    val font = Imgproc.FONT_HERSHEY_COMPLEX
     var goalCenterPoint: Double = 0.0
-
-    fun init() {
-        opencv.init(opmode.hardwareMap)
-        opencv.optimizeView = true
-        opencv.openCameraDeviceAsync = true
-        opencv.start()
-        opencv.onNewFrame(::scoopFrame)
-
-    }
 
     private var displayMode: String = "frame"
 
@@ -68,7 +35,6 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
     # contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     */
 
-
     var L_H = NamedVar("Low Hue", 0.0)
     var L_S = NamedVar("Low Saturation", 65.0)
     var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
@@ -76,14 +42,26 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
     var U_S = NamedVar("Upper Saturation", 255.0)
     var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
+    //Declares X and Y of the Goal's... well, something... that other code can use and request.
+    var x = 0.0
+    var y = 0.0
 
-    var turnDir: String = "STUFF"
+    val hsv = Mat()
+    val maskA = Mat()
+    val maskB = Mat()
+    val kernel = Mat(5, 5, CvType.CV_8U)
+
+    fun init() {
+        opencv.init(opmode.hardwareMap)
+        opencv.optimizeView = true
+        opencv.openCameraDeviceAsync = true
+        opencv.start()
+        opencv.onNewFrame(::scoopFrame)
+    }
+
     fun scoopFrame(frame: Mat): Mat {
         // hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-        val hsv = Mat()
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV)
-
 
         /*
 
@@ -103,15 +81,12 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
         */
         val lower_red = Scalar(L_H.value, L_S.value, L_V.value)
         val upper_red = Scalar(U_H.value, U_S.value, U_V.value)
-        val maskA = Mat()
         Core.inRange(hsv, lower_red, upper_red, maskA)
 
         /*
             kernel = np.ones((5, 5), np.uint8)
             mask = cv2.erode(mask, kernel)
         */
-        val kernel = Mat(5, 5, CvType.CV_8U)
-        val maskB = Mat()
         Imgproc.erode(maskA, maskB, kernel)
 
         /*
@@ -147,8 +122,8 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
             //        x = approx.ravel() [0]
             //        y = approx.ravel() [1]
             val point = approx.toList()[0]
-            val x = point.x
-            val y = point.y
+            x = point.x
+            y = point.y
             /*
                 if area > 400:
                 */
@@ -192,7 +167,6 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
                     goalCenterPoint = x
 
                     console.display(6, "goallastX $x, $y")
-                    console.display(7, "Analysis says to $turnDir")
 
 
                 }

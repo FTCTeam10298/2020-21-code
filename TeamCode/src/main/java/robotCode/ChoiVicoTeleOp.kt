@@ -5,6 +5,9 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
+import goalDetection.OpencvAbstraction
+import goalDetection2.CreamsicleScoop_GoalTracking
+import goalDetection2.CreamsicleWrapper_FTC_UltimateGoal
 import robotCode.hardwareClasses.MecanumDriveTrain
 import telemetryWizard.TelemetryConsole
 import kotlin.math.abs
@@ -16,6 +19,9 @@ class ChoiVicoTeleOp: OpMode() {
     val console = TelemetryConsole(telemetry)
     val hardware = ChoiVicoHardware()
     val robot = MecanumDriveTrain(hardware)
+
+    val goalTracking = CreamsicleScoop_GoalTracking(console, this)
+    val turret = CreamsicleWrapper_FTC_UltimateGoal(console, robot, this)
 
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
@@ -38,6 +44,7 @@ class ChoiVicoTeleOp: OpMode() {
 
     override fun init() {
         hardware.init(hardwareMap)
+        goalTracking.init()
     }
 
     override fun start() {
