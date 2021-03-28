@@ -2,22 +2,15 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
 import locationTracking.Coordinate
-import pid.PID
-import robotCode.hardwareClasses.MecOdometryHardware
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
-
-
 
 @Autonomous(name = "odometryTest", group = "Aim Bot")
 class odometryTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
-    val hardware = odometryHardware()
+    val hardware = odometryTestHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
     val target = Coordinate()
