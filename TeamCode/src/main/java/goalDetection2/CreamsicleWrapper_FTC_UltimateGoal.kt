@@ -42,7 +42,11 @@ class CreamsicleWrapper_FTC_UltimateGoal(val console: TelemetryConsole, val driv
      var turnDir: Directions? = null
 
     fun update() {
-        
+        // GOAL: IMPLEMENT ROTATIONS
+        // HOTZONE LOGIC SO THAT ROTATION DOESN'T BOUNCE
+        // DO IT FAST ENOUGH FOR ODOM, marker,
+        // DO IT HARDER, BETTER, FASTER, STRONGER
+
         if (goalTracking.x < 245) {
             turnDir = Directions.Right
 
@@ -54,8 +58,6 @@ class CreamsicleWrapper_FTC_UltimateGoal(val console: TelemetryConsole, val driv
 
         }
 
-
-        console.display(6, "goallastX $goalTracking.x, $goalTracking.y")
         console.display(7, "Analysis says to $turnDir")
     }
 

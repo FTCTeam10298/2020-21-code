@@ -23,7 +23,6 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
     val opencv = OpencvAbstraction(opmode)
 
     val font = Imgproc.FONT_HERSHEY_COMPLEX
-    var goalCenterPoint: Double = 0.0
 
     private var displayMode: String = "frame"
 
@@ -122,8 +121,6 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
             //        x = approx.ravel() [0]
             //        y = approx.ravel() [1]
             val point = approx.toList()[0]
-            x = point.x
-            y = point.y
             /*
                 if area > 400:
                 */
@@ -151,24 +148,18 @@ class CreamsicleScoop_GoalTracking(private val console: TelemetryConsole, privat
                  */
                 if (approx.toArray().size == 3) {
                     // cv2.putText(frame, "triangle", (x, y), font, 1, (22, 100, 100))
-                    Imgproc.putText(frame, "triangle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    Imgproc.putText(frame, "triangle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 } else if (approx.toArray().size == 4) {
-                    Imgproc.putText(frame, "rectangle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    Imgproc.putText(frame, "rectangle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 } else if (approx.toArray().size in 11..19) {
-                    Imgproc.putText(frame, "circle", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    Imgproc.putText(frame, "circle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                 } else if (approx.toArray().size == 8) {
-                    Imgproc.putText(frame, "goal", Point(x, y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                    Imgproc.putText(frame, "goal", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
 
-                    // GOAL: IMPLEMENT ROTATIONS
-                    // HOTZONE LOGIC SO THAT ROTATION DOESN'T BOUNCE
-                    // DO IT FAST ENOUGH FOR ODOM, marker,
-                    // DO IT HARDER, BETTER, FASTER, STRONGER
+                    x = point.x
+                    y = point.y
 
-                    goalCenterPoint = x
-
-                    console.display(6, "goallastX $x, $y")
-
-
+                    console.display(6, "Last known goal position: $x, $y")
                 }
             }
         }
