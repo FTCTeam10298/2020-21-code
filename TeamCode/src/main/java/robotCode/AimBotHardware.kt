@@ -1,4 +1,4 @@
-package robotCode.AimBot
+package robotCode
 
 import com.qualcomm.robotcore.hardware.*
 import robotCode.hardwareClasses.MecanumHardware

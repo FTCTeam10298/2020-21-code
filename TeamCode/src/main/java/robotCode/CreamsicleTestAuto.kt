@@ -12,10 +12,9 @@ import telemetryWizard.TelemetryConsole
 //ACTUALLY THIS IS IN ANOTHER FILE, GO TO IT!!
 
 
-@Autonomous
-class CreamsicleOpMode() : OpMode() {
+@Autonomous(name="Creamsicle Test", group="Tests")
+class CreamsicleTestAuto() : OpMode() {
 
-//    val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val hardware:ChoiVicoHardware = ChoiVicoHardware()
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val opencv = OpencvAbstraction(this)

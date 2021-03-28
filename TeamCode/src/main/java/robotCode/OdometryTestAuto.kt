@@ -7,10 +7,10 @@ import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 
 @Autonomous(name = "odometryTest", group = "Aim Bot")
-class odometryTest: LinearOpMode() {
+class OdometryTestAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
-    val hardware = odometryTestHardware()
+    val hardware = OdometryTestHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
     val target = Coordinate()

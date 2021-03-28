@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc
 
 // CURRENT VERSION
 
-@TeleOp
+@TeleOp(name="Ring Detector Test", group="Tests")
 class RingDetectorTest: LinearOpMode()  {
 
     val console = TelemetryConsole(telemetry)

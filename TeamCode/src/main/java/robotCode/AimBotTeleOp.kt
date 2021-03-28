@@ -1,16 +1,14 @@
- package robotCode.AimBot
+ package robotCode
 
-//import buttonHelper.Gamepad1
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import telemetryWizard.TelemetryConsole
 import robotCode.hardwareClasses.MecanumDriveTrain
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-//@TeleOp(name="Aim Bot Tele-Op", group="Aim Bot")
+//@TeleOp(name="Aim Bot TeleOp", group="Aim Bot")
 class AimBotTeleOp: OpMode() {
 
     val hardware = AimBotHardware()

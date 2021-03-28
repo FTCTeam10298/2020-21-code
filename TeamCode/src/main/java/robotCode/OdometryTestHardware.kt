@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import robotCode.hardwareClasses.MecOdometryHardware
 
-class odometryTestHardware: MecOdometryHardware {
+class OdometryTestHardware: MecOdometryHardware {
     override lateinit var lOdom: DcMotor
     override lateinit var rOdom: DcMotor
     override lateinit var cOdom: DcMotor

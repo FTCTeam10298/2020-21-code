@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Servo
 import pid.MotorWithPID
-import robotCode.AimBot.AimBotHardware
+import robotCode.AimBotHardware
 
 @Autonomous
 class ShooterTest(): OpMode() {

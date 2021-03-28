@@ -12,7 +12,7 @@ import telemetryWizard.TelemetryConsole
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-@TeleOp(name="Tele-Op ChoiVico", group="ChoiVico")
+@TeleOp(name="ChoiVico TeleOp", group="ChoiVico")
 class ChoiVicoTeleOp: OpMode() {
 
     val console = TelemetryConsole(telemetry)

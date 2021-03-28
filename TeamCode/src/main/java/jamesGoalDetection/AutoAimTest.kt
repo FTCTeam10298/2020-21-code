@@ -1,26 +1,18 @@
 package jamesGoalDetection
 
-import android.os.SystemClock
-import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotor
 import locationTracking.Coordinate
-import robotCode.ChoiVicoHardware
 import robotCode.RingDetector
-import robotCode.hardwareClasses.MecanumDriveTrain
 import robotCode.hardwareClasses.OdometryDriveMovement
-import robotCode.odometryTestHardware
+import robotCode.OdometryTestHardware
 import telemetryWizard.TelemetryConsole
-import kotlin.math.abs
-import kotlin.math.absoluteValue
 
-@TeleOp
+@TeleOp(name="James Auto Aim Test", group="Tests")
 class AutoAimTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
-    val hardware = odometryTestHardware()
+    val hardware = OdometryTestHardware()
     val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpencvAbstraction(this)
 
