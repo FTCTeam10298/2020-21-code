@@ -16,19 +16,19 @@ class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
     fun updatePosition(deltaL: Double, deltaC: Double, deltaR: Double) {
         var robotX: Double = x
         var robotY: Double = y
-        var robotA: Double = r
+        var robotR: Double = r
 
-        robotA += 1 / (2 * xnot) * (deltaL - deltaR)
+        robotR += 1 / (2 * xnot) * (deltaL - deltaR)
 
         val deltaY = .5 * (deltaR + deltaL)
         val deltaX = ynot / (2 * xnot) * (deltaL - deltaR) + deltaC
 
-        robotX += deltaX * -cos(robotA) + deltaY * sin(robotA)
-        robotY += deltaX * sin(robotA) + deltaY * cos(robotA)
+        robotX += deltaX * cos(robotR) + deltaY * sin(robotR)
+        robotY += deltaX * sin(robotR) + deltaY * cos(robotR)
 
         x = robotX
         y = robotY
-        r = robotA % (2 * Math.PI)
+        r = robotR % (2 * Math.PI)
 
         if (r > Math.PI)
             r -= 2 * Math.PI

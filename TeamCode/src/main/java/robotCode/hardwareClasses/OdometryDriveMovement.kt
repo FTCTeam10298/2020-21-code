@@ -64,14 +64,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 
         var angleError: Double = target.r - current.r
 
-        while (angleError > 181.0)
-            angleError -= 360.0
+        while (angleError > Math.PI)
+            angleError -= Math.PI * 2
 
-        while (angleError < -181.0)
-            angleError += 360.0
-
-        //if (angleError > Math.PI)
-        //    angleError -= 2 * Math.PI
+        while (angleError < -Math.PI)
+            angleError += Math.PI * 2
 
         // Find the absolute angle error
         val absAngleError: Double =
@@ -110,7 +107,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(11, "absAngleError: ${Math.toDegrees(absAngleError)}")
         console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(0.0, 1.0, newSpeedA, 0.0, maxPower)
+        setSpeedAll(newSpeedx, newSpeedy, newSpeedA, 0.0, maxPower)
 
         return State.Running
     }
@@ -171,11 +168,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(1.0, 0.01, 0.0),
-                PID(1.0, 0.01, 0.0),
-                PID(0.0, 0.0, 0.0),
+                PID(0.03, 0.01, 0.0),
+                PID(0.03, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
                 distanceMin,
-                1.0,
+                0.5,
                 true,
                 opmode
         )
@@ -198,9 +195,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.25, 0.01, 0.0),
-                PID(1.0, 0.01, 0.0),
-                PID(1.0, 0.01, 0.0),
+                PID(0.01, 0.01, 0.0),
+                PID(0.01, 0.01, 0.0),
+                PID(0.5, 0.01, 0.0),
                 0.5,
                 angleDegMin,
                 true,
