@@ -9,10 +9,8 @@
 
 package goalDetection2
 
-import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import goalDetection.OpencvAbstraction
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import robotCode.hardwareClasses.EncoderDriveMovement

@@ -5,7 +5,6 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
-import goalDetection.OpencvAbstraction
 import goalDetection2.CreamsicleScoop_GoalTracking
 import goalDetection2.CreamsicleWrapper_FTC_UltimateGoal
 import robotCode.hardwareClasses.MecanumDriveTrain

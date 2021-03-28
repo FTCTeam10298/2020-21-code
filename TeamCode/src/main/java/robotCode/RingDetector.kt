@@ -2,7 +2,7 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import goalDetection.OpencvAbstraction
+import jamesGoalDetection.OpencvAbstraction
 import telemetryWizard.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc

@@ -1,4 +1,4 @@
-package goalDetection
+package jamesGoalDetection
 
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.OpMode

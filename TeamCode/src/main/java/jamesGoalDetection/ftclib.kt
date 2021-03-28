@@ -1,4 +1,4 @@
-package goalDetection
+package jamesGoalDetection
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName

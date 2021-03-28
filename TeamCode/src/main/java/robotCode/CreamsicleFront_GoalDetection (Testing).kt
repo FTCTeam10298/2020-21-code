@@ -2,7 +2,7 @@ package robotCode
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import goalDetection.OpencvAbstraction
+import jamesGoalDetection.OpencvAbstraction
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import robotCode.hardwareClasses.EncoderDriveMovement
