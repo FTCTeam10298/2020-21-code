@@ -1,22 +1,23 @@
-package jamesGoalDetection
+package creamsicleGoalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import locationTracking.Coordinate
+import openCvAbstraction.OpenCvAbstraction
 import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
 import robotCode.OdometryTestHardware
 import telemetryWizard.TelemetryConsole
 
 @TeleOp(name="James Auto Aim Test", group="Tests")
-class AutoAimTest: LinearOpMode() {
+class CreamsicleAutoAimTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = OdometryTestHardware()
     val robot = OdometryDriveMovement(console, hardware)
-    val opencv = OpencvAbstraction(this)
+    val opencv = OpenCvAbstraction(this)
 
-    val turret = AutoAim(console, robot)
+    val turret = CreamsicleAutoAim(console, robot)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
     val ringDetector = RingDetector(150, 135, console)

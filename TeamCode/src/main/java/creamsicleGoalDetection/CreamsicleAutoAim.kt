@@ -1,18 +1,17 @@
-package jamesGoalDetection
+package creamsicleGoalDetection
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.opencv.core.Mat
 import robotCode.hardwareClasses.MecanumDriveTrain
 import telemetryWizard.TelemetryConsole
 
-class AutoAim(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain) {
+class CreamsicleAutoAim(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain) {
     enum class Directions {
         Right,
         Left,
         TargetAcquired
     }
 
-    val goalTracking = GoalDecector(console)
+    val goalTracking = CreamsicleGoalDetector(console)
 
     var turnDir: Directions? = null
 

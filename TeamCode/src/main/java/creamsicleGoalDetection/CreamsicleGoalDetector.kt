@@ -1,12 +1,10 @@
-package jamesGoalDetection
+package creamsicleGoalDetection
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import jamesGoalDetection.OpencvAbstraction
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import telemetryWizard.TelemetryConsole
 
-class GoalDecector(private val console: TelemetryConsole){
+class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
     private val font = Imgproc.FONT_HERSHEY_COMPLEX
 

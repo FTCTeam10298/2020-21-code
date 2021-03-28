@@ -1,4 +1,4 @@
-package jamesGoalDetection
+package openCvAbstraction
 
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -48,7 +48,7 @@ class PipelineAbstraction: OpenCvPipeline() {
 
 }
 
-class OpencvAbstraction(private val opmode: OpMode) {
+class OpenCvAbstraction(private val opmode: OpMode) {
 
     private val pipeline = PipelineAbstraction()
 

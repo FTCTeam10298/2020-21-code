@@ -3,7 +3,7 @@
 
  */
 // A clean, robot-free port of good ol' CreamsicleVision for Android... perhaps also
-package goalDetection2
+package creamsicleGoalDetection
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.HardwareMap

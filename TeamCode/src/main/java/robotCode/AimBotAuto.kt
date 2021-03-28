@@ -2,7 +2,8 @@
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
-import jamesGoalDetection.OpencvAbstraction
+import openCvAbstraction.OpenCvAbstraction
+import ringDetector.RingDetector
 import robotCode.hardwareClasses.EncoderDriveMovement
 import telemetryWizard.TelemetryConsole
 import telemetryWizard.TelemetryWizard
@@ -13,7 +14,7 @@ class AimBotAuto: LinearOpMode() {
     val console = TelemetryConsole(telemetry)
     val wizard = TelemetryWizard(console)
 
-    val opencv = OpencvAbstraction(this)
+    val opencv = OpenCvAbstraction(this)
     val ringDetector = RingDetector(150, 135, console)
 
     val hardware = AimBotHardware()

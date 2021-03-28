@@ -2,7 +2,7 @@ package ringDetector
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import jamesGoalDetection.OpencvAbstraction
+import openCvAbstraction.OpenCvAbstraction
 import telemetryWizard.TelemetryConsole
 
 @TeleOp(name="Ring Detector Test", group="Tests")
@@ -10,7 +10,7 @@ class RingDetectorTest: LinearOpMode()  {
 
     val console = TelemetryConsole(telemetry)
 
-    val opencv = OpencvAbstraction(this)
+    val opencv = OpenCvAbstraction(this)
     val ringDetector = RingDetector(150, 135, console)
 
     override fun runOpMode() {
