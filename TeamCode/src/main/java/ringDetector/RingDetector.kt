@@ -1,42 +1,10 @@
-package robotCode
+package ringDetector
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import jamesGoalDetection.OpencvAbstraction
 import telemetryWizard.TelemetryConsole
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 
 // CURRENT VERSION
-
-@TeleOp(name="Ring Detector Test", group="Tests")
-class RingDetectorTest: LinearOpMode()  {
-
-    val console = TelemetryConsole(telemetry)
-
-    val opencv = OpencvAbstraction(this)
-    val ringDetector = RingDetector(150, 135, console)
-
-    override fun runOpMode() {
-        opencv.init(hardwareMap)
-        opencv.optimizeView = true
-        opencv.openCameraDeviceAsync = true
-        opencv.start()
-
-        waitForStart()
-        opencv.onFirstFrame{ ringDetector.init(it) }
-
-        if (ringDetector.position == RingDetector.RingPosition.FOUR)
-        while (opModeIsActive()) {
-            telemetry.addData("Analysis", ringDetector.analysis)
-            telemetry.addData("Position", ringDetector.position)
-            telemetry.update()
-
-            opencv.onNewFrame { ringDetector.processFrame(it)}
-
-        }
-    }
-}
 
 class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, private val console: TelemetryConsole) {
     /*

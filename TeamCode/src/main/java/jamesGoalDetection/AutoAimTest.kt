@@ -3,7 +3,7 @@ package jamesGoalDetection
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import locationTracking.Coordinate
-import robotCode.RingDetector
+import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
 import robotCode.OdometryTestHardware
 import telemetryWizard.TelemetryConsole
