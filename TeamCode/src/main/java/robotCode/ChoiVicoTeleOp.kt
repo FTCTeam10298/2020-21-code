@@ -19,8 +19,8 @@ class ChoiVicoTeleOp: OpMode() {
     val hardware = ChoiVicoHardware()
     val robot = MecanumDriveTrain(hardware)
 
-    val goalTracking = CreamsicleGoalDetector(console)
-    val turret = CreamsicleAutoAim(console, robot)
+//    val goalTracking = CreamsicleScoop_GoalTracking(console, this)
+//    val turret = CreamsicleWrapper_FTC_UltimateGoal(console, robot, this)
 
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
@@ -39,6 +39,7 @@ class ChoiVicoTeleOp: OpMode() {
     val dUpHelp = ButtonHelper()
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
+    val rollerHelper = ButtonHelper()
 
 
     override fun init() {
@@ -46,8 +47,8 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun start() {
-        hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        hardware.shooter.power = 0.3    // Idle Shooter
+//        hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+//        hardware.shooter.power = 0.3    // Idle Shooter
     }
 
     override fun loop() {
@@ -79,7 +80,7 @@ class ChoiVicoTeleOp: OpMode() {
             hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
         }
 
-        fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(2.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(2.0 , shooterRpm)
+        fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(10.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(10.0 , shooterRpm)
 
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
@@ -87,33 +88,33 @@ class ChoiVicoTeleOp: OpMode() {
             when(ringShooting) {
                 RingShooting.One -> {
                     hardware.lift.position = 0.0
-                    hardware.gate.position = 0.0
+                    hardware.roller.power = 0.0
                     sleep(200)
                     hardware.lift.position = 0.7
                     sleep(200)
-                    hardware.gate.position = 0.6
+                    hardware.roller.power = 0.6
                     sleep(400)
-                    hardware.gate.position = 0.1
+                    hardware.roller.power = 0.1
                     ringShooting = RingShooting.Two
                 }
                 RingShooting.Two -> {
                     sleep(200)
                     hardware.lift.position = 0.8
                     sleep(200)
-                    hardware.gate.position = 0.6
+                    hardware.roller.power = 0.6
                     sleep(400)
-                    hardware.gate.position = 0.1
+                    hardware.roller.power = 0.1
                     ringShooting = RingShooting.Three
                 }
                 RingShooting.Three -> {
                     sleep(200)
                     hardware.lift.position = 2.0
                     sleep(300)
-                    hardware.gate.position = 0.6
+                    hardware.roller.power = 0.6
                     ringShooting = RingShooting.One
                     sleep(200)
                     hardware.lift.position = 0.0
-                    hardware.gate.position = 0.0
+                    hardware.roller.power = 0.0
                 }
             }
         }
@@ -123,8 +124,9 @@ class ChoiVicoTeleOp: OpMode() {
             goToVelocity()
 
             if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
-                for (i in (1..3))
-                    shoot()
+//                for (i in (1..3))
+//                    shoot()
+                hardware.roller.power = 1.0
             }
             triggerDown = gamepad1.right_trigger > 0.2
 
@@ -132,6 +134,7 @@ class ChoiVicoTeleOp: OpMode() {
         } else if (shooterReving && !isVelocityCorrect()) {
             hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             hardware.shooter.power = 0.3    // Idle Shooter
+            hardware.roller.power = 0.0
             shooterReving = false
         }
 
@@ -184,12 +187,12 @@ class ChoiVicoTeleOp: OpMode() {
 //        } else {
 //            hardware.lift.position = 0.0
 //        }
-//
-////        GATE
-//        if (gamepad2.y)
-//            hardware.gate.position = 0.5
-//        else if (ringShooting == RingShooting.Three)
-//            hardware.gate.position = 0.0
+
+//        GATE
+        if (gamepad1.y)
+            hardware.roller.power = 1.0
+        else if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
+            hardware.roller.power = 0.0
 
         loopTime = time - lastTime
         lastTime = time

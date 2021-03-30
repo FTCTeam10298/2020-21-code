@@ -1,7 +1,6 @@
 package robotCode
 
 import com.qualcomm.robotcore.hardware.*
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType
 import robotCode.hardwareClasses.MecOdometryHardware
 
 class ChoiVicoHardware(): MecOdometryHardware {
@@ -19,7 +18,7 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var shooter: DcMotorEx
 
     lateinit var lift: Servo
-    lateinit var gate: Servo
+    lateinit var roller: CRServo
     lateinit var claw1: Servo
     lateinit var claw2: Servo
 
@@ -35,10 +34,15 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        DRIVE TRAIN
 
-        lFDrive = hwMap.get("left drive f") as DcMotor
-        rFDrive = hwMap["right drive f"] as DcMotor
-        lBDrive = hwMap["left drive b"] as DcMotor
-        rBDrive = hwMap["right drive b"] as DcMotor
+        lFDrive = hwMap["lFDrive"] as DcMotor
+        rFDrive = hwMap["rBDrive"] as DcMotor
+        lBDrive = hwMap["lBDrive"] as DcMotor
+        rBDrive = hwMap["rBDrive"] as DcMotor
+
+//        lFDrive = hwMap["left drive f"] as DcMotor
+//        rFDrive = hwMap["right drive f"] as DcMotor
+//        lBDrive = hwMap["left drive b"] as DcMotor
+//        rBDrive = hwMap["right drive b"] as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
@@ -56,41 +60,41 @@ class ChoiVicoHardware(): MecOdometryHardware {
         lBDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
 //        SHOOTER
-//        shooter = hwMap.get("shooter") as DcMotorEx
-//
-//        shooter.direction = DcMotorSimple.Direction.REVERSE
-//        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
-//        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
-//
-////        COLLECTOR
-//        collector = hwMap["collector"] as DcMotor
-//
-//        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//        collector.direction = DcMotorSimple.Direction.FORWARD
-//        collector.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-//
-////        WOBBLE
-//        wobble = hwMap["wobble"] as DcMotor
-//
-//        wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-//        wobble.direction = DcMotorSimple.Direction.FORWARD
-//        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
-//
-////        SERVOS
-//        lift = hwMap["lift1"] as Servo
-//        claw1 = hwMap["claw1"] as Servo
-//        claw2 = hwMap["claw2"] as Servo
-//        gate = hwMap["gate"] as Servo
-//
-//        lift.direction = Servo.Direction.REVERSE
-//        claw1.direction = Servo.Direction.FORWARD
-//        claw2.direction = Servo.Direction.REVERSE
-//        gate.direction = Servo.Direction.REVERSE
-//
-//        lift.position = 0.0
-//        claw1.position = 1.0
-//        claw2.position = 1.0
-//        gate.position = 0.1
+        shooter = hwMap["shooter"] as DcMotorEx
+
+        shooter.direction = DcMotorSimple.Direction.REVERSE
+        shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
+
+//        COLLECTOR
+        collector = hwMap["collector"] as DcMotor
+
+        collector.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        collector.direction = DcMotorSimple.Direction.FORWARD
+        collector.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+//        WOBBLE
+        wobble = hwMap["wobble"] as DcMotor
+
+        wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        wobble.direction = DcMotorSimple.Direction.FORWARD
+        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
+
+//        SERVOS
+        lift = hwMap["lift1"] as Servo
+        claw1 = hwMap["claw1"] as Servo
+        claw2 = hwMap["claw2"] as Servo
+        roller = hwMap["roller"] as CRServo
+
+        lift.direction = Servo.Direction.REVERSE
+        claw1.direction = Servo.Direction.FORWARD
+        claw2.direction = Servo.Direction.REVERSE
+        roller.direction = DcMotorSimple.Direction.FORWARD
+
+        lift.position = 0.0
+        claw1.position = 1.0
+        claw2.position = 1.0
+        roller.power = 0.0
 
     }
 }
