@@ -1,6 +1,5 @@
 package robotCode.hardwareClasses
 
-import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.Range
 import telemetryWizard.TelemetryConsole
@@ -51,12 +50,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 Math.toDegrees(globalRobot.r)
         )
 
-        // Find the error in distance and angle, ensuring angle does not exceed 2*Math.PI
-        val distanceError = hypot(
-                target.x - current.x,
-                target.y - current.y
-        )
-
         // Find the error in distance for X
         val distanceErrorX = target.x - current.x
         // Find the error in distance for Y
@@ -70,44 +63,33 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         while (angleError < -Math.PI)
             angleError += Math.PI * 2
 
-        // Find the absolute angle error
-        val absAngleError: Double =
-                atan2(target.y - current.y, target.x - current.x) - current.r
-
         // Convert the largest allowed error into radians to use in calculations
         val angleMin = Math.toRadians(angleDegMin)
 
         // Check to see if we've reached the desired position already
-        if (abs(distanceError) <= distanceMin && abs(angleError) <= angleMin) {
+        if (abs(distanceErrorX) <= distanceMin &&
+                abs(distanceErrorY) <= distanceMin &&
+                abs(angleError) <= angleMin) {
             return State.Done
         }
-
-//        // Calculate the error in x and y and use the PID to find the error in angle
-//        distancePID.calcPID(distanceError)
-//        val dx: Double = -sin(absAngleError) /** (10.0 / 7.0) */* distancePID.pidVals()// Constant to scale strafing up
-//        //val dx: Double = dxp * (distancePID.i + distancePID.d)
-//        val dy: Double = cos(absAngleError) * distancePID.pidVals()
 
         // Calculate the error in x and y and use the PID to find the error in angle
         val dx: Double = distancePIDX.calcPID(distanceErrorX)
         val dy: Double = distancePIDY.calcPID(distanceErrorY)
-
         val da: Double = anglePID.calcPID(angleError)
 
-        val newSpeedx = Range.clip(dx, -1.0, 1.0) // / dTotal;
-        val newSpeedy = Range.clip(dy, -1.0, 1.0) // / dTotal;
+        val newSpeedX = Range.clip(dx, -1.0, 1.0)
+        val newSpeedY = Range.clip(dy, -1.0, 1.0)
         val newSpeedA = Range.clip(da, -1.0, 1.0)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
-        console.display(7, "angleError, target angle: ${Math.toDegrees(angleError)}, ${Math.toDegrees(target.r)}")
-        console.display(8, "Distance Error: $distanceError")
-        console.display(9, "Current X,Y,A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
-        console.display(10, "Speedx, SpeedY, SpeedA $newSpeedx, $newSpeedy, $newSpeedA")
-        console.display(11, "absAngleError: ${Math.toDegrees(absAngleError)}")
-        console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
+        console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
+        console.display(8, "Current X, Y, A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
+        console.display(9, "Speed X, Speed Y, Speed A: $newSpeedX, $newSpeedY, $newSpeedA")
+        console.display(10, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(newSpeedx, newSpeedy, newSpeedA, 0.0, maxPower)
+        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.2, maxPower)
 
         return State.Running
     }
@@ -168,9 +150,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.03, 0.01, 0.0),
-                PID(0.03, 0.01, 0.0),
-                PID(0.05, 0.01, 0.0),
+                PID(0.03, 0.0, 0.0),
+                PID(0.03, 0.0, 0.0),
+                PID(0.05, 0.0, 0.0),
                 distanceMin,
                 0.5,
                 true,
@@ -195,9 +177,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.01, 0.01, 0.0),
-                PID(0.01, 0.01, 0.0),
-                PID(0.5, 0.01, 0.0),
+                PID(0.01, 0.0, 0.0),
+                PID(0.01, 0.0, 0.0),
+                PID(0.5, 0.0, 0.0),
                 0.5,
                 angleDegMin,
                 true,
