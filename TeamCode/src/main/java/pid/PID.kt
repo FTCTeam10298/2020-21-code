@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range
  * @param d derivative coefficient
  * @param f feed-forward coefficient
  * */
-open class PID(private val k_p: Double = 0.0, private val k_i: Double = 0.0, private val k_d: Double = 0.0, private val k_f: Double = 0.0) {
+open class PID(val k_p: Double = 0.0, val k_i: Double = 0.0, val k_d: Double = 0.0, val k_f: Double = 0.0) {
 
     var p: Double = 0.0
     var i: Double = 0.0

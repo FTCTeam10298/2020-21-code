@@ -64,22 +64,21 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val dx: Double = distancePIDX.calcPID(distanceErrorX)
-        val dy: Double = distancePIDY.calcPID(distanceErrorY)
-        val da: Double = anglePID.calcPID(angleError)
-
-        val newSpeedX = Range.clip(dx, -1.0, 1.0)
-        val newSpeedY = Range.clip(dy, -1.0, 1.0)
-        val newSpeedA = Range.clip(da, -1.0, 1.0)
+        val speedX: Double = distancePIDX.calcPID(distanceErrorX)
+        val speedY: Double = distancePIDY.calcPID(distanceErrorY)
+        val speedA: Double = anglePID.calcPID(angleError)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
         console.display(8, "Current X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
-        console.display(9, "Speed X, Speed Y, Speed A: $newSpeedX, $newSpeedY, $newSpeedA")
-        console.display(10, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
+        console.display(8, "X P, I, D: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}")
+        console.display(9, "Y P, I, D: ${distancePIDY.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}")
+        console.display(10, "A P, I, D: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}")
+        console.display(11, "Speed X, Speed Y, Speed A: $speedX, $speedY, $speedA")
+        console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.3, maxPower)
+        setSpeedAll(speedX, speedY, speedA, 0.3, maxPower)
 
         return State.Running
     }
