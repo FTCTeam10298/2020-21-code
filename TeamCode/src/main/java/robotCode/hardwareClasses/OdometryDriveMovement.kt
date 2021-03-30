@@ -72,9 +72,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
         console.display(8, "Current X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
-        console.display(8, "X P, I, D: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}")
-        console.display(9, "Y P, I, D: ${distancePIDY.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}")
-        console.display(10, "A P, I, D: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}")
+        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
+        console.display(9, "X P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
+        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
         console.display(11, "Speed X, Speed Y, Speed A: $speedX, $speedY, $speedA")
         console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
