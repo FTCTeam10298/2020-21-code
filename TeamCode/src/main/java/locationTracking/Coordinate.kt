@@ -6,13 +6,9 @@ import kotlin.math.hypot
  * Creates a Coordinate with given values. All alternate constructors assume 0 for unstated variables.
  * @param x X position
  * @param y Y position
- * @param r Angle
+ * @param r Angle, in radians
  */
 open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0) {
-
-    init {
-        r = Math.toRadians(r)
-    }
 
     /**
      * Sets the parameters of the Coordinate.
@@ -29,10 +25,10 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
 
         if (r != null) {
             var r_abs:Double = r
-            while (r_abs < 0)
-                r_abs += 360.0
+            while (r_abs < -Math.PI)
+                r_abs += (Math.PI * 2)
 
-            this.r = Math.toRadians(r_abs)
+            this.r = r_abs
         }
     }
 

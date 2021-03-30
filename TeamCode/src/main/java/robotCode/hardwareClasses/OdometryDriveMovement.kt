@@ -43,19 +43,12 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
             angleDegMin: Double,
     ): State {
 
-        // Set the current position
-        current.setCoordinate(
-                globalRobot.x,
-                globalRobot.y,
-                Math.toDegrees(globalRobot.r)
-        )
-
         // Find the error in distance for X
-        val distanceErrorX = target.x - current.x
+        val distanceErrorX = target.x - globalRobot.x
         // Find the error in distance for Y
-        val distanceErrorY = target.y - current.y
-
-        var angleError: Double = target.r - current.r
+        val distanceErrorY = target.y - globalRobot.y
+        // Find the error in angle
+        var angleError: Double = target.r - globalRobot.r
 
         while (angleError > Math.PI)
             angleError -= Math.PI * 2
@@ -63,13 +56,10 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         while (angleError < -Math.PI)
             angleError += Math.PI * 2
 
-        // Convert the largest allowed error into radians to use in calculations
-        val angleMin = Math.toRadians(angleDegMin)
-
         // Check to see if we've reached the desired position already
         if (abs(distanceErrorX) <= distanceMin &&
                 abs(distanceErrorY) <= distanceMin &&
-                abs(angleError) <= angleMin) {
+                abs(angleError) <= Math.toRadians(angleDegMin)) {
             return State.Done
         }
 
@@ -85,11 +75,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
-        console.display(8, "Current X, Y, A: ${current.x}, ${current.y}, ${Math.toDegrees(current.r)}")
+        console.display(8, "Current X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
         console.display(9, "Speed X, Speed Y, Speed A: $newSpeedX, $newSpeedY, $newSpeedA")
         console.display(10, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.1, maxPower)
+        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.3, maxPower)
 
         return State.Running
     }
@@ -123,8 +113,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         if (reset)
             reset()
 
+        // Correct degree input to radians as expected by coordinate-based code
+        target.r = Math.toRadians(target.r)
+
         var state = State.Running
-        while (state != State.Done && opmode.opModeIsActive()){
+        while (state != State.Done && opmode.opModeIsActive()) {
             state = goToPosition(target, maxPower, distancePIDX, distancePIDY, anglePID, distanceMin, angleDegMin)
             updatePosition()
         }

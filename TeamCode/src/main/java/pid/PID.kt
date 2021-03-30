@@ -1,5 +1,6 @@
 package pid
 
+import com.qualcomm.robotcore.util.Range
 
 
 /**
@@ -16,8 +17,8 @@ open class PID(private val k_p: Double = 0.0, private val k_i: Double = 0.0, pri
     var d: Double = 0.0
     var f: Double = 0.0
 
-    private var deltaTime: Double = 0.0
-    private var lastTime: Double = 0.0
+    private var deltaTimeMs: Long = 1
+    private var lastTimeMs: Long = System.currentTimeMillis()
     private var lastError: Double = 0.0
 
     fun pidVals(): Double = p + i + d + f
@@ -35,19 +36,18 @@ open class PID(private val k_p: Double = 0.0, private val k_i: Double = 0.0, pri
     }
 
     fun calcPID(error: Double): Double {
-        deltaTime = System.nanoTime() - lastTime
-        lastTime = System.nanoTime().toDouble()
-
         p = k_p * error
-        i += k_i * (error * deltaTime)
-        d = k_d * (error - lastError) / deltaTime
+        i += k_i * (error * deltaTimeMs.toDouble())
+        d = k_d * (error - lastError) / deltaTimeMs.toDouble()
 
-        if (i > 0.1)
-            i = 0.1
-        else if (i < -0.1)
-            i = -0.1
+        i = Range.clip(i, -0.1, 0.1)
 
         lastError = error
+
+        deltaTimeMs = System.currentTimeMillis() - lastTimeMs
+        if (deltaTimeMs < 1)
+            deltaTimeMs = 1
+        lastTimeMs = System.currentTimeMillis()
 
         return pidVals()
     }
