@@ -89,7 +89,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(9, "Speed X, Speed Y, Speed A: $newSpeedX, $newSpeedY, $newSpeedA")
         console.display(10, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.2, maxPower)
+        setSpeedAll(newSpeedX, newSpeedY, newSpeedA, 0.1, maxPower)
 
         return State.Running
     }

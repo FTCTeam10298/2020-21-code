@@ -38,37 +38,16 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
         max = Math.max(max, Math.abs(fr))
         val ave = (Math.abs(fl) + Math.abs(bl) + Math.abs(br) + Math.abs(fr)) / 4
         if (max > maxPower) {
-            fl *= maxPower
-            bl *= maxPower
-            br *= maxPower
-            fr *= maxPower
-            fl /= max + 1E-6
-            bl /= max + 1E-6
-            br /= max + 1E-6
-            fr /= max + 1E-6
+            fl *= maxPower / max
+            bl *= maxPower / max
+            br *= maxPower / max
+            fr *= maxPower / max
         } else if (ave < minPower) {
-            fl *= minPower
-            bl *= minPower
-            br *= minPower
-            fr *= minPower
-            fl /= max + 1E-6
-            bl /= max + 1E-6
-            br /= max + 1E-6
-            fr /= max + 1E-6
+            fl *= minPower / ave
+            bl *= minPower / ave
+            br *= minPower / ave
+            fr *= minPower / ave
         }
-
-        // Recalculate max and scale down to 1
-        max = Math.abs(fl)
-        max = Math.max(max, Math.abs(bl))
-        max = Math.max(max, Math.abs(br))
-        max = Math.max(max, Math.abs(fr))
-        if (max < 1)
-            max = 1.0
-
-        fl /= max + 1E-6
-        bl /= max + 1E-6
-        br /= max + 1E-6
-        fr /= max + 1E-6
 
         // Range clip just to be safe
         fl = Range.clip(fl, -1.0, 1.0)
