@@ -1,4 +1,4 @@
- package robotCode
+ package robotCode.aimBot
 
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode

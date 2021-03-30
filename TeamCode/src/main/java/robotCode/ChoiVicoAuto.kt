@@ -2,9 +2,10 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import jamesGoalDetection.AutoAim
-import jamesGoalDetection.OpencvAbstraction
+import creamsicleGoalDetection.CreamsicleAutoAim
 import locationTracking.Coordinate
+import openCvAbstraction.OpenCvAbstraction
+import ringDetector.RingDetector
 import robotCode.hardwareClasses.EncoderDriveMovement
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
@@ -12,7 +13,7 @@ import telemetryWizard.TelemetryConsole
 @Autonomous(name="Auto ChoiVico", group="ChoiVico")
 class ChoiVicoAuto: LinearOpMode() {
 
-    val opencv = OpencvAbstraction(this)
+    val opencv = OpenCvAbstraction(this)
 
     val console = TelemetryConsole(telemetry)
 
@@ -23,7 +24,7 @@ class ChoiVicoAuto: LinearOpMode() {
     val ringDetector = RingDetector(150, 135, console)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
-    val turret = AutoAim(console, robot)
+    val turret = CreamsicleAutoAim(console, robot)
 
     override fun runOpMode() {
         hardware.init(hardwareMap)
