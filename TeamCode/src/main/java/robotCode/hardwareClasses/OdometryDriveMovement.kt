@@ -1,7 +1,6 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.util.Range
 import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate
 import pid.PID
@@ -47,14 +46,17 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         val distanceErrorX = target.x - globalRobot.x
         // Find the error in distance for Y
         val distanceErrorY = target.y - globalRobot.y
+
         // Find the error in angle
-        var angleError: Double = target.r - globalRobot.r
+        var tempAngleError: Double = target.r - globalRobot.r
 
-        while (angleError > Math.PI)
-            angleError -= Math.PI * 2
+        while (tempAngleError > Math.PI)
+            tempAngleError -= Math.PI * 2
 
-        while (angleError < -Math.PI)
-            angleError += Math.PI * 2
+        while (tempAngleError < -Math.PI)
+            tempAngleError += Math.PI * 2
+
+        val angleError: Double = tempAngleError
 
         // Find the error in distance
         val distanceError = hypot(distanceErrorX, distanceErrorY)
@@ -74,13 +76,13 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
         console.display(8, "Current X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
-        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
-        console.display(9, "X P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
-        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
+//        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
+//        console.display(9, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
+//        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
         console.display(11, "Speed X, Speed Y, Speed A: $speedX, $speedY, $speedA")
         console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
-        setSpeedAll(speedX, speedY, speedA, 0.3, maxPower)
+        setSpeedAll(speedX, speedY, speedA, 0.0, maxPower)
 
         return State.Running
     }
@@ -144,9 +146,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.03, 0.0, 0.0),
-                PID(0.03, 0.0, 0.0),
+                PID(0.0, 0.0, 0.0),
                 PID(0.05, 0.0, 0.0),
+                PID(0.0, 0.0, 0.0),
                 distanceMin,
                 0.5,
                 true,

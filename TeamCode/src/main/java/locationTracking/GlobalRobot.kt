@@ -4,7 +4,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
-    var forward_offset = 0
+    var forwardOffset = 0
     var trackwidth = 14.756661709
 
     /**
@@ -16,7 +16,7 @@ class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
     fun updatePosition(deltaL: Double, deltaC: Double, deltaR: Double) {
         val deltaAngle = (deltaL - deltaR) / trackwidth
         val deltaMiddle = (deltaR + deltaL) / 2
-        val deltaPerp = deltaC - forward_offset * deltaAngle
+        val deltaPerp = deltaC - forwardOffset * deltaAngle
 
         val deltaX = deltaMiddle * cos(r) - deltaPerp * sin(r)
         val deltaY = deltaMiddle * sin(r) + deltaPerp * cos(r)

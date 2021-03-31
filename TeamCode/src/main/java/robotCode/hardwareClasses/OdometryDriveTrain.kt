@@ -25,40 +25,40 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     fun setSpeedAll(vX: Double, vY: Double, vA: Double, minPower: Double, maxPower: Double) {
 
         // Calculate theoretical values for motor powers using transformation matrix
-        var fl = vY + vX + vA
-        var bl = vY - vX + vA
-        var br = vY - vX - vA
-        var fr = vY + vX - vA
+        var fl = vY - vX - vA
+        var fr = vY + vX + vA
+        var bl = vY + vX - vA
+        var br = vY - vX + vA
 
         // Find the largest magnitude of power and the average magnitude of power to scale down to
         // maxpower and up to minpower
-        var max = Math.abs(fl)
-        max = Math.max(max, Math.abs(bl))
-        max = Math.max(max, Math.abs(br))
-        max = Math.max(max, Math.abs(fr))
-        val ave = (Math.abs(fl) + Math.abs(bl) + Math.abs(br) + Math.abs(fr)) / 4
-        if (max > maxPower) {
-            fl *= maxPower / max
-            bl *= maxPower / max
-            br *= maxPower / max
-            fr *= maxPower / max
-        } else if (ave < minPower) {
-            fl *= minPower / ave
-            bl *= minPower / ave
-            br *= minPower / ave
-            fr *= minPower / ave
-        }
+//        var max = Math.abs(fl)
+//        max = Math.max(max, Math.abs(bl))
+//        max = Math.max(max, Math.abs(br))
+//        max = Math.max(max, Math.abs(fr))
+//        val ave = (Math.abs(fl) + Math.abs(bl) + Math.abs(br) + Math.abs(fr)) / 4
+//        if (max > maxPower) {
+//            fl *= maxPower / max
+//            bl *= maxPower / max
+//            br *= maxPower / max
+//            fr *= maxPower / max
+//        } else if (ave < minPower) {
+//            fl *= minPower / ave
+//            bl *= minPower / ave
+//            br *= minPower / ave
+//            fr *= minPower / ave
+//        }
 
         // Range clip just to be safe
         fl = Range.clip(fl, -1.0, 1.0)
+        fr = Range.clip(fr, -1.0, 1.0)
         bl = Range.clip(bl, -1.0, 1.0)
         br = Range.clip(br, -1.0, 1.0)
-        fr = Range.clip(fr, -1.0, 1.0)
 
         // Set powers
-        hardware.lBDrive.power = bl
         hardware.lFDrive.power = fl
         hardware.rFDrive.power = fr
+        hardware.lBDrive.power = bl
         hardware.rBDrive.power = br
     }
 
