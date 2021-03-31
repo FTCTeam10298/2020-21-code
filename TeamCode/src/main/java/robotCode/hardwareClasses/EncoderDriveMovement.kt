@@ -413,7 +413,8 @@ class EncoderDriveMovement(private val hardware: MecanumHardware, private val co
         driveRobotPosition((robotCoordinate.y - target.y), maxPower, true)
     }
 
-
-    
+    override fun turnGoToPosition(target: Coordinate, maxPower: Double, angleDegMin: Double, opmodeisactive: LinearOpMode) {
+        TODO("Not yet implemented")
+    }
 
 }
