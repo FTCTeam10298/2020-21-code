@@ -18,11 +18,11 @@ class GlobalRobot(x: Double, y:Double, r:Double) : Coordinate(x, y, r) {
         val deltaMiddle = (deltaL + deltaR) / 2
         val deltaPerp = deltaC - forwardOffset * deltaAngle
 
-        val deltaX = deltaMiddle * cos(r) - deltaPerp * sin(r)
-        val deltaY = deltaMiddle * sin(r) + deltaPerp * cos(r)
+        val deltaY = deltaMiddle * cos(r) - deltaPerp * sin(r)
+        val deltaX = deltaMiddle * sin(r) + deltaPerp * cos(r)
 
-        x += deltaY
-        y += deltaX
+        x += deltaX
+        y += deltaY
         r += deltaAngle
 
         r %= (2 * Math.PI)
