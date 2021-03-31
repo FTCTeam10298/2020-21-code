@@ -98,17 +98,4 @@ interface DriveMovement {
                              opmodeisactive: LinearOpMode
     )
 
-    /**
-     * Executes DoGoToPosition with set PIDs optimized for straight driving.
-     * @param target The target Coordinate to drive to.
-     * @param maxPower The maximum power allowed on the drive motors.
-     * @param angleDegMin The minimum allowed distance away from the target to terminate.
-     * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
-     * so that stopping mid-loop doesn't cause an error.
-     */
-    fun turnGoToPosition(target: Coordinate,
-                         maxPower: Double,
-                         angleDegMin: Double,
-                         opmodeisactive: LinearOpMode
-    )
 }
