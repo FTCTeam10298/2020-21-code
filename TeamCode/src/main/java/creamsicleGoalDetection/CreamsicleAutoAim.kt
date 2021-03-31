@@ -45,8 +45,7 @@ class CreamsicleAutoAim(val console: TelemetryConsole, val drivetrain: MecanumDr
 
     var turnDir: Directions? = null
 
-
-    fun update(frame: Mat): Mat {
+    fun update(frame: Mat): Mat /*Sadly neccary*/ {
         console.display(1, "start")
 
         goalTracking.scoopFrame(frame)
@@ -64,6 +63,7 @@ class CreamsicleAutoAim(val console: TelemetryConsole, val drivetrain: MecanumDr
 
         aimNoScope()
 
+//        Sadly neccary
         return frame
     }
 
