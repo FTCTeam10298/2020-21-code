@@ -36,6 +36,9 @@ open class PID(val k_p: Double = 0.0, val k_i: Double = 0.0, val k_d: Double = 0
     }
 
     fun calcPID(error: Double): Double {
+        if (deltaTimeMs < 1)
+            deltaTimeMs = 1
+
         p = k_p * error
         i += k_i * (error * deltaTimeMs.toDouble())
         d = k_d * (error - lastError) / deltaTimeMs.toDouble()
@@ -45,8 +48,6 @@ open class PID(val k_p: Double = 0.0, val k_i: Double = 0.0, val k_d: Double = 0
         lastError = error
 
         deltaTimeMs = System.currentTimeMillis() - lastTimeMs
-        if (deltaTimeMs < 1)
-            deltaTimeMs = 1
         lastTimeMs = System.currentTimeMillis()
 
         return pidVals()
