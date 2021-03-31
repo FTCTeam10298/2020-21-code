@@ -3,7 +3,7 @@ package locationTracking
 import kotlin.math.cos
 import kotlin.math.sin
 
-class GlobalRobot : Coordinate(0.0, 0.0, 0.0) {
+class GlobalRobot(x: Double, y:Double, r:Double) : Coordinate(x, y, r) {
     var forwardOffset = 0
     var trackwidth = 14.756661709
 
@@ -15,14 +15,14 @@ class GlobalRobot : Coordinate(0.0, 0.0, 0.0) {
      */
     fun updatePosition(deltaL: Double, deltaC: Double, deltaR: Double) {
         val deltaAngle = (deltaL - deltaR) / trackwidth
-        val deltaMiddle = (deltaR + deltaL) / 2
+        val deltaMiddle = (deltaL + deltaR) / 2
         val deltaPerp = deltaC - forwardOffset * deltaAngle
 
         val deltaX = deltaMiddle * cos(r) - deltaPerp * sin(r)
         val deltaY = deltaMiddle * sin(r) + deltaPerp * cos(r)
 
-        x += deltaX
-        y += deltaY
+        x += deltaY
+        y += deltaX
         r += deltaAngle
 
         r %= (2 * Math.PI)

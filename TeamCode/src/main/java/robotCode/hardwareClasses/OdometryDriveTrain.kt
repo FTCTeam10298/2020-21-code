@@ -13,7 +13,7 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     var previousC = 0.0
     var previousL = 0.0
     var previousR = 0.0
-    var globalRobot = GlobalRobot(0.0, 0.0, 0.0)
+    var globalRobot = GlobalRobot()
 
     /**
      * Sets the speed of the four drive motors given desired speeds in the robot's x, y, and angle.
