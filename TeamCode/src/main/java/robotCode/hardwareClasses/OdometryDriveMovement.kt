@@ -13,23 +13,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         Done
     }
 
-    private var prevErrorX = 0.0
-    private var prevErrorY = 0.0
-    private var prevErrorA = 0.0
-    private var sumErrorX = 0.0
-    private var sumErrorY = 0.0
-    private var sumErrorA = 0.0
-    var current = Coordinate(0.0, 0.0, 0.0)
-
     fun reset() {
         // Start by setting all speeds and error values to 0 and moving into the next state
         drivePowerZero()
-        prevErrorX = 0.0
-        prevErrorY = 0.0
-        prevErrorA = 0.0
-        sumErrorX = 0.0
-        sumErrorY = 0.0
-        sumErrorA = 0.0
     }
 
     fun goToPosition(
@@ -75,7 +61,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
-        console.display(8, "Current X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
+        console.display(8, "Global Coordinate X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
 //        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
 //        console.display(9, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
 //        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
@@ -92,7 +78,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * error to drive.
      * @param target The target Coordinate to drive to.
      * @param maxPower The maximum power allowed on the drive motors.
-     * @param distancePID The PID for the x-y error.
+     * @param distancePIDX The PID for the x-y error.
      * @param anglePID The PID for the theta error.
      *
      * @param distanceMin The minimum allowed distance away from the target to terminate.

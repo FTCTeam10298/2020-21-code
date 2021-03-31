@@ -24,11 +24,11 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
             this.y = y
 
         if (r != null) {
-            var r_abs:Double = r
-            while (r_abs < -Math.PI)
-                r_abs += (Math.PI * 2)
+            var rAbs:Double = r
+            while (rAbs < -Math.PI)
+                rAbs += (Math.PI * 2)
 
-            this.r = r_abs
+            this.r = rAbs
         }
     }
 
@@ -85,5 +85,7 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
     override fun toString(): String {
         return "X: $x\nY: $y\nAngle: $r"
     }
+
+    override fun hashCode(): Int = x.hashCode() + y.hashCode() + r.hashCode()
 
 }

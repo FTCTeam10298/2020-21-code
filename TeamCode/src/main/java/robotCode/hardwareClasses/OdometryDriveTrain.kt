@@ -3,6 +3,7 @@ package robotCode.hardwareClasses
 import com.qualcomm.robotcore.util.Range
 import locationTracking.GlobalRobot
 import telemetryWizard.TelemetryConsole
+import kotlin.math.abs
 
 open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
@@ -12,7 +13,7 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     var previousC = 0.0
     var previousL = 0.0
     var previousR = 0.0
-    var globalRobot: GlobalRobot = GlobalRobot(0.0, 0.0, 0.0)
+    var globalRobot = GlobalRobot(0.0, 0.0, 0.0)
 
     /**
      * Sets the speed of the four drive motors given desired speeds in the robot's x, y, and angle.
@@ -31,23 +32,23 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
         var br = vY + vX - vA
 
         // Find the largest magnitude of power and the average magnitude of power to scale down to
-        // maxpower and up to minpower
-//        var max = Math.abs(fl)
-//        max = Math.max(max, Math.abs(bl))
-//        max = Math.max(max, Math.abs(br))
-//        max = Math.max(max, Math.abs(fr))
-//        val ave = (Math.abs(fl) + Math.abs(bl) + Math.abs(br) + Math.abs(fr)) / 4
-//        if (max > maxPower) {
-//            fl *= maxPower / max
-//            bl *= maxPower / max
-//            br *= maxPower / max
-//            fr *= maxPower / max
-//        } else if (ave < minPower) {
-//            fl *= minPower / ave
-//            bl *= minPower / ave
-//            br *= minPower / ave
-//            fr *= minPower / ave
-//        }
+        // maxPower and up to minPower
+        var max = abs(fl)
+        max = max.coerceAtLeast(abs(fr))
+        max = max.coerceAtLeast(abs(bl))
+        max = max.coerceAtLeast(abs(br))
+        val ave = (abs(fl) + abs(fr) + abs(bl) + abs(br)) / 4
+        if (max > maxPower) {
+            fl *= maxPower / max
+            bl *= maxPower / max
+            br *= maxPower / max
+            fr *= maxPower / max
+        } else if (ave < minPower) {
+            fl *= minPower / ave
+            bl *= minPower / ave
+            br *= minPower / ave
+            fr *= minPower / ave
+        }
 
         // Range clip just to be safe
         fl = Range.clip(fl, -1.0, 1.0)

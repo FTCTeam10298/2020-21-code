@@ -3,7 +3,7 @@ package locationTracking
 import kotlin.math.cos
 import kotlin.math.sin
 
-class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
+class GlobalRobot : Coordinate(0.0, 0.0, 0.0) {
     var forwardOffset = 0
     var trackwidth = 14.756661709
 
