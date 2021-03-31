@@ -4,8 +4,8 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
-    var ynot = 0.315 //.315
-    var xnot = 14.756661709 / 2.0
+    var forward_offset = 0
+    var trackwidth = 14.756661709
 
     /**
      * Update the robot's global coordinates with inputs of the change in the encoders.
@@ -14,22 +14,18 @@ class GlobalRobot(x: Double, y: Double, a: Double) : Coordinate(x, y, a) {
      * @param deltaR Change in the right encoder.
      */
     fun updatePosition(deltaL: Double, deltaC: Double, deltaR: Double) {
-        var robotX: Double = x
-        var robotY: Double = y
-        var robotR: Double = r
+        val deltaAngle = (deltaL - deltaR) / trackwidth
+        val deltaMiddle = (deltaR + deltaL) / 2
+        val deltaPerp = deltaC - forward_offset * deltaAngle
 
-        robotR += 1 / (2 * xnot) * (deltaL - deltaR)
+        val deltaX = deltaMiddle * cos(r) - deltaPerp * sin(r)
+        val deltaY = deltaMiddle * sin(r) + deltaPerp * cos(r)
 
-        val deltaY = .5 * (deltaR + deltaL)
-        val deltaX = ynot / (2 * xnot) * (deltaL - deltaR) + deltaC
+        x += deltaX
+        y += deltaY
+        r += deltaAngle
 
-        robotX += deltaX * cos(robotR) + deltaY * sin(robotR)
-        robotY += deltaX * sin(robotR) + deltaY * cos(robotR)
-
-        x = robotX
-        y = robotY
-        r = robotR % (2 * Math.PI)
-
+        r %= (2 * Math.PI)
         if (r > Math.PI)
             r -= 2 * Math.PI
     }
