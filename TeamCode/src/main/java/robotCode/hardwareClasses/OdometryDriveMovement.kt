@@ -56,16 +56,18 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         while (angleError < -Math.PI)
             angleError += Math.PI * 2
 
+        // Find the error in distance
+        val distanceError = hypot(distanceErrorX, distanceErrorY)
+
         // Check to see if we've reached the desired position already
-        if (abs(distanceErrorX) <= distanceMin &&
-                abs(distanceErrorY) <= distanceMin &&
+        if (abs(distanceError) <= distanceMin &&
                 abs(angleError) <= Math.toRadians(angleDegMin)) {
             return State.Done
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val speedX: Double = distancePIDX.calcPID(-distanceErrorX)
-        val speedY: Double = distancePIDY.calcPID(-distanceErrorY)
+        val speedX: Double = -distancePIDX.calcPID(sin(globalRobot.r) * distanceErrorY + cos(globalRobot.r) * distanceErrorX)
+        val speedY: Double = -distancePIDY.calcPID(cos(globalRobot.r) * distanceErrorY + sin(globalRobot.r) * distanceErrorX)
         val speedA: Double = anglePID.calcPID(angleError)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
