@@ -30,6 +30,9 @@ class ChoiVicoHardware(): MecOdometryHardware {
         hwMap = ahwMap
 
         // ODOMETRY
+//        lOdom = hwMap.dcMotor.get("left collector")
+//        cOdom = hwMap.dcMotor.get("tape")
+//        rOdom = hwMap.dcMotor.get("")
         lOdom = hwMap.dcMotor.get("left collector")
         cOdom = hwMap.dcMotor.get("tape")
         rOdom = hwMap.dcMotor.get("left drive b")
@@ -44,6 +47,11 @@ class ChoiVicoHardware(): MecOdometryHardware {
         rOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
 //        DRIVE TRAIN
+
+//        lFDrive = hwMap.get("lFDrive") as DcMotor
+//        rFDrive = hwMap.get("rFDrive") as DcMotor
+//        lBDrive = hwMap.get("lBDrive") as DcMotor
+//        rBDrive = hwMap.get("rBDrive") as DcMotor
         lFDrive = hwMap.get("left drive f") as DcMotor
         lBDrive = hwMap.get("left drive b") as DcMotor
         rFDrive = hwMap.get("right drive f") as DcMotor
