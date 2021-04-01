@@ -52,7 +52,7 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
             val area = Imgproc.contourArea(cnt)
 
-            val approx = MatOfPoint2f()
+            val points = MatOfPoint2f()
 
 
             fun convert(src: MatOfPoint): MatOfPoint2f {
@@ -62,12 +62,12 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
             }
 
             val cnt2f = convert(cnt)
-            Imgproc.approxPolyDP(cnt2f, approx, 0.02 * Imgproc.arcLength(cnt2f, true), true)
+            Imgproc.approxPolyDP(cnt2f, points, 0.02 * Imgproc.arcLength(cnt2f, true), true)
 
 
             //        x = approx.ravel() [0]
             //        y = approx.ravel() [1]
-            val point = approx.toList()[0]
+            val point = points.toList()[0]
             /*
                 if area > 400:
                 */
@@ -80,9 +80,9 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
                 }
 
                 // cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
-                Imgproc.drawContours(frame, mutableListOf(convert(approx)), 0, Scalar(0.0, 0.0, 0.0), 5)
+                Imgproc.drawContours(frame, mutableListOf(convert(points)), 0, Scalar(0.0, 0.0, 0.0), 5)
 
-                when (approx.toArray().size) {
+                when (points.toArray().size) {
                     3 -> {
                         // cv2.putText(frame, "triangle", (x, y), font, 1, (22, 100, 100))
                         Imgproc.putText(frame, "triangle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
@@ -93,13 +93,33 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
                     in 11..19 -> {
                         Imgproc.putText(frame, "circle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                     }
-                    8 -> {
+                    8-> {
                         Imgproc.putText(frame, "goal", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+
+                        val pointsArray = points.toArray()
+
+                        val xValues = pointsArray.map{it.x}
+                        val yValues = pointsArray.map{it.y}
+
+                        val minX = xValues.minOrNull()!!
+                        val minY = yValues.minOrNull()!!
+
+                        val maxX = xValues.maxOrNull()!!
+                        val maxY = yValues.maxOrNull()!!
+
+                        val width = maxX - minX
+                        val height = maxY - minY
+                        val area = width * height
 
                         x = point.x
                         y = point.y
 
+                        console.display(5, "width $width")
                         console.display(6, "Last known goal position: $x, $y")
+                        console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
+                        console.display(8, "there can only be one: $area")
+
+
                     }
                 }
             }
