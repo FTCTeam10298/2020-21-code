@@ -8,9 +8,9 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
     private val font = Imgproc.FONT_HERSHEY_COMPLEX
 
-    private var displayMode: String = "frame"
+    var displayMode: String = "frame"
 
-    private class NamedVar(val name: String, var value: Double)
+    class NamedVar(val name: String, var value: Double)
 
     /*
     # values for Cam Calibrated Goal detection DURING THE DAY: L-H = 95, L-S = 105, L-V = 000, U-H = 111, U-S = 255, U-V = 255
@@ -18,12 +18,12 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
     # contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     */
 
-    private var L_H = NamedVar("Low Hue", 0.0)
-    private var L_S = NamedVar("Low Saturation", 65.0)
-    private var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-    private var U_H = NamedVar("Uppper Hue", 105.0)
-    private var U_S = NamedVar("Upper Saturation", 255.0)
-    private var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+    var L_H = NamedVar("Low Hue", 0.0)
+    var L_S = NamedVar("Low Saturation", 65.0)
+    var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+    var U_H = NamedVar("Uppper Hue", 105.0)
+    var U_S = NamedVar("Upper Saturation", 255.0)
+    var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
     //Declares X and Y of the Goal's... well, something... that other code can use and request.
     var x = 0.0

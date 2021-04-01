@@ -34,49 +34,43 @@ import telemetryWizard.TelemetryConsole
 //*this has been an Aperture Science Innovators notification.*
 
 
-class CreamsicleAutoAim(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain) {
+class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain, val goalDetector:CreamsicleGoalDetector) {
     enum class Directions {
         Right,
         Left,
         TargetAcquired
     }
 
-    val goalTracking = CreamsicleGoalDetector(console)
-
-    var turnDir: Directions? = null
-
-    fun update(frame: Mat): Mat /*Sadly neccary*/ {
-        console.display(1, "start")
-
-        goalTracking.scoopFrame(frame)
-
-        if (goalTracking.x < 245)
-            turnDir = Directions.Right
-
-        if (goalTracking.x > 245 && goalTracking.x < 255)
-            turnDir = Directions.TargetAcquired
-
-        else if (goalTracking.x >= 255)
-            turnDir = Directions.Left
-
-        console.display(7, "Turn direction: $turnDir")
-
-        aimNoScope()
-
-//        Sadly neccary
-        return frame
+    fun updateAimAndAdjustRobot(){
+        moveTowardAimDirection(calculateAimDirection())
     }
 
-    fun aimNoScope() {
+    private fun calculateAimDirection():Directions?{
+        console.display(1, "start")
 
-        console.display(12, turnDir.toString())
-
-        if (turnDir == Directions.Left) {
-            drivetrain.driveSetPower(-0.3, 0.3, -0.3, 0.3)
+        val turnDir = if (goalDetector.x < 245) {
+            Directions.Right
+        }else if (goalDetector.x > 245 && goalDetector.x < 255) {
+            Directions.TargetAcquired
+        }else if(goalDetector.x >= 255) {
+            Directions.Left
+        }else{
+            null
         }
+        console.display(7, "Turn direction: $turnDir")
 
-        if (turnDir == Directions.Right) {
-            drivetrain.driveSetPower(0.3, -0.3, 0.3, 0.3)
+        return turnDir
+    }
+
+    private fun moveTowardAimDirection(direction:Directions?) {
+
+        console.display(12, direction.toString())
+
+        when(direction){
+            Directions.Left -> drivetrain.driveSetPower(-0.3, 0.3, -0.3, 0.3)
+            Directions.Right -> drivetrain.driveSetPower(0.3, -0.3, 0.3, 0.3)
+            Directions.TargetAcquired -> drivetrain.driveSetPower(0.0, 0.0, 0.0, 0.0)
+            else -> console.display(1, "No direction!!! Fixme!!!")
         }
 
     }

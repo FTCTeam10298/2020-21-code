@@ -5,8 +5,6 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
-import creamsicleGoalDetection.CreamsicleAutoAim
-import creamsicleGoalDetection.CreamsicleGoalDetector
 import robotCode.hardwareClasses.MecanumDriveTrain
 import telemetryWizard.TelemetryConsole
 import kotlin.math.abs

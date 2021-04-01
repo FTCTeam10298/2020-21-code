@@ -2,11 +2,11 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import creamsicleGoalDetection.CreamsicleAutoAim
+import creamsicleGoalDetection.CreamsicleGoalDetector
+import creamsicleGoalDetection.UltimateGoalAimer
 import locationTracking.Coordinate
 import openCvAbstraction.OpenCvAbstraction
 import ringDetector.RingDetector
-import robotCode.hardwareClasses.EncoderDriveMovement
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 
@@ -24,7 +24,8 @@ class ChoiVicoAuto: LinearOpMode() {
     val ringDetector = RingDetector(150, 135, console)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
-    val turret = CreamsicleAutoAim(console, robot)
+    val goalDetector = CreamsicleGoalDetector(console)
+    val turret = UltimateGoalAimer(console, robot, goalDetector)
 
     override fun runOpMode() {
         hardware.init(hardwareMap)
@@ -41,7 +42,7 @@ class ChoiVicoAuto: LinearOpMode() {
 
         position = ringDetector.position
 
-        opencv.onNewFrame { turret.update(it) }
+        opencv.onNewFrame(goalDetector::scoopFrame)
 
         target.setCoordinate(x = 0.0, y = 24.0, r = 0.0)
         robot.straightGoToPosition(target,1.0,0.5,this)

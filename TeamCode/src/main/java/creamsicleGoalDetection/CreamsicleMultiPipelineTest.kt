@@ -17,7 +17,8 @@ class CreamsicleMultiPipelineTest: LinearOpMode() {
     val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
 
-    val turret = CreamsicleAutoAim(console, robot)
+    val goalDetector = CreamsicleGoalDetector(console)
+    val turret = UltimateGoalAimer(console, robot, goalDetector)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
 
@@ -32,7 +33,7 @@ class CreamsicleMultiPipelineTest: LinearOpMode() {
         waitForStart()
 
 
-        opencv.onNewFrame { turret.update(it) }
+        opencv.onNewFrame(goalDetector::scoopFrame)
         sleep(500000000000)
     }
 }
