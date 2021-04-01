@@ -1,9 +1,9 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import telemetryWizard.TelemetryConsole
 import locationTracking.Coordinate
 import pid.PID
+import telemetryWizard.TelemetryConsole
 import kotlin.math.*
 
 class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement, OdometryDriveTrain(hardware, console) {
@@ -42,7 +42,19 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 //        while (tempAngleError < -Math.PI)
 //            tempAngleError += Math.PI * 2
 
+        while (tempAngleError > 180)
+            tempAngleError -= 360.0
+
+        while (tempAngleError < -180)
+            tempAngleError += 360.0
+
+        if (tempAngleError > Math.PI)
+            tempAngleError -= 2 * Math.PI
+
         val angleError: Double = tempAngleError
+
+//        val absAngleError: Double = (atan2(target.y - globalRobot.y, target.x - globalRobot.x) - globalRobot.r)
+
 
         // Find the error in distance
         val distanceError = hypot(distanceErrorX, distanceErrorY)
