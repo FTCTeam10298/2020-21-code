@@ -49,15 +49,15 @@ class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDr
         console.display(1, "start")
 
         val turnDir = if (goalDetector.x < 245) {
-            Directions.Right
+            Directions.Left
         }else if (goalDetector.x > 245 && goalDetector.x < 255) {
             Directions.TargetAcquired
         }else if(goalDetector.x >= 255) {
-            Directions.Left
+            Directions.Right
         }else{
             null
         }
-        console.display(7, "Turn direction: $turnDir")
+        console.display(6, "Turn direction: $turnDir")
 
         return turnDir
     }
