@@ -20,8 +20,8 @@ class ChoiVicoTeleOp: OpMode() {
     val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
-    val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector)
+//    val goalDetector = CreamsicleGoalDetector(console)
+//    val turret = UltimateGoalAimer(console, robot, goalDetector)
 
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
@@ -182,8 +182,8 @@ class ChoiVicoTeleOp: OpMode() {
         }
 
 //        LIFT
-            hardware.lift1.position = gamepad2.left_stick_y.toDouble()
-            hardware.lift2.position = gamepad2.left_stick_y.toDouble()
+            hardware.lift1.power = gamepad2.left_stick_y.toDouble() * 0.5
+            hardware.lift2.power = gamepad2.left_stick_y.toDouble() * 0.5
 
 //        GATE
         if (gamepad1.y)
