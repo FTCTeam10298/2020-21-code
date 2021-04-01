@@ -41,13 +41,6 @@ class ChoiVicoAuto: LinearOpMode() {
         waitForStart()
 
         position = ringDetector.position
-
-        opencv.onNewFrame(goalDetector::scoopFrame)
-
-        target.setCoordinate(x = 0.0, y = 24.0, r = 0.0)
-        robot.straightGoToPosition(target,1.0,0.5,this)
-
-        target.setCoordinate(x = 10.0, y = 0.0, r = 0.0)
-        robot.straightGoToPosition(target,1.0,0.5,this)
+        
     }
 }
