@@ -95,13 +95,11 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        LIFT
         lift1 = hwMap["lift1"] as Servo
+        lift2 = hwMap["lift2"] as Servo
 
         lift1.direction = Servo.Direction.REVERSE
-        lift1.position = 0.0
-
-        lift2 = hwMap["lift1"] as Servo
-
         lift2.direction = Servo.Direction.REVERSE
+        lift1.position = 0.0
         lift2.position = 0.0
 
 //        SERVOS

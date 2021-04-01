@@ -5,7 +5,10 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
+import creamsicleGoalDetection.CreamsicleGoalDetector
+import creamsicleGoalDetection.UltimateGoalAimer
 import robotCode.hardwareClasses.MecanumDriveTrain
+import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 import kotlin.math.abs
 import kotlin.math.absoluteValue
@@ -15,10 +18,10 @@ class ChoiVicoTeleOp: OpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = ChoiVicoHardware()
-    val robot = MecanumDriveTrain(hardware)
+    val robot = OdometryDriveMovement(console, hardware)
 
-//    val goalTracking = CreamsicleScoop_GoalTracking(console, this)
-//    val turret = CreamsicleWrapper_FTC_UltimateGoal(console, robot, this)
+    val goalDetector = CreamsicleGoalDetector(console)
+    val turret = UltimateGoalAimer(console, robot, goalDetector)
 
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
@@ -70,8 +73,7 @@ class ChoiVicoTeleOp: OpMode() {
                 (y - x + r)
         )
 
-
-        //        Shoot routine
+//        Shoot routine
         fun goToVelocity() {
             hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
             hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0,0.0)
@@ -117,7 +119,6 @@ class ChoiVicoTeleOp: OpMode() {
 //            }
 //        }
 
-
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
@@ -148,6 +149,8 @@ class ChoiVicoTeleOp: OpMode() {
             shooterRpm = powerShotsPreset.toDouble()
 
 //        TURRET
+//        turret.updateAimAndAdjustRobot() //auto aim
+//        hardware.turret.currentPosition - robot.globalRobot.r //aim at the same place
         hardware.turret.power = gamepad2.left_stick_x.toDouble()
 
 //        COLLECTOR
@@ -161,7 +164,6 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.collector.power = 0.0
             else
                 hardware.collector.power = -1.0
-
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y
@@ -179,15 +181,9 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
-
 //        LIFT
-        if (gamepad2.b) {
-            hardware.lift1.position = 1.0
-            hardware.lift2.position = 1.0
-        } else {
-            hardware.lift1.position = 0.0
-            hardware.lift2.position = 0.0
-        }
+            hardware.lift1.position = gamepad2.left_stick_y.toDouble()
+            hardware.lift2.position = gamepad2.left_stick_y.toDouble()
 
 //        GATE
         if (gamepad1.y)
