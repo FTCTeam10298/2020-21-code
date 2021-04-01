@@ -82,48 +82,46 @@ class ChoiVicoTeleOp: OpMode() {
 
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
-        fun shoot() {
-            when(ringShooting) {
-                RingShooting.One -> {
-                    hardware.lift.position = 0.0
-                    hardware.roller.power = 0.0
-                    sleep(200)
-                    hardware.lift.position = 0.7
-                    sleep(200)
-                    hardware.roller.power = 0.6
-                    sleep(400)
-                    hardware.roller.power = 0.1
-                    ringShooting = RingShooting.Two
-                }
-                RingShooting.Two -> {
-                    sleep(200)
-                    hardware.lift.position = 0.8
-                    sleep(200)
-                    hardware.roller.power = 0.6
-                    sleep(400)
-                    hardware.roller.power = 0.1
-                    ringShooting = RingShooting.Three
-                }
-                RingShooting.Three -> {
-                    sleep(200)
-                    hardware.lift.position = 2.0
-                    sleep(300)
-                    hardware.roller.power = 0.6
-                    ringShooting = RingShooting.One
-                    sleep(200)
-                    hardware.lift.position = 0.0
-                    hardware.roller.power = 0.0
-                }
-            }
-        }
+//        fun shoot() {
+//            when(ringShooting) {
+//                RingShooting.One -> {
+//                    hardware.lift.position = 0.0
+//                    hardware.roller.power = 0.0
+//                    sleep(200)
+//                    hardware.lift.position = 0.7
+//                    sleep(200)
+//                    hardware.roller.power = 0.6
+//                    sleep(400)
+//                    hardware.roller.power = 0.1
+//                    ringShooting = RingShooting.Two
+//                }
+//                RingShooting.Two -> {
+//                    sleep(200)
+//                    hardware.lift.position = 0.8
+//                    sleep(200)
+//                    hardware.roller.power = 0.6
+//                    sleep(400)
+//                    hardware.roller.power = 0.1
+//                    ringShooting = RingShooting.Three
+//                }
+//                RingShooting.Three -> {
+//                    sleep(200)
+//                    hardware.lift.position = 2.0
+//                    sleep(300)
+//                    hardware.roller.power = 0.6
+//                    ringShooting = RingShooting.One
+//                    sleep(200)
+//                    hardware.lift.position = 0.0
+//                    hardware.roller.power = 0.0
+//                }
+//            }
+//        }
 
 
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
             if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
-//                for (i in (1..3))
-//                    shoot()
                 hardware.roller.power = 1.0
             }
             triggerDown = gamepad1.right_trigger > 0.2
@@ -148,6 +146,9 @@ class ChoiVicoTeleOp: OpMode() {
 
         if (gamepad2.a || gamepad1.a)
             shooterRpm = powerShotsPreset.toDouble()
+
+//        TURRET
+        hardware.turret.power = gamepad2.left_stick_x.toDouble()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
@@ -179,12 +180,14 @@ class ChoiVicoTeleOp: OpMode() {
         }
 
 
-////        LIFT
-//        if (gamepad2.b) {
-//            hardware.lift.position = 1.0
-//        } else {
-//            hardware.lift.position = 0.0
-//        }
+//        LIFT
+        if (gamepad2.b) {
+            hardware.lift1.position = 1.0
+            hardware.lift2.position = 1.0
+        } else {
+            hardware.lift1.position = 0.0
+            hardware.lift2.position = 0.0
+        }
 
 //        GATE
         if (gamepad1.y)

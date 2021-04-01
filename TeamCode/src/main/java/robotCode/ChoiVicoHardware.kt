@@ -16,8 +16,10 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var collector: DcMotor
     lateinit var wobble: DcMotor
     lateinit var shooter: DcMotorEx
+    lateinit var turret: DcMotor
 
-    lateinit var lift: Servo
+    lateinit var lift1: Servo
+    lateinit var lift2: Servo
     lateinit var roller: CRServo
     lateinit var claw1: Servo
     lateinit var claw2: Servo
@@ -28,9 +30,9 @@ class ChoiVicoHardware(): MecOdometryHardware {
         hwMap = ahwMap
 
 //        ODOMETRY
-//        lOdom = hwMap.dcMotor["lFDrive"]
-//        cOdom = hwMap.dcMotor["rFDrive"]
-//        rOdom = hwMap.dcMotor["lBDrive"]
+        lOdom = hwMap.dcMotor["lFDrive"]
+        cOdom = hwMap.dcMotor["rFDrive"]
+        rOdom = hwMap.dcMotor["lBDrive"]
 
 //        DRIVE TRAIN
 
@@ -38,11 +40,6 @@ class ChoiVicoHardware(): MecOdometryHardware {
         rFDrive = hwMap["rBDrive"] as DcMotor
         lBDrive = hwMap["lBDrive"] as DcMotor
         rBDrive = hwMap["rBDrive"] as DcMotor
-
-//        lFDrive = hwMap["left drive f"] as DcMotor
-//        rFDrive = hwMap["right drive f"] as DcMotor
-//        lBDrive = hwMap["left drive b"] as DcMotor
-//        rBDrive = hwMap["right drive b"] as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
@@ -66,6 +63,13 @@ class ChoiVicoHardware(): MecOdometryHardware {
         shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
 
+//        TURRET
+        turret = hwMap["turret"] as DcMotor
+
+        turret.direction = DcMotorSimple.Direction.FORWARD
+        turret.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        turret.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
+
 //        COLLECTOR
         collector = hwMap["collector"] as DcMotor
 
@@ -80,18 +84,26 @@ class ChoiVicoHardware(): MecOdometryHardware {
         wobble.direction = DcMotorSimple.Direction.FORWARD
         wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
+//        LIFT
+        lift1 = hwMap["lift1"] as Servo
+
+        lift1.direction = Servo.Direction.REVERSE
+        lift1.position = 0.0
+
+        lift2 = hwMap["lift1"] as Servo
+
+        lift2.direction = Servo.Direction.REVERSE
+        lift2.position = 0.0
+
 //        SERVOS
-        lift = hwMap["lift1"] as Servo
         claw1 = hwMap["claw1"] as Servo
         claw2 = hwMap["claw2"] as Servo
         roller = hwMap["roller"] as CRServo
 
-        lift.direction = Servo.Direction.REVERSE
         claw1.direction = Servo.Direction.FORWARD
         claw2.direction = Servo.Direction.REVERSE
         roller.direction = DcMotorSimple.Direction.FORWARD
 
-        lift.position = 0.0
         claw1.position = 1.0
         claw2.position = 1.0
         roller.power = 0.0

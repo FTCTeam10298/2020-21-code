@@ -41,6 +41,6 @@ class ChoiVicoAuto: LinearOpMode() {
         waitForStart()
 
         position = ringDetector.position
-        
+
     }
 }
