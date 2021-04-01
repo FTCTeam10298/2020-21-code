@@ -34,27 +34,17 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         val distanceErrorY = target.y - globalRobot.y
 
         // Find the error in angle
-        var tempAngleError: Double = target.r - globalRobot.r
+        var tempAngleError = target.r - globalRobot.r
 
-//        while (tempAngleError > Math.PI)
-//            tempAngleError -= Math.PI * 2
-//
-//        while (tempAngleError < -Math.PI)
-//            tempAngleError += Math.PI * 2
+        while (tempAngleError > Math.PI)
+            tempAngleError -= Math.PI * 2
 
-        while (tempAngleError > 180)
-            tempAngleError -= 360.0
-
-        while (tempAngleError < -180)
-            tempAngleError += 360.0
-
-        if (tempAngleError > Math.PI)
-            tempAngleError -= 2 * Math.PI
+        while (tempAngleError < -Math.PI)
+            tempAngleError += Math.PI * 2
 
         val angleError: Double = tempAngleError
 
-//        val absAngleError: Double = (atan2(target.y - globalRobot.y, target.x - globalRobot.x) - globalRobot.r)
-
+        val absAngleError: Double = (atan2(target.y - globalRobot.y, target.x - globalRobot.x) - globalRobot.r)
 
         // Find the error in distance
         val distanceError = hypot(distanceErrorX, distanceErrorY)
@@ -68,7 +58,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         // Calculate the error in x and y and use the PID to find the error in angle
         val speedX: Double = distancePIDX.calcPID(sin(globalRobot.r) * distanceErrorY + cos(globalRobot.r) * distanceErrorX)
         val speedY: Double = distancePIDY.calcPID(cos(globalRobot.r) * distanceErrorY + sin(globalRobot.r) * distanceErrorX)
-        val speedA: Double = anglePID.calcPID(angleError)
+        val speedA: Double = anglePID.calcPID(absAngleError)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
