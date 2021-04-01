@@ -44,8 +44,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 
         val angleError: Double = tempAngleError
 
-        val absAngleError: Double = (atan2(target.y - globalRobot.y, target.x - globalRobot.x) - globalRobot.r)
-
         // Find the error in distance
         val distanceError = hypot(distanceErrorX, distanceErrorY)
 
@@ -56,17 +54,17 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val speedX: Double = distancePIDX.calcPID(sin(globalRobot.r) * distanceErrorY + cos(globalRobot.r) * distanceErrorX)
+        val speedX: Double = distancePIDX.calcPID(sin(globalRobot.r) * -distanceErrorY + cos(globalRobot.r) * distanceErrorX)
         val speedY: Double = distancePIDY.calcPID(cos(globalRobot.r) * distanceErrorY + sin(globalRobot.r) * distanceErrorX)
-        val speedA: Double = anglePID.calcPID(absAngleError)
+        val speedA: Double = anglePID.calcPID(angleError)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
         console.display(8, "Global Coordinate X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
-//        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
-//        console.display(9, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
-//        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
+        console.display(8, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
+        console.display(9, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
+        console.display(10, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
         console.display(11, "Speed X, Speed Y, Speed A: $speedX, $speedY, $speedA")
         console.display(12, "Raw L, Raw C, Raw R: ${hardware.lOdom.currentPosition}, ${hardware.cOdom.currentPosition}, ${hardware.rOdom.currentPosition}")
 
@@ -132,9 +130,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 1.0,
-                PID(0.05, 0.0, 0.0),
-                PID(0.05, 0.0, 0.0),
-                PID(0.1, 0.0, 0.0),
+                PID(0.05, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
+                PID(0.5, 0.01, 0.0),
                 0.5,
                 0.5,
                 true,
@@ -159,9 +157,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.05, 0.0, 0.0),
-                PID(0.05, 0.0, 0.0),
-                PID(0.05, 0.0, 0.0),
+                PID(0.05, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
                 distanceMin,
                 0.5,
                 true,
@@ -186,9 +184,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.01, 0.0, 0.0),
-                PID(0.01, 0.0, 0.0),
-                PID(0.5, 0.0, 0.0),
+                PID(0.01, 0.01, 0.0),
+                PID(0.01, 0.01, 0.0),
+                PID(0.5, 0.01, 0.0),
                 0.5,
                 angleDegMin,
                 true,

@@ -20,12 +20,36 @@ class OdometryTestAuto: LinearOpMode() {
 
         waitForStart()
 
-        target.setCoordinate(x = 0.0, y = 0.0, r = 90.0)
 //        while (true) {
 //            robot.updatePosition()
 //            console.display(1, robot.globalRobot.toString())
 //        }
-        robot.fineTunedGoToPos(target,this)
+        target.setCoordinate(x = 0.0, y = 0.0, r = 90.0)
+        robot.fineTunedGoToPos(target, this)
+        target.setCoordinate(x = 10.0, y = 10.0, r = 90.0)
+        robot.fineTunedGoToPos(target, this)
+        target.setCoordinate(x = -10.0, y = -10.0, r = 270.0)
+        robot.fineTunedGoToPos(target, this)
+        target.setCoordinate(x = -10.0, y = -10.0, r = 180.0)
+        robot.fineTunedGoToPos(target, this)
+        target.setCoordinate(x = 10.0, y = -10.0, r = 270.0)
+        robot.fineTunedGoToPos(target, this)
 //        robot.turnGoToPosition(target, 1000.0, 0.5, this)
+
+//        // setSpeedAll tests
+//        robot.setSpeedAll(0.0,1.0,0.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(1.0,0.0,0.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(0.0,0.0,1.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(1.0,1.0,0.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(-1.0,-1.0,0.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(1.0,1.0,1.0, 0.0, 1.0)
+//        sleep(500)
+//        robot.setSpeedAll(-1.0,-1.0,-1.0, 0.0, 1.0)
+//        sleep(500)
     }
 }
