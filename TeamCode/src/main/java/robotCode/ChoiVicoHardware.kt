@@ -33,9 +33,6 @@ class ChoiVicoHardware(): MecOdometryHardware {
 //        lOdom = hwMap.dcMotor.get("left collector")
 //        cOdom = hwMap.dcMotor.get("tape")
 //        rOdom = hwMap.dcMotor.get("")
-        lOdom = hwMap.dcMotor.get("left collector")
-        cOdom = hwMap.dcMotor.get("tape")
-        rOdom = hwMap.dcMotor.get("left drive b")
 
         lOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         lOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
@@ -48,14 +45,10 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        DRIVE TRAIN
 
-//        lFDrive = hwMap.get("lFDrive") as DcMotor
-//        rFDrive = hwMap.get("rFDrive") as DcMotor
-//        lBDrive = hwMap.get("lBDrive") as DcMotor
-//        rBDrive = hwMap.get("rBDrive") as DcMotor
-        lFDrive = hwMap.get("left drive f") as DcMotor
-        lBDrive = hwMap.get("left drive b") as DcMotor
-        rFDrive = hwMap.get("right drive f") as DcMotor
-        rBDrive = hwMap.get("right drive b") as DcMotor
+        lFDrive = hwMap.get("lFDrive") as DcMotor
+        rFDrive = hwMap.get("rFDrive") as DcMotor
+        lBDrive = hwMap.get("lBDrive") as DcMotor
+        rBDrive = hwMap.get("rBDrive") as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
