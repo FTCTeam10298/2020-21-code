@@ -20,12 +20,12 @@ class OdometryTestAuto: LinearOpMode() {
 
         waitForStart()
 
-        target.setCoordinate(x = 20.0, y = 0.0, r = 0.0)
+        target.setCoordinate(x = 0.0, y = 0.0, r = 90.0)
 //        while (true) {
 //            robot.updatePosition()
 //            console.display(1, robot.globalRobot.toString())
 //        }
-        robot.straightGoToPosition(target,100.0,0.5,this)
+        robot.fineTunedGoToPos(target,this)
 //        robot.turnGoToPosition(target, 1000.0, 0.5, this)
     }
 }

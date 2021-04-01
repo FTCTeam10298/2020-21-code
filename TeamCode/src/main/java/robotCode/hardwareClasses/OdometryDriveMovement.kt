@@ -36,11 +36,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         // Find the error in angle
         var tempAngleError: Double = target.r - globalRobot.r
 
-        while (tempAngleError > Math.PI)
-            tempAngleError -= Math.PI * 2
-
-        while (tempAngleError < -Math.PI)
-            tempAngleError += Math.PI * 2
+//        while (tempAngleError > Math.PI)
+//            tempAngleError -= Math.PI * 2
+//
+//        while (tempAngleError < -Math.PI)
+//            tempAngleError += Math.PI * 2
 
         val angleError: Double = tempAngleError
 
@@ -123,6 +123,31 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
+    fun fineTunedGoToPos(
+            target: Coordinate,
+            opmode: LinearOpMode
+    ) {
+        doGoToPosition(
+                target,
+                1.0,
+                PID(0.05, 0.0, 0.0),
+                PID(0.05, 0.0, 0.0),
+                PID(0.1, 0.0, 0.0),
+                0.5,
+                0.5,
+                true,
+                opmode
+        )
+    }
+
+    /**
+     * Executes DoGoToPosition with set PIDs optimized for straight driving.
+     * @param target The target Coordinate to drive to.
+     * @param maxPower The maximum power allowed on the drive motors.
+     * @param distanceMin The minimum allowed distance away from the target to terminate.
+     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
+     * so that stopping mid-loop doesn't cause an error.
+     */
     override fun straightGoToPosition(
             target: Coordinate,
             maxPower: Double,
@@ -134,7 +159,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 maxPower,
                 PID(0.05, 0.0, 0.0),
                 PID(0.05, 0.0, 0.0),
-                PID(0.0, 0.0, 0.0),
+                PID(0.05, 0.0, 0.0),
                 distanceMin,
                 0.5,
                 true,
