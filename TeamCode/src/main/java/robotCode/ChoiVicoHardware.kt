@@ -29,27 +29,35 @@ class ChoiVicoHardware(): MecOdometryHardware {
     override fun init(ahwMap: HardwareMap) {
         hwMap = ahwMap
 
-//        ODOMETRY
-        lOdom = hwMap.dcMotor["lFDrive"]
-        cOdom = hwMap.dcMotor["rFDrive"]
-        rOdom = hwMap.dcMotor["lBDrive"]
+        // ODOMETRY
+        lOdom = hwMap.dcMotor.get("left collector")
+        cOdom = hwMap.dcMotor.get("tape")
+        rOdom = hwMap.dcMotor.get("left drive b")
+
+        lOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        lOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+        cOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        cOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+
+        rOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        rOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
 //        DRIVE TRAIN
-
-        lFDrive = hwMap["lFDrive"] as DcMotor
-        rFDrive = hwMap["rBDrive"] as DcMotor
-        lBDrive = hwMap["lBDrive"] as DcMotor
-        rBDrive = hwMap["rBDrive"] as DcMotor
+        lFDrive = hwMap.get("left drive f") as DcMotor
+        lBDrive = hwMap.get("left drive b") as DcMotor
+        rFDrive = hwMap.get("right drive f") as DcMotor
+        rBDrive = hwMap.get("right drive b") as DcMotor
 
         rFDrive.direction = DcMotorSimple.Direction.FORWARD
         lFDrive.direction = DcMotorSimple.Direction.REVERSE
         rBDrive.direction = DcMotorSimple.Direction.FORWARD
         lBDrive.direction = DcMotorSimple.Direction.REVERSE
 
-        rFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lFDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        rBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        lBDrive.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        rFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lFDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lBDrive.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
         rFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lFDrive.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
