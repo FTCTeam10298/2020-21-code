@@ -17,7 +17,7 @@ class ChoiVicoAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
 
-    val hardware = ChoiVicoHardware()
+    val hardware = OdometryTestHardware()
     val robot = OdometryDriveMovement(console, hardware)
     val target = Coordinate()
 
