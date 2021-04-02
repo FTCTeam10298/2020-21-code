@@ -32,6 +32,10 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
         }
     }
 
+    fun addCoordinate(x: Double = 0.0, y: Double = 0.0, r: Double = 0.0) {
+        setCoordinate(this.x + x, this.y + y, this.r + r)
+    }
+
     /**
      * Wraps the angle around so that the robot doesn't unnecessarily turn over 180 degrees.
      * @param angle The angle to wrap.
