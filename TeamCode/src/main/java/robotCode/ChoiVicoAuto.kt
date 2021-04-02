@@ -44,10 +44,19 @@ class ChoiVicoAuto: LinearOpMode() {
         if(position == RingDetector.RingPosition.NONE){
             target.setCoordinate(0.0,60.0,0.0)
             robot.fineTunedGoToPos(target, this)
+            sleep(1000)
             target.addCoordinate(36.0,0.0,0.0)
             robot.fineTunedGoToPos(target, this)
-            target.addCoordinate(0.0,0.0,90.0)
+            sleep(1000)
+            target.addCoordinate(0.0,0.0,18.0)
             robot.fineTunedGoToPos(target, this)
+            sleep(1000)
+            target.addCoordinate(0.0,0.0,-72.0)
+            robot.fineTunedGoToPos(target, this)
+            sleep(1000)
+            target.addCoordinate(0.0,12.0,0.0)
+            robot.fineTunedGoToPos(target, this)
+            sleep(1000)
         }
         if(position == RingDetector.RingPosition.ONE){
             target.setCoordinate(12.0,12.0,0.0)
