@@ -1,13 +1,10 @@
 package robotCode
 
-import android.os.SystemClock.sleep
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
-import creamsicleGoalDetection.CreamsicleGoalDetector
-import creamsicleGoalDetection.UltimateGoalAimer
-import robotCode.hardwareClasses.MecanumDriveTrain
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 import kotlin.math.abs
@@ -29,6 +26,9 @@ class ChoiVicoTeleOp: OpMode() {
     var shooterReving = false
     var ringShooting: RingShooting = RingShooting.One
     var triggerDown: Boolean = false
+    var shootingStart = 0.0
+    var ringsIn = 0
+    var ringIntaking = false
 
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
@@ -73,6 +73,27 @@ class ChoiVicoTeleOp: OpMode() {
                 (y - x + r)
         )
 
+//        RING COUNTER
+
+        if (hardware.ringsStored.getDistance(DistanceUnit.MM) < 1)
+            ringsIn = 0
+
+        if (ringIntaking && hardware.ringsIn.getDistance(DistanceUnit.MM) > 1)
+            ringsIn ++
+
+        ringIntaking = hardware.ringsIn.getDistance(DistanceUnit.MM) < 1
+        console.display(12, "distance: ${hardware.ringsIn.getDistance(DistanceUnit.MM)}")
+
+
+//        LIFT
+        hardware.lift1.position += gamepad2.left_stick_y.toDouble() * 0.1
+        hardware.lift2.position += gamepad2.left_stick_y.toDouble() * 0.1
+
+        if (ringsIn == 0) {
+            hardware.lift1.position = 0.0
+            hardware.lift2.position = 0.0
+        }
+
 //        Shoot routine
         fun goToVelocity() {
             hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
@@ -84,45 +105,33 @@ class ChoiVicoTeleOp: OpMode() {
 
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
-//        fun shoot() {
-//            when(ringShooting) {
-//                RingShooting.One -> {
-//                    hardware.lift.position = 0.0
-//                    hardware.roller.power = 0.0
-//                    sleep(200)
-//                    hardware.lift.position = 0.7
-//                    sleep(200)
-//                    hardware.roller.power = 0.6
-//                    sleep(400)
-//                    hardware.roller.power = 0.1
-//                    ringShooting = RingShooting.Two
-//                }
-//                RingShooting.Two -> {
-//                    sleep(200)
-//                    hardware.lift.position = 0.8
-//                    sleep(200)
-//                    hardware.roller.power = 0.6
-//                    sleep(400)
-//                    hardware.roller.power = 0.1
-//                    ringShooting = RingShooting.Three
-//                }
-//                RingShooting.Three -> {
-//                    sleep(200)
-//                    hardware.lift.position = 2.0
-//                    sleep(300)
-//                    hardware.roller.power = 0.6
-//                    ringShooting = RingShooting.One
-//                    sleep(200)
-//                    hardware.lift.position = 0.0
-//                    hardware.roller.power = 0.0
-//                }
-//            }
-//        }
+        fun shoot() {
+            hardware.roller.power = 1.0
+
+            when(ringsIn) {
+                1 -> {
+                    hardware.lift1.position = 1.0
+                    hardware.lift2.position = 1.0
+                }
+                2 -> {
+                    hardware.lift1.position = 0.7
+                    hardware.lift2.position = 0.7
+                }
+                3 -> {
+                    hardware.lift1.position = 0.5
+                    hardware.lift2.position = 0.5
+                }
+            }
+        }
+
 
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
+            shootingStart = time
+
             if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
+                shoot()
                 hardware.roller.power = 1.0
             }
             triggerDown = gamepad1.right_trigger > 0.2
@@ -180,10 +189,6 @@ class ChoiVicoTeleOp: OpMode() {
                 }
             }
         }
-
-//        LIFT
-            hardware.lift1.power = gamepad2.left_stick_y.toDouble() * 0.5
-            hardware.lift2.power = gamepad2.left_stick_y.toDouble() * 0.5
 
 //        GATE
         if (gamepad1.y)
