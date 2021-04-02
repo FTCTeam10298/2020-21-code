@@ -18,8 +18,8 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var shooter: DcMotorEx
     lateinit var turret: DcMotor
 
-    lateinit var lift1: Servo
-    lateinit var lift2: Servo
+    lateinit var lift1: CRServo
+    lateinit var lift2: CRServo
     lateinit var roller: CRServo
     lateinit var claw1: Servo
     lateinit var claw2: Servo
@@ -97,13 +97,13 @@ class ChoiVicoHardware(): MecOdometryHardware {
         wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
 //        LIFT
-        lift1 = hwMap["lift1"] as Servo
-        lift2 = hwMap["lift2"] as Servo
+        lift1 = hwMap["lift1"] as CRServo
+        lift2 = hwMap["lift2"] as CRServo
 
-        lift1.direction = Servo.Direction.REVERSE
-        lift2.direction = Servo.Direction.FORWARD
-        lift1.position = 0.0
-        lift2.position = 0.0
+        lift1.direction = DcMotorSimple.Direction.REVERSE
+        lift2.direction = DcMotorSimple.Direction.FORWARD
+        lift1.power = 0.0
+        lift2.power = 0.0
 
 //        SERVOS
         claw1 = hwMap["claw1"] as Servo

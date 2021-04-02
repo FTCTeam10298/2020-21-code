@@ -86,13 +86,13 @@ class ChoiVicoTeleOp: OpMode() {
 
 
 //        LIFT
-        hardware.lift1.position += gamepad2.left_stick_y.toDouble() * 0.1
-        hardware.lift2.position += gamepad2.left_stick_y.toDouble() * 0.1
+        hardware.lift1.power = gamepad2.left_stick_y.toDouble() * 0.5
+        hardware.lift2.power = gamepad2.left_stick_y.toDouble() * 0.5
 
-        if (ringsIn == 0) {
-            hardware.lift1.position = 0.0
-            hardware.lift2.position = 0.0
-        }
+//        if (ringsIn == 0) {
+//            hardware.lift1.position = 0.0
+//            hardware.lift2.position = 0.0
+//        }
 
 //        Shoot routine
         fun goToVelocity() {
@@ -110,16 +110,16 @@ class ChoiVicoTeleOp: OpMode() {
 
             when(ringsIn) {
                 1 -> {
-                    hardware.lift1.position = 1.0
-                    hardware.lift2.position = 1.0
+                    hardware.lift1.power = 1.0
+                    hardware.lift2.power = 1.0
                 }
                 2 -> {
-                    hardware.lift1.position = 0.7
-                    hardware.lift2.position = 0.7
+                    hardware.lift1.power = 0.7
+                    hardware.lift2.power = 0.7
                 }
                 3 -> {
-                    hardware.lift1.position = 0.5
-                    hardware.lift2.position = 0.5
+                    hardware.lift1.power = 0.5
+                    hardware.lift2.power = 0.5
                 }
             }
         }
