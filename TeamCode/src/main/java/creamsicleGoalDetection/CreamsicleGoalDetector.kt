@@ -94,7 +94,7 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
                         Imgproc.putText(frame, "circle", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
                     }
                     8-> {
-                        Imgproc.putText(frame, "goal", Point(point.x, point.y), font, 1.0, Scalar(22.0, 100.0, 100.0))
+                        Imgproc.putText(frame, "goalCandidate", Point(point.x, point.y), font, 0.05, Scalar(22.0, 100.0, 100.0))
 
                         val pointsArray = points.toArray()
 
@@ -110,14 +110,24 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
                         val width = maxX - minX
                         val height = maxY - minY
                         val area = width * height
+                        val aspect = width / height
 
-                        x = point.x
-                        y = point.y
+                        //determine if it isn't a floating spot.
+
+                        if (aspect > 1.3) {
+                            x = point.x
+                            y = point.y
+                            Imgproc.putText(frame, "goal", Point(point.x, point.y), font, 1.5, Scalar(22.0, 100.0, 100.0))
+                        }
+
+
+
 
                         console.display(5, "width $width")
                         console.display(6, "Last known goal position: $x, $y")
                         console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
                         console.display(8, "there can only be one: $area")
+                        console.display(9, "Aspects are bright: $aspect")
 
 
                     }

@@ -41,6 +41,8 @@ class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDr
         TargetAcquired
     }
 
+    
+
     fun updateAimAndAdjustRobot(){
         moveTowardAimDirection(calculateAimDirection())
     }
@@ -48,11 +50,11 @@ class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDr
     private fun calculateAimDirection():Directions?{
         console.display(1, "start")
 
-        val turnDir = if (goalDetector.x < 245) {
+        val turnDir = if (goalDetector.x < 140) {
             Directions.Left
-        }else if (goalDetector.x > 245 && goalDetector.x < 255) {
+        }else if (goalDetector.x > 140 && goalDetector.x < 180) {
             Directions.TargetAcquired
-        }else if(goalDetector.x >= 255) {
+        }else if(goalDetector.x >= 180) {
             Directions.Right
         }else{
             null
@@ -68,7 +70,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDr
 
         when(direction){
             Directions.Left -> drivetrain.driveSetPower(-0.3, 0.3, -0.3, 0.3)
-            Directions.Right -> drivetrain.driveSetPower(0.3, -0.3, 0.3, 0.3)
+            Directions.Right -> drivetrain.driveSetPower(0.3, -0.3, 0.3, -0.3)
             Directions.TargetAcquired -> drivetrain.driveSetPower(0.0, 0.0, 0.0, 0.0)
             else -> console.display(1, "No direction!!! Fixme!!!")
         }
