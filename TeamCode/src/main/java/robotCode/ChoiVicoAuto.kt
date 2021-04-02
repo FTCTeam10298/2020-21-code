@@ -48,30 +48,15 @@ class ChoiVicoAuto: LinearOpMode() {
             target.addCoordinate(36.0,0.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
-            target.addCoordinate(0.0,0.0,18.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(0.0,0.0,-72.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
             target.addCoordinate(0.0,12.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
         }
         if(position == RingDetector.RingPosition.ONE){
-            target.setCoordinate(0.0,72.0,0.0)
+            target.setCoordinate(0.0,96.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
-            target.setCoordinate(0.0,-12.0,0.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(36.0,0.0,0.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(0.0,0.0,18.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(0.0,0.0,-72.0)
+            target.addCoordinate(36.0,-36.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
             target.addCoordinate(0.0,12.0,0.0)
@@ -80,27 +65,15 @@ class ChoiVicoAuto: LinearOpMode() {
 
         }
         if (position == RingDetector.RingPosition.FOUR){
-            target.setCoordinate(0.0,84.0,0.0)
+            target.setCoordinate(0.0,114.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
-            target.setCoordinate(0.0,-24.0,0.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(36.0,0.0,0.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(0.0,0.0,18.0)
-            robot.fineTunedGoToPos(target, this)
-            sleep(1000)
-            target.addCoordinate(0.0,0.0,-72.0)
+            target.addCoordinate(36.0,-54.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
             target.addCoordinate(0.0,12.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
         }
-
-
-
     }
 }
