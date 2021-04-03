@@ -144,8 +144,6 @@ class ChoiVicoTeleOp: OpMode() {
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
-            shootingStart = time
-
             if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
                 shoot()
                 hardware.roller.power = 1.0
