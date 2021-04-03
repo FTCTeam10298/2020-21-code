@@ -45,7 +45,6 @@ class ChoiVicoHardware(): MecOdometryHardware {
         rOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
 //        DRIVE TRAIN
-
         lFDrive = hwMap["lFDrive"] as DcMotor
         rFDrive = hwMap["rFDrive"] as DcMotor
         lBDrive = hwMap["lBDrive"] as DcMotor

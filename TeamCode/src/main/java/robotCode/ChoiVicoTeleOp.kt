@@ -161,11 +161,7 @@ class ChoiVicoTeleOp: OpMode() {
             shooterRpm = powerShotsPreset.toDouble()
 
 //        TURRET
-//        turret.updateAimAndAdjustRobot() //auto aim
-//        hardware.turret.currentPosition - robot.globalRobot.r //aim at the same place
         hardware.turret.power = pow(gamepad2.left_stick_x.toDouble(), 0.0) * 0.5
-
-//        turret.updateAimAndAdjustRobot()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
