@@ -28,7 +28,7 @@ open class PID(val k_p: Double = 0.0, val k_i: Double = 0.0, val k_d: Double = 0
      * @param target the target value for the controller
      * @param feedback the current value
      * @return the calculated value for the pid
-     * */
+     *
     fun calcPID(target: Double, feedback: Double): Double {
         val error: Double = target - feedback
 
