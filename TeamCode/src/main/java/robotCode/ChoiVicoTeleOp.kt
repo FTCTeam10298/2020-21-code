@@ -54,6 +54,7 @@ class ChoiVicoTeleOp: OpMode() {
 
     override fun init() {
         hardware.init(hardwareMap)
+
         opencv.init(hardwareMap)
         opencv.start()
         opencv.onNewFrame(goalDetector::scoopFrame)
@@ -65,8 +66,6 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun loop() {
-//        UPDATE Turret
-        turret.updateAimAndAdjustRobot()
 
 //        DRONE DRIVE
         val yInput = -gamepad1.left_stick_y.toDouble()

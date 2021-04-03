@@ -36,18 +36,29 @@ class ChoiVicoAuto: LinearOpMode() {
         opencv.init(hardwareMap)
         opencv.start()
 
-        opencv.onFirstFrame{ ringDetector.init(it) }
-        opencv.onNewFrame{ ringDetector.processFrame(it) }
+        opencv.onFirstFrame(ringDetector::init)
+        opencv.onNewFrame(ringDetector::processFrame)
 
         waitForStart()
+
+        position = ringDetector.position
 
         opencv.cameraName = "Webcam 2"
         opencv.init(hardwareMap)
         opencv.start()
-        
-        opencv.onNewFrame{ turret.updateAimAndAdjustRobot() }
 
-        position = ringDetector.position
+        opencv.onNewFrame( goalDetector::scoopFrame )
+
+        object: Thread() {
+            override fun run() {
+                while (opModeIsActive()) {
+                    turret.updateAimAndAdjustRobot()
+                    sleep(10)
+                }
+
+            }
+        }.start()
+
         if(position == RingDetector.RingPosition.NONE){
             target.setCoordinate(0.0,60.0,0.0)
             robot.fineTunedGoToPos(target, this)
