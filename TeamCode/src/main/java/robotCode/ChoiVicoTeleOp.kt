@@ -25,11 +25,9 @@ class ChoiVicoTeleOp: OpMode() {
     val opencv = OpenCvAbstraction(this)
 
     val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector, hardware)
+    val turret = UltimateGoalAimer(console, goalDetector, hardware)
 
     val ringDetector = RingDetector(150, 135, console)
-    var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
-
 
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
@@ -55,13 +53,12 @@ class ChoiVicoTeleOp: OpMode() {
     override fun init() {
         hardware.init(hardwareMap)
 
-//        opencv.init(hardwareMap)
-//        opencv.start()
-//
-//        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
-//        val aimCamera = ringCamera
-//
-//        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
+
+        opencv.cameraName = hardware.turretCameraName
+        opencv.init(hardwareMap)
+        opencv.start()
+
+        opencv.onNewFrame(ringDetector::processFrame)
     }
 
     override fun start() {
@@ -70,13 +67,6 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun loop() {
-//        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
-////        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv, hardwareMap)
-//        val aimCamera = ringCamera
-//
-//        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
-
-//        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
 
         turret.updateAimAndAdjustRobot()
 

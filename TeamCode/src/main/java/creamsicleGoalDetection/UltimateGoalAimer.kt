@@ -33,7 +33,7 @@ import telemetryWizard.TelemetryConsole
 //*this has been an Aperture Science Innovators notification.*
 
 
-class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain, val goalDetector:CreamsicleGoalDetector, val hardware: ChoiVicoHardware) {
+class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:CreamsicleGoalDetector, val hardware: ChoiVicoHardware) {
     enum class Directions {
         Right,
         Left,

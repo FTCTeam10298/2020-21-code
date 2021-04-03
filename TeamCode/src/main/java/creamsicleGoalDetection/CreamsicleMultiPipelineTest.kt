@@ -19,7 +19,7 @@ class CreamsicleMultiPipelineTest: LinearOpMode() {
     val opencv = OpenCvAbstraction(this)
 
     val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector, hardware)
+    val turret = UltimateGoalAimer(console, goalDetector, hardware)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
 

@@ -18,7 +18,7 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
     val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
     val goalDetector = CreamsicleGoalDetector(console)
-    val aimer = UltimateGoalAimer(console, robot, goalDetector, hardware)
+    val aimer = UltimateGoalAimer(console, goalDetector, hardware)
     val movement = EncoderDriveMovement(hardware, console)
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val XbuttonHelper = ButtonHelper()
