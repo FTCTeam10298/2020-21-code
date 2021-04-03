@@ -37,8 +37,6 @@ class ChoiVicoTeleOp: OpMode() {
     var shooterReving = false
     var ringShooting: RingShooting = RingShooting.One
     var triggerDown: Boolean = false
-    var ringsIn = 0
-    var ringIntaking = false
 
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
@@ -113,26 +111,15 @@ class ChoiVicoTeleOp: OpMode() {
                 (y - x + r)
         )
 
-//        RING COUNTER
-
-        if (hardware.ringsStored.getDistance(DistanceUnit.MM) < 1)
-            ringsIn = 0
-
-        if (ringIntaking && hardware.ringsIn.getDistance(DistanceUnit.MM) > 1)
-            ringsIn ++
-
-        ringIntaking = hardware.ringsIn.getDistance(DistanceUnit.MM) < 1
-        console.display(12, "distance: ${hardware.ringsIn.getDistance(DistanceUnit.MM)}")
-
 
 //        LIFT
-        hardware.lift1.position = gamepad2.left_stick_y.toDouble() * 0.5
-        hardware.lift2.position = gamepad2.left_stick_y.toDouble() * 0.5
+        hardware.lift1.position = gamepad2.left_stick_y.toDouble()
+        hardware.lift2.position = gamepad2.left_stick_y.toDouble()
 
-        if (ringsIn == 0) {
-            hardware.lift1.position = 0.5
-            hardware.lift2.position = 0.5
-        }
+//        if (ringsIn == 0) {
+//            hardware.lift1.position = 0.5
+//            hardware.lift2.position = 0.5
+//        }
 
 //        Shoot routine
         fun goToVelocity() {
@@ -148,20 +135,20 @@ class ChoiVicoTeleOp: OpMode() {
         fun shoot() {
             hardware.roller.power = 1.0
 
-            when(ringsIn) {
-                1 -> {
-                    hardware.lift1.position = 0.8
-                    hardware.lift2.position = 0.8
-                }
-                2 -> {
-                    hardware.lift1.position = 0.7
-                    hardware.lift2.position = 0.7
-                }
-                3 -> {
-                    hardware.lift1.position = 0.6
-                    hardware.lift2.position = 0.6
-                }
-            }
+//            when(ringsIn) {
+//                1 -> {
+//                    hardware.lift1.position = 0.8
+//                    hardware.lift2.position = 0.8
+//                }
+//                2 -> {
+//                    hardware.lift1.position = 0.7
+//                    hardware.lift2.position = 0.7
+//                }
+//                3 -> {
+//                    hardware.lift1.position = 0.6
+//                    hardware.lift2.position = 0.6
+//                }
+//            }
         }
 
 
