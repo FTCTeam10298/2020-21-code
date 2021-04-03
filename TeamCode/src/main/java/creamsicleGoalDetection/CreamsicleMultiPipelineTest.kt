@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import locationTracking.Coordinate
 import openCvAbstraction.OpenCvAbstraction
 import ringDetector.RingDetector
+import robotCode.ChoiVicoHardware
 import robotCode.hardwareClasses.OdometryDriveMovement
 import robotCode.OdometryTestHardware
 import telemetryWizard.TelemetryConsole
@@ -13,12 +14,12 @@ import telemetryWizard.TelemetryConsole
 class CreamsicleMultiPipelineTest: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
-    val hardware = OdometryTestHardware()
+    val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
 
     val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector)
+    val turret = UltimateGoalAimer(console, robot, goalDetector, hardware)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
 
