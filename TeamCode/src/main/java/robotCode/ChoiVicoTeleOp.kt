@@ -27,8 +27,6 @@ class ChoiVicoTeleOp: OpMode() {
     val goalDetector = CreamsicleGoalDetector(console)
     val turret = UltimateGoalAimer(console, goalDetector, hardware)
 
-    val ringDetector = RingDetector(150, 135, console)
-
     val highGoalPreset = 4450
     val powerShotsPreset = 4000
     var shooterRpm: Double = highGoalPreset.toDouble()
@@ -46,8 +44,7 @@ class ChoiVicoTeleOp: OpMode() {
     val dUpHelp = ButtonHelper()
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
-    val rollerHelper = ButtonHelper()
-    val wobblePID = PID(0.1, 0.05)
+    val turretHelp = ButtonHelper()
 
 
     override fun init() {
@@ -55,8 +52,6 @@ class ChoiVicoTeleOp: OpMode() {
 
 
         opencv.cameraName = hardware.turretCameraName
-//        opencv.onFirstFrame (ringDetector::init)
-//        opencv.onNewFrame(ringDetector::processFrame)
         opencv.onNewFrame(goalDetector::scoopFrame)
         opencv.init(hardwareMap)
         opencv.start()
@@ -64,13 +59,11 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun start() {
-//        hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-//        hardware.shooter.power = 0.3    // Idle Shooter
+        hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        hardware.shooter.power = 0.3    // Idle Shooter
     }
 
     override fun loop() {
-
-        turret.updateAimAndAdjustRobot()
 
 //        DRONE DRIVE
         val yInput = -gamepad1.left_stick_y.toDouble()
@@ -113,29 +106,49 @@ class ChoiVicoTeleOp: OpMode() {
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
         fun shoot() {
-            hardware.roller.power = 1.0
 
-//            when(ringsIn) {
-//                1 -> {
-//                    hardware.lift1.position = 0.8
-//                    hardware.lift2.position = 0.8
-//                }
-//                2 -> {
-//                    hardware.lift1.position = 0.7
-//                    hardware.lift2.position = 0.7
-//                }
-//                3 -> {
-//                    hardware.lift1.position = 0.6
-//                    hardware.lift2.position = 0.6
-//                }
-//            }
+            when (ringShooting) {
+                RingShooting.One -> {
+                    hardware.roller.power = 0.0
+                    hardware.lift1.position = 0.8
+                    hardware.lift2.position = 0.8
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 1.0
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 0.0
+                    ringShooting = RingShooting.Two
+
+                }
+                RingShooting.Two -> {
+                    hardware.roller.power = 0.0
+                    hardware.lift1.position = 0.7
+                    hardware.lift2.position = 0.7
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 1.0
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 0.0
+                    ringShooting = RingShooting.Three
+                }
+                RingShooting.Three -> {
+                    hardware.roller.power = 0.0
+                    hardware.lift1.position = 0.6
+                    hardware.lift2.position = 0.6
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 1.0
+                    if (waitInLoop(1000))
+                        hardware.roller.power = 0.0
+                    ringShooting = RingShooting.One
+                }
+            }
         }
 
 
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
-            if (isVelocityCorrect() && gamepad1.right_trigger > 0.2) {
+            ringShooting = RingShooting.One
+
+            if (isVelocityCorrect() && (gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2)) {
                 shoot()
                 hardware.roller.power = 1.0
             }
@@ -163,7 +176,10 @@ class ChoiVicoTeleOp: OpMode() {
             shooterRpm = powerShotsPreset.toDouble()
 
 //        TURRET
-        hardware.turret.power = pow(gamepad2.left_stick_x.toDouble(), 0.0) * 0.5
+        if (turretHelp.stateChanged(gamepad2.a) && !gamepad2.a)
+            turret.updateAimAndAdjustRobot()
+
+        hardware.turret.power += gamepad2.left_stick_x.toDouble()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
@@ -203,22 +219,22 @@ class ChoiVicoTeleOp: OpMode() {
 //        ROLLER
         if (gamepad1.y)
             hardware.roller.power = 1.0
-        if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
-            hardware.roller.power = 0.0
+//        if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
+//            hardware.roller.power = 0.0
 
         loopTime = time - lastTime
         lastTime = time
 
-        console.display(2, "Loop time: ${loopTime}")
+        console.display(2, "Loop time: $loopTime")
         console.display(3, "Ring #$ringShooting")
-        console.display(4, "Shooter rpm: ${hardware.shooter.velocity * 60 / 28}")
-        console.display(5, "Target rpm: $shooterRpm")
-        console.display(6, "Shooter tps: ${hardware.shooter.velocity}")
-        console.display(7, "Shooter Power: ${hardware.shooter.power}")
-        console.display(8, "LF: ${hardware.lFDrive.power}")
-        console.display(9, "RF: ${hardware.rFDrive.power}")
-        console.display(10, "LB: ${hardware.lBDrive.power}")
-        console.display(11, "RB: ${hardware.rBDrive.power}")
+//        console.display(4, "Shooter rpm: ${hardware.shooter.velocity * 60 / 28}")
+        console.display(4, "Target rpm: $shooterRpm")
+//        console.display(5, "Shooter tps: ${hardware.shooter.velocity}")
+        console.display(5, "Shooter Power: ${hardware.shooter.power}")
+//        console.display(8, "LF: ${hardware.lFDrive.power}")
+//        console.display(9, "RF: ${hardware.rFDrive.power}")
+//        console.display(10, "LB: ${hardware.lBDrive.power}")
+//        console.display(11, "RB: ${hardware.rBDrive.power}")
     }
 
     fun toRPM(tps: Double): Double = tps * 60 / 28
@@ -240,6 +256,8 @@ class ChoiVicoTeleOp: OpMode() {
         Two,
         Three
     }
+
+    fun waitInLoop(ms: Int): Boolean = timeSince(time) >= ms
 
     fun timeSince(ms: Double): Double = time - ms
 }

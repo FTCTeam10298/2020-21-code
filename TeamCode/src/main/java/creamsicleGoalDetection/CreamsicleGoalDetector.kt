@@ -123,11 +123,11 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
 
 
-                        console.display(5, "width $width")
-                        console.display(6, "Last known goal position: $x, $y")
-                        console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
-                        console.display(8, "there can only be one: $area")
-                        console.display(9, "Aspects are bright: $aspect")
+//                        console.display(5, "width $width")
+//                        console.display(6, "Last known goal position: $x, $y")
+//                        console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
+//                        console.display(8, "there can only be one: $area")
+//                        console.display(9, "Aspects are bright: $aspect")
 
 
                     }

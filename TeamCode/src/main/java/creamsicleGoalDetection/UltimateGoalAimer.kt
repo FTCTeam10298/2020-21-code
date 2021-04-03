@@ -47,7 +47,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
     }
 
     private fun calculateAimDirection():Directions?{
-        console.display(1, "start")
+//        console.display(1, "start")
 
         val turnDir = if (goalDetector.x < 140) {
             Directions.Left
@@ -58,7 +58,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
         }else{
             null
         }
-        console.display(6, "Turn direction: $turnDir")
+//        console.display(6, "Turn direction: $turnDir")
 
         return turnDir
     }
@@ -71,7 +71,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
             Directions.Left -> hardware.turret.power = 0.3
             Directions.Right -> hardware.turret.power = -0.3
             Directions.TargetAcquired -> hardware.turret.power = 0.0
-            else -> console.display(1, "No direction!!! Fixme!!!")
+//            else -> console.display(1, "No direction!!! fix me!!!")
         }
 
     }
