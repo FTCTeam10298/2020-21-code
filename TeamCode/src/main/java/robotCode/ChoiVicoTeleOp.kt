@@ -25,7 +25,7 @@ class ChoiVicoTeleOp: OpMode() {
     val opencv = OpenCvAbstraction(this)
 
     val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector)
+//    val turret = UltimateGoalAimer(console, robot, goalDetector)
 
     val ringDetector = RingDetector(150, 135, console)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
@@ -175,7 +175,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        hardware.turret.currentPosition - robot.globalRobot.r //aim at the same place
         hardware.turret.power = gamepad2.left_stick_x.toDouble()
 
-        turret.updateAimAndAdjustRobot()
+//        turret.updateAimAndAdjustRobot()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
@@ -191,7 +191,9 @@ class ChoiVicoTeleOp: OpMode() {
 
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y.toDouble()
-        hardware.wobble.power = wobblePID.calcPID(wobbleStick, hardware.wobble.currentPosition.toDouble())
+        hardware.wobble.targetPosition = wobbleStick.toInt()
+        if (wobbleStick != 0.0)
+            hardware.wobble.power = 0.8
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
