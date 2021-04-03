@@ -27,7 +27,7 @@ class ChoiVicoAuto: LinearOpMode() {
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
 
     val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, robot, goalDetector)
+    val turret = UltimateGoalAimer(console, robot, goalDetector, hardware)
 
     class CameraWrap(val cameraName:String,
                      val opencv:OpenCvAbstraction,
