@@ -33,14 +33,16 @@ class OdometryTestAuto: LinearOpMode() {
         sleep(400)
         robot.setSpeedAll(1.0, 0.0, 0.0, 0.0, 1.0)
         sleep(400)
+        robot.setSpeedAll(0.0, 0.0, 0.0, 0.0, 0.0)
+
         while (true) {
-            console.display(1, robot.globalRobot.y.toString())
-            console.display(2, robot.globalRobot.x.toString())
+            console.display(1, robot.globalRobot.x.toString())
+            console.display(2, robot.globalRobot.y.toString())
             console.display(3, (robot.globalRobot.r * 57.2958).toString())
 
-            console.display(5, "left raw" + hardware.lOdom.toString())
-            console.display(6, "right raw" + hardware.rOdom.toString())
-            console.display(7,"center raw" +  hardware.cOdom.toString())
+            console.display(5, "left raw" + hardware.lOdom.currentPosition.toString())
+            console.display(6, "right raw" + hardware.rOdom.currentPosition.toString())
+            console.display(7,"center raw" +  hardware.cOdom.currentPosition.toString())
             robot.updatePosition()
 
         }
