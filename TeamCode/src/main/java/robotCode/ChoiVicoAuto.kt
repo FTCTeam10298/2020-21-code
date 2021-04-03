@@ -35,8 +35,7 @@ class ChoiVicoAuto: LinearOpMode() {
         opencv.openCameraDeviceAsync = true
         opencv.start()
 
-        opencv.onFirstFrame{ ringDetector.init(it) }
-        opencv.onNewFrame{ ringDetector.processFrame(it) }
+        opencv.onNewFrame{ turret.updateAimAndAdjustRobot(it) }
 
         waitForStart()
 

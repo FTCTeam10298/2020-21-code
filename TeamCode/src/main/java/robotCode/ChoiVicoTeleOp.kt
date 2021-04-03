@@ -9,7 +9,6 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
-import locationTracking.Coordinate
 import openCvAbstraction.OpenCvAbstraction
 import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
@@ -59,9 +58,7 @@ class ChoiVicoTeleOp: OpMode() {
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
         opencv.start()
-
-        opencv.onFirstFrame{ ringDetector.init(it) }
-        opencv.onNewFrame{ ringDetector.processFrame(it) }
+        opencv.onNewFrame(goalDetector::scoopFrame)
     }
 
     override fun start() {
@@ -70,6 +67,8 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun loop() {
+//        UPDATE Turret
+        turret.updateAimAndAdjustRobot()
 
 //        DRONE DRIVE
         val yInput = -gamepad1.left_stick_y.toDouble()

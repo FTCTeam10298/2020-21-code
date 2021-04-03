@@ -4,7 +4,6 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import openCvAbstraction.OpenCvAbstraction
-import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import robotCode.OdometryTestHardware
 import robotCode.hardwareClasses.EncoderDriveMovement
