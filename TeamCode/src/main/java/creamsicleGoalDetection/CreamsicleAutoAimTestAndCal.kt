@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import openCvAbstraction.OpenCvAbstraction
 import org.opencv.imgproc.Imgproc
-import robotCode.OdometryTestHardware
+import robotCode.ChoiVicoHardware
 import robotCode.hardwareClasses.EncoderDriveMovement
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
@@ -13,12 +13,12 @@ import telemetryWizard.TelemetryConsole
 
 @Autonomous(name="Creamsicle Test and Calibration", group="Tests")
 class CreamsicleAutoAimTestAndCal : OpMode() {
-    val hardware = OdometryTestHardware()
+    val hardware = ChoiVicoHardware()
     val console = TelemetryConsole(telemetry)
     val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
     val goalDetector = CreamsicleGoalDetector(console)
-    val aimer = UltimateGoalAimer(console, robot, goalDetector)
+    val aimer = UltimateGoalAimer(console, robot, goalDetector, hardware)
     val movement = EncoderDriveMovement(hardware, console)
     val font = Imgproc.FONT_HERSHEY_COMPLEX
     val XbuttonHelper = ButtonHelper()

@@ -1,9 +1,8 @@
 package creamsicleGoalDetection
 
-import org.opencv.core.Mat
+import robotCode.ChoiVicoHardware
 import robotCode.hardwareClasses.MecanumDriveTrain
 import telemetryWizard.TelemetryConsole
-
 
 //This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies and use my little ol' library with big clunky old Kotlin Driven machinery.
 //It has four calls to run.
@@ -29,12 +28,12 @@ import telemetryWizard.TelemetryConsole
 //THERES PROBLEMS??
 //Don't be a stupid Alternian, go run a camera.bake with the special pattern to make it work!
 //Or run a cam-calibration with front_GoalDetection (Calibrate)
-//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!
+//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!?
 
 //*this has been an Aperture Science Innovators notification.*
 
 
-class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain, val goalDetector:CreamsicleGoalDetector) {
+class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDriveTrain, val goalDetector:CreamsicleGoalDetector, val hardware: ChoiVicoHardware) {
     enum class Directions {
         Right,
         Left,
@@ -69,9 +68,9 @@ class UltimateGoalAimer(val console: TelemetryConsole, val drivetrain: MecanumDr
         console.display(12, direction.toString())
 
         when(direction){
-            Directions.Left -> drivetrain.driveSetPower(-0.3, 0.3, -0.3, 0.3)
-            Directions.Right -> drivetrain.driveSetPower(0.3, -0.3, 0.3, -0.3)
-            Directions.TargetAcquired -> drivetrain.driveSetPower(0.0, 0.0, 0.0, 0.0)
+            Directions.Left -> hardware.turret.power = 0.3
+            Directions.Right -> hardware.turret.power = -0.3
+            Directions.TargetAcquired -> hardware.turret.power = 0.0
             else -> console.display(1, "No direction!!! Fixme!!!")
         }
 
