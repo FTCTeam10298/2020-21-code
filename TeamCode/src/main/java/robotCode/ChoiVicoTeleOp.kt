@@ -55,13 +55,13 @@ class ChoiVicoTeleOp: OpMode() {
     override fun init() {
         hardware.init(hardwareMap)
 
-        opencv.init(hardwareMap)
-        opencv.start()
-
-        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
-        val aimCamera = ringCamera
-
-        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
+//        opencv.init(hardwareMap)
+//        opencv.start()
+//
+//        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
+//        val aimCamera = ringCamera
+//
+//        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
     }
 
     override fun start() {
@@ -70,25 +70,14 @@ class ChoiVicoTeleOp: OpMode() {
     }
 
     override fun loop() {
-        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
-//        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv, hardwareMap)
-        val aimCamera = ringCamera
-
-        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
-
-
-
-//        position = ringDetector.position
+//        val ringCamera = ChoiVicoAuto.CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
+////        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv, hardwareMap)
+//        val aimCamera = ringCamera
 //
-//        opencv.optimizeView = false
-//        opencv.openCameraDeviceAsync = false
-//        opencv.cameraName = "Webcam 2"
-//        opencv.init(hardwareMap)
-//        opencv.start()
+//        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
 
-        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
-//
-//        opencv.onNewFrame( goalDetector::scoopFrame )
+
+//        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
 
         turret.updateAimAndAdjustRobot()
 
