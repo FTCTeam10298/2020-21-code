@@ -82,15 +82,15 @@ class ChoiVicoAuto: LinearOpMode() {
 //
 //        opencv.onNewFrame( goalDetector::scoopFrame )
 
-        object: Thread() {
-            override fun run() {
-                while (opModeIsActive()) {
-                    turret.updateAimAndAdjustRobot()
-                    sleep(10)
-                }
-
-            }
-        }.start()
+//        object: Thread() {
+//            override fun run() {
+//                while (opModeIsActive()) {
+//                    turret.updateAimAndAdjustRobot()
+//                    sleep(10)
+//                }
+//
+//            }
+//        }.start()
 
         if(position == RingDetector.RingPosition.NONE){
             target.setCoordinate(0.0,60.0,0.0)

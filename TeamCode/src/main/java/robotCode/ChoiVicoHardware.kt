@@ -24,9 +24,6 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var claw1: Servo
     lateinit var claw2: Servo
 
-    lateinit var ringsIn: ColorRangeSensor
-    lateinit var ringsStored: ColorRangeSensor
-
     override lateinit var hwMap: HardwareMap
 
     override fun init(ahwMap: HardwareMap) {
@@ -118,8 +115,5 @@ class ChoiVicoHardware(): MecOdometryHardware {
         claw2.position = 1.0
         roller.power = 0.0
 
-//        SENSORS
-        ringsIn = hwMap["ringsIn"] as ColorRangeSensor
-        ringsStored = hwMap["ringsStored"] as ColorRangeSensor
     }
 }

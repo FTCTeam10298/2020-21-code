@@ -185,7 +185,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        TURRET
 //        turret.updateAimAndAdjustRobot() //auto aim
 //        hardware.turret.currentPosition - robot.globalRobot.r //aim at the same place
-        hardware.turret.power = gamepad2.left_stick_x.toDouble()
+        hardware.turret.power = pow(gamepad2.left_stick_x.toDouble(), 0.0) * 0.5
 
 //        turret.updateAimAndAdjustRobot()
 
