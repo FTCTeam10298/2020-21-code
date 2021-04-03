@@ -37,7 +37,6 @@ class ChoiVicoTeleOp: OpMode() {
     var shooterReving = false
     var ringShooting: RingShooting = RingShooting.One
     var triggerDown: Boolean = false
-    var shootingStart = 0.0
     var ringsIn = 0
     var ringIntaking = false
 
@@ -180,6 +179,8 @@ class ChoiVicoTeleOp: OpMode() {
 //        hardware.turret.currentPosition - robot.globalRobot.r //aim at the same place
         hardware.turret.power = gamepad2.left_stick_x.toDouble()
 
+        turret.updateAimAndAdjustRobot()
+
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
             if (hardware.collector.power == 1.0)
@@ -208,10 +209,10 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
-//        GATE
+//        ROLLER
         if (gamepad1.y)
             hardware.roller.power = 1.0
-        else if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
+        if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
             hardware.roller.power = 0.0
 
         loopTime = time - lastTime
