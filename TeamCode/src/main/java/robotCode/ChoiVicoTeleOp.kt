@@ -76,7 +76,6 @@ class ChoiVicoTeleOp: OpMode() {
 //
 //        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
 
-
 //        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
 
         turret.updateAimAndAdjustRobot()

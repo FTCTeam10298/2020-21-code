@@ -31,7 +31,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         // Find the error in distance for X
         val distanceErrorX = target.x - globalRobot.x
 
-        // Find the error in distance for Y
+        // Find there error in distance for Y
         val distanceErrorY = target.y - globalRobot.y
 
         // Find the error in angle
@@ -55,9 +55,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val speedX: Double = distancePIDX.calcPID(sin(globalRobot.r) * -distanceErrorY + cos(globalRobot.r) * distanceErrorX)
-        val speedY: Double = distancePIDY.calcPID(cos(globalRobot.r) * distanceErrorY + sin(globalRobot.r) * distanceErrorX)
-        val speedA: Double = anglePID.calcPID(angleError)
+        val speedX: Double = /*distancePIDX.calcPID(*/sin(globalRobot.r) * -distanceErrorY + cos(globalRobot.r) * distanceErrorX//)
+        val speedY: Double = /*distancePIDY.calcPID(*/cos(globalRobot.r) * distanceErrorY + sin(globalRobot.r) * distanceErrorX//)
+        val speedA: Double = /*anglePID.calcPID(*/angleError//)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
@@ -132,7 +132,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 target,
                 1.0,
                 PID(0.05, 0.01, 0.0),
-                PID(0.05, 0.01, 0.0),
+                PID(0.06, 0.01, 0.0),
                 PID(0.5, 0.01, 0.0),
                 0.5,
                 0.5,
