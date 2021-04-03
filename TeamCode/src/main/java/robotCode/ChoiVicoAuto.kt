@@ -6,6 +6,7 @@ import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import locationTracking.Coordinate
 import openCvAbstraction.OpenCvAbstraction
+import org.opencv.core.Mat
 import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
@@ -27,27 +28,57 @@ class ChoiVicoAuto: LinearOpMode() {
     val goalDetector = CreamsicleGoalDetector(console)
     val turret = UltimateGoalAimer(console, robot, goalDetector)
 
+    class CameraWrap(val cameraName:String,
+                     val opencv:OpenCvAbstraction){
+        private var hasInitialized = false
+
+        fun startWatching(onFirstFrame:((Mat)->Unit)?, onNewFrame: (Mat)->Mat){
+            if(!hasInitialized){
+                hasInitialized = true
+
+                opencv.cameraName = cameraName
+                if(onFirstFrame!=null){
+                    opencv.onFirstFrame(onFirstFrame)
+                }
+                opencv.onNewFrame(onNewFrame)
+                opencv.start()
+
+            }
+        }
+
+    }
+
     override fun runOpMode() {
         hardware.init(hardwareMap)
 
-        opencv.optimizeView = true
-        opencv.openCameraDeviceAsync = true
-        opencv.cameraName = "Webcam 1"
-        opencv.init(hardwareMap)
-        opencv.start()
+//        opencv.optimizeView = true
+//        opencv.openCameraDeviceAsync = true
+//        opencv.cameraName = "Webcam 1"
+//        opencv.init(hardwareMap)
+//        opencv.start()
+//
+//        opencv.onFirstFrame(ringDetector::init)
+//        opencv.onNewFrame(ringDetector::processFrame)
 
-        opencv.onFirstFrame(ringDetector::init)
-        opencv.onNewFrame(ringDetector::processFrame)
+        val ringCamera = CameraWrap(cameraName = "Webcam 1", opencv)
+//        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv)
+        val aimCamera = ringCamera
+
+        ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
 
         waitForStart()
 
-        position = ringDetector.position
+//        position = ringDetector.position
+//
+//        opencv.optimizeView = false
+//        opencv.openCameraDeviceAsync = false
+//        opencv.cameraName = "Webcam 2"
+//        opencv.init(hardwareMap)
+//        opencv.start()
 
-        opencv.cameraName = "Webcam 2"
-        opencv.init(hardwareMap)
-        opencv.start()
-
-        opencv.onNewFrame( goalDetector::scoopFrame )
+        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
+//
+//        opencv.onNewFrame( goalDetector::scoopFrame )
 
         object: Thread() {
             override fun run() {
