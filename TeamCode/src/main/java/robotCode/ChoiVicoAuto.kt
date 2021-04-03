@@ -2,6 +2,7 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.HardwareMap
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import locationTracking.Coordinate
@@ -29,7 +30,8 @@ class ChoiVicoAuto: LinearOpMode() {
     val turret = UltimateGoalAimer(console, robot, goalDetector)
 
     class CameraWrap(val cameraName:String,
-                     val opencv:OpenCvAbstraction){
+                     val opencv:OpenCvAbstraction,
+                     val hardwareMap: HardwareMap){
         private var hasInitialized = false
 
         fun startWatching(onFirstFrame:((Mat)->Unit)?, onNewFrame: (Mat)->Mat){
@@ -41,8 +43,8 @@ class ChoiVicoAuto: LinearOpMode() {
                     opencv.onFirstFrame(onFirstFrame)
                 }
                 opencv.onNewFrame(onNewFrame)
+                opencv.init(hardwareMap)
                 opencv.start()
-
             }
         }
 
@@ -60,8 +62,8 @@ class ChoiVicoAuto: LinearOpMode() {
 //        opencv.onFirstFrame(ringDetector::init)
 //        opencv.onNewFrame(ringDetector::processFrame)
 
-        val ringCamera = CameraWrap(cameraName = "Webcam 1", opencv)
-//        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv)
+        val ringCamera = CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
+//        val aimCamera = CameraWrap(cameraName = "Webcam 2", opencv, hardwareMap)
         val aimCamera = ringCamera
 
         ringCamera.startWatching( onFirstFrame = ringDetector::init, onNewFrame = ringDetector::processFrame)
