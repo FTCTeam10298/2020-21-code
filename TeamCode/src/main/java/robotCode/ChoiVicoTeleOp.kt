@@ -83,10 +83,10 @@ class ChoiVicoTeleOp: OpMode() {
 //        val r = rInput.pow(5) * 0.5 + 0.5 * rInput
 
         robot.driveSetPower(
-                (y - x - r),
-                (y + x + r),
                 (y + x - r),
-                (y - x + r)
+                (y - x + r),
+                (y - x - r),
+                (y + x + r)
         )
 
 
