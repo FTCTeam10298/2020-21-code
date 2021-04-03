@@ -192,8 +192,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        WOBBLE ARM
         val wobbleStick = gamepad2.right_stick_y.toDouble()
         hardware.wobble.targetPosition = wobbleStick.toInt()
-        if (wobbleStick != 0.0)
-            hardware.wobble.power = 0.8
+        hardware.wobble.power = 0.8
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
