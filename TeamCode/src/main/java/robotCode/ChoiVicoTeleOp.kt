@@ -27,8 +27,8 @@ class ChoiVicoTeleOp: OpMode() {
     val goalDetector = CreamsicleGoalDetector(console)
     val turret = UltimateGoalAimer(console, goalDetector, hardware)
 
-    val highGoalPreset = 4450
-    val powerShotsPreset = 4000
+    val highGoalPreset = 4550
+//    val powerShotsPreset = 4000
     var shooterRpm: Double = highGoalPreset.toDouble()
     var shooterReving = false
     var ringShooting: RingShooting = RingShooting.One
@@ -101,7 +101,7 @@ class ChoiVicoTeleOp: OpMode() {
             hardware.shooter.velocity = (shooterRpm / 60.0 * 28)
         }
 
-        fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(10.0 , shooterRpm) && toRPM(hardware.shooter.velocity) <= shooterRpm + percentage(10.0 , shooterRpm)
+        fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(10.0 , shooterRpm)
 
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
@@ -142,6 +142,8 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
+        if (gamepad2.b || gamepad1.b)
+            shoot()
 
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
@@ -172,14 +174,14 @@ class ChoiVicoTeleOp: OpMode() {
             gamepad1.dpad_right || gamepad2.dpad_right-> shooterRpm = highGoalPreset.toDouble()
         }
 
-        if (gamepad2.a || gamepad1.a)
-            shooterRpm = powerShotsPreset.toDouble()
+//        if (gamepad2.b || gamepad1.b)
+//            shooterRpm = powerShotsPreset.toDouble()
 
 //        TURRET
-        if (turretHelp.stateChanged(gamepad2.a) && !gamepad2.a)
+        if (gamepad2.left_stick_x.toDouble() !== 0.0 || gamepad2.left_stick_button)
+            hardware.turret.power = gamepad2.left_stick_x.toDouble()
+        else
             turret.updateAimAndAdjustRobot()
-
-        hardware.turret.power += gamepad2.left_stick_x.toDouble()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
@@ -194,15 +196,16 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.collector.power = -1.0
 
 //        WOBBLE ARM
-        if (gamepad2.right_stick_y > 0) {
-            hardware.wobble.targetPosition = 2
-            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
-            hardware.wobble.power = 0.8
-        } else if (gamepad2.right_stick_y < 0) {
-            hardware.wobble.targetPosition = -2
-            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
-            hardware.wobble.power = 0.8
-        }
+//        if (gamepad2.right_stick_y > 0) {
+//            hardware.wobble.targetPosition = 2
+//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            hardware.wobble.power = 0.8
+//        } else if (gamepad2.right_stick_y < 0) {
+//            hardware.wobble.targetPosition = -2
+//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            hardware.wobble.power = 0.8
+//        }
+        hardware.wobble.power = gamepad2.right_stick_y.toDouble()
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
@@ -217,7 +220,7 @@ class ChoiVicoTeleOp: OpMode() {
         }
 
 //        ROLLER
-        if (gamepad1.y)
+        if (gamepad1.y || gamepad2.y)
             hardware.roller.power = 1.0
 //        if (rollerHelper.stateChanged(gamepad1.y) && !gamepad1.y)
 //            hardware.roller.power = 0.0
