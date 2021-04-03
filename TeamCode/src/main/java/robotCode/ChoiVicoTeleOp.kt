@@ -10,6 +10,7 @@ import kotlin.math.absoluteValue
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import openCvAbstraction.OpenCvAbstraction
+import pid.PID
 import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
@@ -50,6 +51,7 @@ class ChoiVicoTeleOp: OpMode() {
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val rollerHelper = ButtonHelper()
+    val wobblePID = PID(0.1, 0.05)
 
 
     override fun init() {
@@ -141,7 +143,7 @@ class ChoiVicoTeleOp: OpMode() {
         if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
             goToVelocity()
 
-            if (isVelocityCorrect() && gamepad1.right_trigger > 0.2/* && stateChanged()*/) {
+            if (isVelocityCorrect() && gamepad1.right_trigger > 0.2) {
                 shoot()
                 hardware.roller.power = 1.0
             }
@@ -188,8 +190,8 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.collector.power = -1.0
 
 //        WOBBLE ARM
-        val wobbleStick = gamepad2.right_stick_y
-        hardware.wobble.power = wobbleStick.toDouble()
+        val wobbleStick = gamepad2.right_stick_y.toDouble()
+        hardware.wobble.power = wobblePID.calcPID(wobbleStick, hardware.wobble.currentPosition.toDouble())
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
