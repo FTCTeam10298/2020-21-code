@@ -55,10 +55,12 @@ class ChoiVicoTeleOp: OpMode() {
 
 
         opencv.cameraName = hardware.turretCameraName
+//        opencv.onFirstFrame (ringDetector::init)
+//        opencv.onNewFrame(ringDetector::processFrame)
+        opencv.onNewFrame(goalDetector::scoopFrame)
         opencv.init(hardwareMap)
         opencv.start()
 
-        opencv.onNewFrame(ringDetector::processFrame)
     }
 
     override fun start() {
