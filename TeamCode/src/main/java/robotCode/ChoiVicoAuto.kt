@@ -97,6 +97,8 @@ class ChoiVicoAuto: LinearOpMode() {
             target.addCoordinate(36.0,0.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
+            hardware.turret.targetPosition = 1
+            hardware.turret.power = 1.0
             target.addCoordinate(0.0,12.0,0.0)
             robot.fineTunedGoToPos(target, this)
             sleep(1000)
