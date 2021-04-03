@@ -21,10 +21,10 @@ class ChoiVicoTeleOp: OpMode() {
     val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware)
 
+    val opencv = OpenCvAbstraction(this)
+
     val goalDetector = CreamsicleGoalDetector(console)
     val turret = UltimateGoalAimer(console, robot, goalDetector)
-
-    val opencv = OpenCvAbstraction(this)
 
     val ringDetector = RingDetector(150, 135, console)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE
@@ -55,8 +55,6 @@ class ChoiVicoTeleOp: OpMode() {
     override fun init() {
         hardware.init(hardwareMap)
         opencv.init(hardwareMap)
-        opencv.optimizeView = true
-        opencv.openCameraDeviceAsync = true
         opencv.start()
         opencv.onNewFrame(goalDetector::scoopFrame)
     }

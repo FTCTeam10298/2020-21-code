@@ -56,11 +56,12 @@ class OpenCvAbstraction(private val opmode: OpMode) {
 
     var optimizeView = false
     var openCameraDeviceAsync = false
+    var cameraName: String = "Webcam 1"
 
 
     fun init(hardwareMap: HardwareMap) {
         val cameraMonitorViewId: Int = opmode.hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", opmode.hardwareMap.appContext.packageName)
-        val webcamName = hardwareMap.get(WebcamName::class.java, "Webcam 1")
+        val webcamName = hardwareMap.get(WebcamName::class.java, cameraName)
 
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId)
         camera.openCameraDevice()

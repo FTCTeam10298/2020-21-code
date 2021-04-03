@@ -30,14 +30,22 @@ class ChoiVicoAuto: LinearOpMode() {
     override fun runOpMode() {
         hardware.init(hardwareMap)
 
-        opencv.init(hardwareMap)
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
+        opencv.cameraName = "Webcam 1"
+        opencv.init(hardwareMap)
         opencv.start()
 
-        opencv.onNewFrame{ turret.updateAimAndAdjustRobot(it) }
+        opencv.onFirstFrame{ ringDetector.init(it) }
+        opencv.onNewFrame{ ringDetector.processFrame(it) }
 
         waitForStart()
+
+        opencv.cameraName = "Webcam 2"
+        opencv.init(hardwareMap)
+        opencv.start()
+        
+        opencv.onNewFrame{ turret.updateAimAndAdjustRobot() }
 
         position = ringDetector.position
         if(position == RingDetector.RingPosition.NONE){
