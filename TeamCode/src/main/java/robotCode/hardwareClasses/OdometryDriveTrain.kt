@@ -26,9 +26,9 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     fun setSpeedAll(vX: Double, vY: Double, vA: Double, minPower: Double, maxPower: Double) {
 
         // Calculate theoretical values for motor powers using transformation matrix
-        var fl = vY + vX + vA
+        var fl = vY - vX + vA
         var fr = vY + vX - vA
-        var bl = vY - vX + vA
+        var bl = vY + vX + vA
         var br = vY - vX - vA
 
         // Find the largest magnitude of power and the average magnitude of power to scale down to

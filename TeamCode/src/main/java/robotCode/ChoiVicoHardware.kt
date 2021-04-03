@@ -30,9 +30,9 @@ class ChoiVicoHardware(): MecOdometryHardware {
         hwMap = ahwMap
 
         // ODOMETRY
-        lOdom = hwMap.dcMotor["lFDrive"]
+        lOdom = hwMap.dcMotor["lBDrive"]
         cOdom = hwMap.dcMotor["rFDrive"]
-        rOdom = hwMap.dcMotor["lBDrive"]
+        rOdom = hwMap.dcMotor["lFDrive"]
 
         lOdom.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         lOdom.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
