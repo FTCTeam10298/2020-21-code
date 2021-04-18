@@ -14,6 +14,7 @@ import pid.PID
 import ringDetector.RingDetector
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
+import kotlin.math.pow
 
 @TeleOp(name="ChoiVico TeleOp", group="ChoiVico")
 class ChoiVicoTeleOp: OpMode() {
@@ -50,7 +51,6 @@ class ChoiVicoTeleOp: OpMode() {
     override fun init() {
         hardware.init(hardwareMap)
 
-
         opencv.cameraName = hardware.turretCameraName
         opencv.onNewFrame(goalDetector::scoopFrame)
         opencv.init(hardwareMap)
@@ -66,13 +66,13 @@ class ChoiVicoTeleOp: OpMode() {
     override fun loop() {
 
 //        DRONE DRIVE
-        val yInput = -gamepad1.left_stick_y.toDouble()
+        val yInput = gamepad1.left_stick_y.toDouble()
         val xInput = gamepad1.left_stick_x.toDouble()
-        val rInput = -gamepad1.right_stick_x.toDouble()
+        val rInput = gamepad1.right_stick_x.toDouble()
 
-        val y = yInput
+        val y = -yInput
         val x = xInput
-        val r = rInput * abs(rInput)
+        val r = -rInput * abs(rInput)
 //        val y = yInput.pow(5)
 //        val x = xInput.pow(5)
 //        val r = rInput.pow(5) * 0.5 + 0.5 * rInput
@@ -251,7 +251,7 @@ class ChoiVicoTeleOp: OpMode() {
             input < 0 -> -1.0
             else -> 0.0
         }
-        return Math.pow(input.absoluteValue, exponent) * polarity
+        return input.absoluteValue.pow(exponent) * polarity
     }
 
     enum class RingShooting {
