@@ -1,7 +1,7 @@
 package creamsicleGoalDetection
 
+import pid.PID
 import robotCode.ChoiVicoHardware
-import robotCode.hardwareClasses.MecanumDriveTrain
 import telemetryWizard.TelemetryConsole
 
 //This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies and use my little ol' library with big clunky old Kotlin Driven machinery.
@@ -40,7 +40,8 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
         TargetAcquired
     }
 
-    
+    var turretPower: Double = 0.0
+    val pid = PID(0.005, 0.0, 0.0)
 
     fun updateAimAndAdjustRobot(){
         moveTowardAimDirection(calculateAimDirection())
@@ -67,12 +68,15 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
 
         console.display(12, direction.toString())
 
-        when(direction){
-            Directions.Left -> hardware.turret.power = 0.3
-            Directions.Right -> hardware.turret.power = -0.3
-            Directions.TargetAcquired -> hardware.turret.power = 0.0
-//            else -> console.display(1, "No direction!!! fix me!!!")
-        }
+        turretPower = pid.calcPID(160.0, goalDetector.x)
+
+//        when(direction){
+//            Directions.Left -> hardware.turret.power = stockPower
+//            Directions.Right -> hardware.turret.power = stockPower
+//            Directions.TargetAcquired -> hardware.turret.power = 0.0
+////            else -> console.display(1, "No direction!!! fix me!!!")
+//        }
+        hardware.turret.power = turretPower
 
     }
 }
