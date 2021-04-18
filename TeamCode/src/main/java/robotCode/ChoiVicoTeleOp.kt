@@ -25,8 +25,8 @@ class ChoiVicoTeleOp: OpMode() {
 
     val opencv = OpenCvAbstraction(this)
 
-    val goalDetector = CreamsicleGoalDetector(console)
-    val turret = UltimateGoalAimer(console, goalDetector, hardware)
+//    val goalDetector = CreamsicleGoalDetector(console)
+//    val turret = UltimateGoalAimer(console, goalDetector, hardware)
 
     val highGoalPreset = 4550
 //    val powerShotsPreset = 4000
@@ -52,9 +52,9 @@ class ChoiVicoTeleOp: OpMode() {
         hardware.init(hardwareMap)
 
         opencv.cameraName = hardware.turretCameraName
-        opencv.onNewFrame(goalDetector::scoopFrame)
+//        opencv.onNewFrame(goalDetector::scoopFrame)
         opencv.init(hardwareMap)
-        opencv.start()
+//        opencv.start()
 
     }
 
@@ -180,8 +180,8 @@ class ChoiVicoTeleOp: OpMode() {
 //        TURRET
         if (gamepad2.left_stick_x.toDouble() !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
-        else
-            turret.updateAimAndAdjustRobot()
+//        else
+//            turret.updateAimAndAdjustRobot()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
