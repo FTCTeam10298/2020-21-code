@@ -5,8 +5,8 @@ import kotlin.math.sin
 
 class GlobalRobot(x: Double, y: Double, r: Double) : Coordinate(x, y, r) {
 
-    var forwardOffset = 0
-    var trackwidth = 14.756661709
+    val forwardOffset = 0
+    val trackwidth = 14.756661709
 
     /**
      * Update the robot's global coordinates with inputs of the change in the encoders.
