@@ -7,6 +7,9 @@ import kotlin.math.abs
 
 open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
+    val ticksPerRotation = 8192
+    val rotationsPerInch = 4.3290
+
     var deltaL = 0.0
     var deltaC = 0.0
     var deltaR = 0.0
@@ -71,9 +74,9 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     fun updatePosition() {
 
 //        bulkData = expansionHub.getBulkInputData()
-        val currentL = -hardware.lOdom.currentPosition.toDouble() / (8192 / 4.3290)
-        val currentR = -hardware.rOdom.currentPosition.toDouble() / (8192 / 4.3290)
-        val currentC = hardware.cOdom.currentPosition.toDouble() / (8192 / 4.3290)
+        val currentL = -hardware.lOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
+        val currentR = -hardware.rOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
+        val currentC = hardware.cOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
 
         deltaL = currentL - previousL
         deltaR = currentR - previousR

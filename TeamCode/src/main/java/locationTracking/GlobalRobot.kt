@@ -4,6 +4,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class GlobalRobot(x: Double, y: Double, r: Double) : Coordinate(x, y, r) {
+
     var forwardOffset = 0
     var trackwidth = 14.756661709
 
