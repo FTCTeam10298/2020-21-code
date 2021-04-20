@@ -37,11 +37,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         // Find the error in angle
         var tempAngleError = target.r - globalRobot.r
 
-//        while (tempAngleError > Math.PI)
-//            tempAngleError -= Math.PI * 2
-//
-//        while (tempAngleError < -Math.PI)
-//            tempAngleError += Math.PI * 2
+        while (tempAngleError > Math.PI)
+            tempAngleError -= Math.PI * 2
+
+        while (tempAngleError < -Math.PI)
+            tempAngleError += Math.PI * 2
 
         val angleError: Double = tempAngleError
 
