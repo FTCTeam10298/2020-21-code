@@ -67,19 +67,21 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
      * Updates the current position (globalRobot) of the robot based off of the change in the
      * odometry encoders.
      */
+
     fun updatePosition() {
+
 //        bulkData = expansionHub.getBulkInputData()
-        val currentL = hardware.lOdom.currentPosition.toDouble() / (4.3290 * 2048)
-        val currentC = hardware.cOdom.currentPosition.toDouble() / (4.3290 * 2048)
+        val currentL = -hardware.lOdom.currentPosition.toDouble() / (4.3290 * 2048)
         val currentR = -hardware.rOdom.currentPosition.toDouble() / (4.3290 * 2048)
+        val currentC = hardware.cOdom.currentPosition.toDouble() / (4.3290 * 2048)
 
         deltaL = currentL - previousL
-        deltaC = currentC - previousC
         deltaR = currentR - previousR
+        deltaC = currentC - previousC
 
         previousL = currentL
-        previousC = currentC
         previousR = currentR
+        previousC = currentC
 
         globalRobot.updatePosition(deltaL, deltaC, deltaR)
     }
