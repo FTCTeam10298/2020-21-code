@@ -26,8 +26,8 @@ class OdometryTestAuto: LinearOpMode() {
 //        sleep(400)
 //        robot.setSpeedAll(0.0, 0.0, 0.0, 0.0, 0.0)
 
-        target.setCoordinate(x = 0.0, y = 10.0, r = 0.0)
-        robot.fineTunedGoToPos(target, this)
+//        target.setCoordinate(x = 0.0, y = 10.0, r = 0.0)
+//        robot.fineTunedGoToPos(target, this)
 //        target.setCoordinate(x = 10.0, y = 0.0, r = 0.0)
 //        robot.fineTunedGoToPos(target, this)
 //        target.addCoordinate(x = 0.0, y = 0.0, r = -90.0)
