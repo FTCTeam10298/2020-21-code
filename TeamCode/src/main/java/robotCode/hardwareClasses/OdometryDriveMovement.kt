@@ -37,11 +37,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         // Find the error in angle
         var tempAngleError = target.r - globalRobot.r
 
-        while (tempAngleError > Math.PI)
-            tempAngleError -= Math.PI * 2
-
-        while (tempAngleError < -Math.PI)
-            tempAngleError += Math.PI * 2
+//        while (tempAngleError > Math.PI)
+//            tempAngleError -= Math.PI * 2
+//
+//        while (tempAngleError < -Math.PI)
+//            tempAngleError += Math.PI * 2
 
         val angleError: Double = tempAngleError
 
@@ -61,7 +61,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
-        console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
+        console.display(7, "Target Robot A, Error A: ${target.r}, $angleError")
         console.display(8, "Global Coordinate X, Y, A: ${globalRobot.x}, ${globalRobot.y}, ${Math.toDegrees(globalRobot.r)}")
         console.display(9, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
         console.display(10, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
@@ -133,9 +133,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 1.0,
                 PID(0.05, 0.01, 0.0),
                 PID(0.06, 0.01, 0.0),
-                PID(0.5, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
                 0.5,
-                0.5,
+                0.1,
                 true,
                 opmode
         )

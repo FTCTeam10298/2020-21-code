@@ -1,5 +1,6 @@
 package locationTracking
 
+import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
@@ -24,11 +25,13 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
             this.y = y
 
         if (r != null) {
-            var rAbs:Double = r
-            while (rAbs < -Math.PI)
-                rAbs += (Math.PI * 2)
+//            var rAdjusted: Double = r
+//
+//            while (abs(rAdjusted) > 180)
+//                rAdjusted += (Math.PI/* * 2*/)
 
-            this.r = rAbs
+//            this.r = rAdjusted
+            this.r = r
         }
     }
 

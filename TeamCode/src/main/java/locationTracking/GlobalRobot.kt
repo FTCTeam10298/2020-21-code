@@ -25,8 +25,8 @@ class GlobalRobot(x: Double, y: Double, r: Double) : Coordinate(x, y, r) {
         y += deltaY
         r += deltaAngle
 
-        r %= (2 * Math.PI)
-        if (r > Math.PI)
-            r -= 2 * Math.PI
+//        r %= (2 * Math.PI)
+//        if (r > Math.PI)
+//            r -= 2 * Math.PI
     }
 }
