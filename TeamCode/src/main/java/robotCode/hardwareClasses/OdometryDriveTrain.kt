@@ -71,9 +71,9 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
     fun updatePosition() {
 
 //        bulkData = expansionHub.getBulkInputData()
-        val currentL = -hardware.lOdom.currentPosition.toDouble() / (4.3290 * 2048)
-        val currentR = -hardware.rOdom.currentPosition.toDouble() / (4.3290 * 2048)
-        val currentC = hardware.cOdom.currentPosition.toDouble() / (4.3290 * 2048)
+        val currentL = -hardware.lOdom.currentPosition.toDouble() / (4.3290 * 8192)
+        val currentR = -hardware.rOdom.currentPosition.toDouble() / (4.3290 * 8192)
+        val currentC = hardware.cOdom.currentPosition.toDouble() / (4.3290 * 8192)
 
         deltaL = currentL - previousL
         deltaR = currentR - previousR
