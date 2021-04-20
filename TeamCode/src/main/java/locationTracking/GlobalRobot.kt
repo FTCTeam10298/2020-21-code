@@ -6,7 +6,7 @@ import kotlin.math.sin
 class GlobalRobot(x: Double, y: Double, r: Double) : Coordinate(x, y, r) {
 
     val forwardOffset = 0
-    val trackwidth = 14.756661709
+    val trackwidth = 15
 
     /**
      * Update the robot's global coordinates with inputs of the change in the encoders.
@@ -19,8 +19,8 @@ class GlobalRobot(x: Double, y: Double, r: Double) : Coordinate(x, y, r) {
         val deltaMiddle = (deltaL + deltaR) / 2
         val deltaPerp = deltaC - forwardOffset * deltaAngle
 
-        val deltaY = deltaMiddle * cos(r) - deltaPerp * sin(r)
-        val deltaX = deltaMiddle * sin(r) + deltaPerp * cos(r)
+        val deltaY = cos(r) * deltaMiddle - sin(r) * deltaPerp
+        val deltaX = sin(r) * deltaMiddle + cos(r) * deltaPerp
 
         x += deltaX
         y += deltaY
