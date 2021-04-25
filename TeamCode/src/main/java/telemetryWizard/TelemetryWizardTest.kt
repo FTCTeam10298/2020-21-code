@@ -22,6 +22,7 @@ class TelemetryWizardTest(): LinearOpMode() {
 
         if (wizard.wasItemChosen("alliance", "Red"))
             console.display(2, "works")
+
         waitForStart()
     }
 }

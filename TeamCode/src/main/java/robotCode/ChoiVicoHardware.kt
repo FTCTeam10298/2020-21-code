@@ -1,5 +1,6 @@
 package robotCode
 
+import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
 import robotCode.hardwareClasses.MecOdometryHardware
 
@@ -21,9 +22,13 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
     lateinit var lift1: Servo
     lateinit var lift2: Servo
-    lateinit var roller: CRServo
+    lateinit var kniod: Servo
     lateinit var claw1: Servo
     lateinit var claw2: Servo
+    lateinit var flap: Servo // 0.0-0.5 range
+    lateinit var transfer: CRServo
+
+    lateinit var liftLimit: RevTouchSensor
 
     override lateinit var hwMap: HardwareMap
 
@@ -102,18 +107,29 @@ class ChoiVicoHardware(): MecOdometryHardware {
         lift1.position = 0.0
         lift2.position = 0.0
 
+//        Shooter servos
+        kniod = hwMap["roller"] as Servo
+        flap = hwMap["flap"] as Servo
+
+        kniod.direction = Servo.Direction.REVERSE
+        flap.direction = Servo.Direction.FORWARD
+
+        kniod.position = 0.6
+        flap.position = 0.0
+
 //        SERVOS
         claw1 = hwMap["claw1"] as Servo
         claw2 = hwMap["claw2"] as Servo
-        roller = hwMap["roller"] as CRServo
+        transfer = hwMap["transfer"] as CRServo
 
         claw1.direction = Servo.Direction.FORWARD
         claw2.direction = Servo.Direction.REVERSE
-        roller.direction = DcMotorSimple.Direction.FORWARD
+        transfer.direction = DcMotorSimple.Direction.FORWARD
 
         claw1.position = 1.0
         claw2.position = 1.0
-        roller.power = 0.0
 
+//        SENSORS
+        liftLimit = hwMap["liftLimit"] as RevTouchSensor
     }
 }
