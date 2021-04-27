@@ -34,13 +34,13 @@ import telemetryWizard.TelemetryConsole
 
 
 class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:CreamsicleGoalDetector, val hardware: ChoiVicoHardware) {
+
     enum class Directions {
         Right,
         Left,
         TargetAcquired
     }
 
-    var turretPower: Double = 0.0
     val pid = PID(0.005, 0.0, 0.0)
 
     fun updateAimAndAdjustRobot(){
@@ -48,15 +48,14 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
     }
 
     private fun calculateAimDirection():Directions?{
-//        console.display(1, "start")
 
-        val turnDir = if (goalDetector.x < 140) {
+        val turnDir = if (goalDetector.x < (432 / 2) - 10) {
             Directions.Left
-        }else if (goalDetector.x > 140 && goalDetector.x < 180) {
+        } else if (goalDetector.x > (432 / 2) - 10 && goalDetector.x < (432 / 2) + 10) {
             Directions.TargetAcquired
-        }else if(goalDetector.x >= 180) {
+        } else if (goalDetector.x >= (432 / 2) + 10) {
             Directions.Right
-        }else{
+        } else {
             null
         }
 //        console.display(6, "Turn direction: $turnDir")
@@ -65,18 +64,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
     }
 
     private fun moveTowardAimDirection(direction:Directions?) {
-
-        console.display(12, direction.toString())
-
-        turretPower = pid.calcPID(160.0, goalDetector.x)
-
-//        when(direction){
-//            Directions.Left -> hardware.turret.power = stockPower
-//            Directions.Right -> hardware.turret.power = stockPower
-//            Directions.TargetAcquired -> hardware.turret.power = 0.0
-////            else -> console.display(1, "No direction!!! fix me!!!")
-//        }
-        hardware.turret.power = turretPower
-
+        hardware.turret.power = pid.calcPID((432.0/2.0), goalDetector.x)
+        console.display(12, "Turret power: ${hardware.turret.power}, TurnDir: ${calculateAimDirection().toString()}")
     }
 }
