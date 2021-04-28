@@ -43,6 +43,7 @@ class ChoiVicoTeleOp: OpMode() {
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val turretHelp = ButtonHelper()
+    val overrideHelper = ButtonHelper()
 
 
     override fun init() {
@@ -160,7 +161,14 @@ class ChoiVicoTeleOp: OpMode() {
             shoot()
 
 //        TURRET
-        if (abs(gamepad2.left_stick_x.toDouble()) > 0.1 || gamepad2.left_stick_button)
+        var overrideToggle = false
+
+
+        if (overrideHelper.stateChanged(gamepad2.left_stick_button) && (gamepad2.left_stick_button)) {
+            overrideToggle = !overrideToggle
+        }
+
+        if (abs(gamepad2.left_stick_x.toDouble()) !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
 //        else
 //            turret.updateAimAndAdjustRobot()
