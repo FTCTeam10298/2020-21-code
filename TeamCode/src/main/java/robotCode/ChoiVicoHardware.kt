@@ -1,5 +1,7 @@
 package robotCode
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern
 import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
 import robotCode.hardwareClasses.MecOdometryHardware
@@ -30,6 +32,9 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var transfer: CRServo
 
     lateinit var liftLimit: RevTouchSensor
+
+    var blinkinLedDriver: RevBlinkinLedDriver? = null
+    var blinkinLedPattern: BlinkinPattern? = null
 
     override lateinit var hwMap: HardwareMap
 
@@ -134,5 +139,11 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        SENSORS
         liftLimit = hwMap["liftLimit"] as RevTouchSensor
+
+        // Blinkin LED Driver. The goal was easy on-robot visualization a la Anki;
+        // but the thing is a freaking problematic mess. Blame it on Gabe.
+        blinkinLedDriver = hwMap["blinkin"] as RevBlinkinLedDriver
+        blinkinLedPattern = BlinkinPattern.RAINBOW_RAINBOW_PALETTE
+        blinkinLedDriver!!.setPattern(blinkinLedPattern)
     }
 }
