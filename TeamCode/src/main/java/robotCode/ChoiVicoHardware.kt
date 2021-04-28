@@ -26,6 +26,7 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var claw1: Servo
     lateinit var claw2: Servo
     lateinit var flap: Servo // 0.0-0.5 range
+    lateinit var bottomTrans: CRServo
     lateinit var transfer: CRServo
 
     lateinit var liftLimit: RevTouchSensor
@@ -120,11 +121,13 @@ class ChoiVicoHardware(): MecOdometryHardware {
 //        SERVOS
         claw1 = hwMap["claw1"] as Servo
         claw2 = hwMap["claw2"] as Servo
-        transfer = hwMap["transfer"] as CRServo
+        bottomTrans = hwMap["transfer"] as CRServo
+        transfer = hwMap["upperTransfer"] as CRServo
 
         claw1.direction = Servo.Direction.FORWARD
         claw2.direction = Servo.Direction.REVERSE
-        transfer.direction = DcMotorSimple.Direction.FORWARD
+        bottomTrans.direction = DcMotorSimple.Direction.REVERSE
+        transfer.direction = DcMotorSimple.Direction.REVERSE
 
         claw1.position = 1.0
         claw2.position = 1.0

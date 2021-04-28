@@ -29,7 +29,7 @@ class ChoiVicoTeleOp: OpMode() {
 //    val powerShotsPreset = 4000
     var shooterRpm: Double = highGoalPreset.toDouble()
     var shooterReving = false
-    var ringShooting: RingShooting = RingShooting.One
+    var ringShooting: RingShooting = RingShooting.Three
     var triggerDown: Boolean = false
 
     var loopTime: Double = 0.0
@@ -102,43 +102,25 @@ class ChoiVicoTeleOp: OpMode() {
 
         fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
 
-//        fun shoot() {
-////            BROKEN
-//
-//            when (ringShooting) {
-//                RingShooting.One -> {
-////                    hardware.kniod.power = 0.0
-//                    hardware.lift1.position = 0.8
-//                    hardware.lift2.position = 0.8
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 1.0
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 0.0
-//                    ringShooting = RingShooting.Two
-//
-//                }
-//                RingShooting.Two -> {
-//                    hardware.kniod.power = 0.0
-//                    hardware.lift1.position = 0.7
-//                    hardware.lift2.position = 0.7
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 1.0
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 0.0
-//                    ringShooting = RingShooting.Three
-//                }
-//                RingShooting.Three -> {
-//                    hardware.kniod.power = 0.0
-//                    hardware.lift1.position = 0.6
-//                    hardware.lift2.position = 0.6
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 1.0
-//                    if (waitInLoop(1000))
-//                        hardware.kniod.power = 0.0
-//                    ringShooting = RingShooting.One
-//                }
-//            }
-//        }
+        fun shoot() {
+            when (ringShooting) {
+                RingShooting.One -> {
+                    hardware.lift1.position = 0.7
+                    if (waitInLoop(500))
+                        ringShooting = RingShooting.Three
+                }
+                RingShooting.Two -> {
+                    hardware.lift1.position = 0.54
+                    if (waitInLoop(500))
+                        ringShooting = RingShooting.One
+                }
+                RingShooting.Three -> {
+                    hardware.lift1.position = 0.4
+                    if (waitInLoop(500))
+                        ringShooting = RingShooting.Two
+                }
+            }
+        }
 
         if (gamepad2.b || gamepad1.b)
             hardware.lift1.position = 1.0
@@ -174,8 +156,8 @@ class ChoiVicoTeleOp: OpMode() {
             gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
         }
 
-//        if (gamepad2.b || gamepad1.b)
-//            shooterRpm = powerShotsPreset.toDouble()
+        if (gamepad2.b || gamepad1.b)
+            shoot()
 
 //        TURRET
         if (abs(gamepad2.left_stick_x.toDouble()) > 0.1 || gamepad2.left_stick_button)
@@ -187,17 +169,21 @@ class ChoiVicoTeleOp: OpMode() {
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
             if (hardware.collector.power == 1.0) {
                 hardware.collector.power = 0.0
+                hardware.bottomTrans.power = 0.0
                 hardware.transfer.power = 0.0
             } else {
                 hardware.collector.power = 1.0
+                hardware.bottomTrans.power = 1.0
                 hardware.transfer.power = 1.0
             }
         else if ((gamepad1LeftBumperHelper.stateChanged(gamepad1.left_bumper) && (gamepad1.left_bumper)) || (gamepad2LeftBumperHelper.stateChanged(gamepad2.left_bumper) && (gamepad2.left_bumper)))
             if (hardware.collector.power == -1.0) {
                 hardware.collector.power = 0.0
+                hardware.bottomTrans.power = 0.0
                 hardware.transfer.power = 0.0
             } else {
                 hardware.collector.power = -1.0
+                hardware.bottomTrans.power = -1.0
                 hardware.transfer.power = -1.0
             }
 
