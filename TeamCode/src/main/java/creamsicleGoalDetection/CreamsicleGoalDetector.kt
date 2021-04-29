@@ -6,6 +6,11 @@ import telemetryWizard.TelemetryConsole
 
 class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
+    enum  class TargetHue {
+        RED,
+        BLUE
+    }
+
     private val font = Imgproc.FONT_HERSHEY_COMPLEX
 
     var displayMode: String = "frame"
@@ -18,12 +23,22 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
     # contours,  _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     */
 
-    var L_H = NamedVar("Low Hue", 0.0)
-    var L_S = NamedVar("Low Saturation", 65.0)
-    var L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-    var U_H = NamedVar("Uppper Hue", 105.0)
-    var U_S = NamedVar("Upper Saturation", 255.0)
-    var U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+        //DANGEROUS STUFFS BELOW! These define what color to filter through (and the layer chucks the rest. Use the AutoAimTestAndCal method to find the proper values using a SNAZZY, SNAZZY gui.
+        //Values for Detecting Red
+    var rL_H = NamedVar("Low Hue", 0.0)
+    var rL_S = NamedVar("Low Saturation", 65.0)
+    var rL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+    var rU_H = NamedVar("Uppper Hue", 105.0)
+    var rU_S = NamedVar("Upper Saturation", 255.0)
+    var rU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+
+            //Values for Detecting Blue
+    var bL_H = NamedVar("Low Hue", 0.0)
+    var bL_S = NamedVar("Low Saturation", 65.0)
+    var bL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+    var bU_H = NamedVar("Uppper Hue", 105.0)
+    var bU_S = NamedVar("Upper Saturation", 255.0)
+    var bU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
     //Declares X and Y of the Goal's... well, something... that other code can use and request.
     var x = 0.0
@@ -34,13 +49,22 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
     private val maskB = Mat()
     private val kernel = Mat(5, 5, CvType.CV_8U)
 
-    fun scoopFrame(frame: Mat): Mat {
+    fun scoopFrame(frame: Mat, targetHue: TargetHue): Mat {
 
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV)
 
-        val lower_red = Scalar(L_H.value, L_S.value, L_V.value)
-        val upper_red = Scalar(U_H.value, U_S.value, U_V.value)
-        Core.inRange(hsv, lower_red, upper_red, maskA)
+        val lower_red = Scalar(rL_H.value, rL_S.value, rL_V.value)
+        val upper_red = Scalar(rU_H.value, rU_S.value, rU_V.value)
+
+        val lower_blue = Scalar(bL_H.value, bL_S.value, bL_V.value)
+        val upper_blue = Scalar(bU_H.value, bU_S.value, bU_V.value)
+
+        if (targetHue == TargetHue.RED) {
+            Core.inRange(hsv, lower_red, upper_red, maskA)
+        } else if (targetHue == TargetHue.BLUE) {
+            Core.inRange(hsv, lower_red, upper_red, maskA)
+        }
+
 
         Imgproc.erode(maskA, maskB, kernel)
 
@@ -78,6 +102,9 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
                     matOfPoint2f.convertTo(foo, CvType.CV_32S)
                     return foo
                 }
+
+                //Detects shapes. Commentation isn't great in this, learn to use this in the Python CreamsiclePy port instead...
+                //In java this code transalates to Here Be Dragons and Kotlin is little better.
 
                 // cv2.drawContours(frame, [approx], 0, (0, 0, 0), 5)
                 Imgproc.drawContours(frame, mutableListOf(convert(points)), 0, Scalar(0.0, 0.0, 0.0), 5)
