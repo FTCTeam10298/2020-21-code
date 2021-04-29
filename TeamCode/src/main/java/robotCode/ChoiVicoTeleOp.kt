@@ -1,21 +1,19 @@
 package robotCode
 
 import buttonHelper.ButtonHelper
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
+import kotlin.math.abs
+import kotlin.math.absoluteValue
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import openCvAbstraction.OpenCvAbstraction
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
-import kotlin.math.abs
-import kotlin.math.absoluteValue
 import kotlin.math.pow
 
-@TeleOp(name = "ChoiVico TeleOp", group = "ChoiVico")
+@TeleOp(name="ChoiVico TeleOp", group="ChoiVico")
 class ChoiVicoTeleOp: OpMode() {
 
     val console = TelemetryConsole(telemetry)
@@ -37,8 +35,6 @@ class ChoiVicoTeleOp: OpMode() {
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
 
-    var turretYawControls: Boolean = false
-
     val gamepad2RightBumperHelper = ButtonHelper()
     val gamepad2LeftBumperHelper = ButtonHelper()
     val gamepad1RightBumperHelper = ButtonHelper()
@@ -47,12 +43,8 @@ class ChoiVicoTeleOp: OpMode() {
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val turretHelp = ButtonHelper()
-    val overrideHelper = ButtonHelper()
 
-    var blinkinLedDriver: RevBlinkinLedDriver? = null
-    var pattern: BlinkinPattern? = null
 
-    // ---------------------------------------------------------------------------------------------
     override fun init() {
         hardware.init(hardwareMap)
 
@@ -70,7 +62,7 @@ class ChoiVicoTeleOp: OpMode() {
 
     override fun loop() {
 
-        // DRONE DRIVE
+//        DRONE DRIVE
         val yInput = gamepad1.left_stick_y.toDouble()
         val xInput = gamepad1.left_stick_x.toDouble()
         val rInput = gamepad1.right_stick_x.toDouble()
@@ -90,14 +82,14 @@ class ChoiVicoTeleOp: OpMode() {
         )
 
 
-        // LIFT
+//        LIFT
         hardware.lift1.position = gamepad2.left_stick_y.toDouble()
 //        if (ringsIn == 0) {
 //            hardware.lift1.position = 0.5
 //            hardware.lift2.position = 0.5
 //        }
 
-        // hoot routine
+        //        Shoot routine
         fun goToVelocity() {
             hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
             hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0, 0.0)
@@ -152,53 +144,31 @@ class ChoiVicoTeleOp: OpMode() {
             shooterReving = false
         }
 
-        // SHOOTER
+//        SHOOTER
         val shooterRpmIncrement: Int = 200
+
+        when {
+            (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
+            (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
+            gamepad1.dpad_left || gamepad2.dpad_left -> hardware.shooter.power = 0.0
+            gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
+        }
 
         if (gamepad2.b || gamepad1.b)
             shoot()
 
-        // TURRET
-        var overrideToggle = false
-
-        if (turretYawControls == false) { // Normal functionality
-            when {
-                (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up) && shooterRpm < 5500 -> shooterRpm += shooterRpmIncrement
-                (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down) && shooterRpm > 0 + shooterRpmIncrement -> shooterRpm -= shooterRpmIncrement
-                gamepad1.dpad_left || gamepad2.dpad_left -> hardware.shooter.power = 0.0
-                gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
-            }
-        } else if (turretYawControls == true) { // Honey, I stole half of the dpad!
-            when {
-                (dUpHelp.stateChanged(gamepad1.dpad_up) && gamepad1.dpad_up)  -> if (turret.yaw +5 < 20) {
-                    turret.yaw += 5
-                }
-                (dDownHelp.stateChanged(gamepad1.dpad_down) && gamepad1.dpad_down)  -> if (turret.yaw -5 > -20) {
-                    turret.yaw -= 5
-                }
-                gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
-            }
-        }
-
-        when {
-            gamepad2.a -> turretYawControls = !turretYawControls
-        }
-
-        if (overrideHelper.stateChanged(gamepad2.left_stick_button) && (gamepad2.left_stick_button)) {
-            overrideToggle = !overrideToggle
-        }
+//        TURRET
         if (gamepad1.a || gamepad2.a)
             hardware.flap.position = 0.6
         else
             hardware.flap.position = 0.0
 
-        // the magic 'Do Not Self Aim and/or Kill World' switch
-        if (abs(gamepad2.left_stick_x.toDouble()) < 0.1 || gamepad2.left_stick_button)
+        if (abs(gamepad2.left_stick_x.toDouble()) !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
-        else
-            turret.updateAimAndAdjustRobot()
+//        else
+//            turret.updateAimAndAdjustRobot()
 
-        // COLLECTOR
+//        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
             if (hardware.collector.power == 1.0) {
                 hardware.collector.power = 0.0
@@ -220,7 +190,7 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.transfer.power = -1.0
             }
 
-//        // WOBBLE ARM
+//        WOBBLE ARM
 //        if (gamepad2.right_stick_y > 0) {
 //            hardware.wobble.targetPosition = 2
 //            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
@@ -232,7 +202,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        }
         hardware.wobble.power = gamepad2.right_stick_y.toDouble()
 
-        // CLAW
+//        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
             when (hardware.claw1.position) {
                 1.0 -> {
@@ -244,7 +214,7 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
-        // ROLLER
+//        ROLLER
         if (gamepad1.y || gamepad2.y)
             hardware.kniod.position = 1.0
         else
@@ -271,7 +241,7 @@ class ChoiVicoTeleOp: OpMode() {
 
     fun percentage(percent: Double, value: Double): Double = (value / 100) * percent
 
-    fun pow(input: Double, exponent: Double): Double {
+    fun pow(input:Double, exponent: Double): Double {
         var polarity: Double = 0.0
         polarity = when {
             input > 0 -> 1.0

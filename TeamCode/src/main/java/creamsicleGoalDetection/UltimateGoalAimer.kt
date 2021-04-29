@@ -26,16 +26,14 @@ import telemetryWizard.TelemetryConsole
 //Move the turret onto the target's deadzone (the "there you are *gunshots*" message)
 
 //THERES PROBLEMS??
-//Don't be a stupid Alternian, go run a camera.bake  with the special pattern to make it work!
+//Don't be a stupid Alternian, go run a camera.bake with the special pattern to make it work!
 //Or run a cam-calibration with front_GoalDetection (Calibrate)
-//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!
+//AND IF THERE'S STILL PROBLEMS, GO YAK THE DEV'S EAR OFF!?
 
 //*this has been an Aperture Science Innovators notification.*
 
 
 class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:CreamsicleGoalDetector, val hardware: ChoiVicoHardware) {
-
-    public var yaw = 0
 
     enum class Directions {
         Right,
@@ -66,8 +64,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
     }
 
     private fun moveTowardAimDirection(direction:Directions?) {
-        var goalDetectorCorrected = goalDetector.x + yaw
-        hardware.turret.power = pid.calcPID((432.0/2.0), goalDetectorCorrected)
+        hardware.turret.power = pid.calcPID((432.0/2.0), goalDetector.x)
         console.display(12, "Turret power: ${hardware.turret.power}, TurnDir: ${calculateAimDirection().toString()}")
     }
 }
