@@ -30,12 +30,13 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
 
     override fun init() {
         hardware.init(hardwareMap)
+        goalDetector.targetHue = CreamsicleGoalDetector.TargetHue.RED
         opencv.init(hardwareMap)
         opencv.start()
         opencv.onNewFrame(goalDetector::scoopFrame)
     }
 
-    private var varBeingEdited: CreamsicleGoalDetector.NamedVar = goalDetector.L_H
+    private var varBeingEdited: CreamsicleGoalDetector.NamedVar = goalDetector.redColor.L_H
     fun render() {
         console.display(2, "Active Var; ${varBeingEdited.name}")
         console.display(4, "${varBeingEdited.value}")
@@ -52,16 +53,16 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
             render()
         }
 
-
+        //yo GRRL, set ur COLOR to whatever ud LIKE! Like redColor.L_H = redLow_Hue
         when {
             DpadHelper.stateChanged(gamepad1.dpad_left) && gamepad1.dpad_left -> {
                 when (varBeingEdited) {
-                    goalDetector.L_H -> varBeingEdited = goalDetector.L_S
-                    goalDetector.L_S -> varBeingEdited = goalDetector.L_V
-                    goalDetector.L_V -> varBeingEdited = goalDetector.U_H
-                    goalDetector.U_H -> varBeingEdited = goalDetector.U_S
-                    goalDetector.U_S -> varBeingEdited = goalDetector.U_V
-                    goalDetector.U_V -> varBeingEdited = goalDetector.L_H
+                    goalDetector.redColor.L_H -> varBeingEdited = goalDetector.redColor.L_S
+                    goalDetector.redColor.L_S -> varBeingEdited = goalDetector.redColor.L_V
+                    goalDetector.redColor.L_V -> varBeingEdited = goalDetector.redColor.U_H
+                    goalDetector.redColor.U_H -> varBeingEdited = goalDetector.redColor.U_S
+                    goalDetector.redColor.U_S -> varBeingEdited = goalDetector.redColor.U_V
+                    goalDetector.redColor.U_V -> varBeingEdited = goalDetector.redColor.L_H
                 }
                 render()
             }
@@ -69,12 +70,18 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
 
         if (YbuttonHelper.stateChanged(gamepad1.y) && gamepad1.y) {
             console.display(1, "Vals Zeroed")
-            goalDetector.L_H.value = 0.0
-            goalDetector.L_S.value = 0.0
-            goalDetector.L_V.value = 0.0
-            goalDetector.U_H.value = 0.0
-            goalDetector.U_S.value = 0.0
-            goalDetector.U_V.value = 0.0
+            goalDetector.redColor.L_H.value = 0.0
+            goalDetector.redColor.L_S.value = 0.0
+            goalDetector.redColor.L_V.value = 0.0
+            goalDetector.redColor.U_H.value = 0.0
+            goalDetector.redColor.U_S.value = 0.0
+            goalDetector.redColor.U_V.value = 0.0
+            goalDetector.blueColor.L_H.value = 0.0
+            goalDetector.blueColor.L_S.value = 0.0
+            goalDetector.blueColor.L_V.value = 0.0
+            goalDetector.blueColor.U_H.value = 255.0
+            goalDetector.blueColor.U_S.value = 255.0
+            goalDetector.blueColor.U_V.value = 255.0
             render()
         }
 
@@ -88,12 +95,18 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
         }
 
         if (AbuttonHelper.stateChanged(gamepad1.a) && gamepad1.a) {
-            goalDetector.L_H.value = 0.0
-            goalDetector.L_S.value = 0.0
-            goalDetector.L_V.value = 0.0
-            goalDetector.U_H.value = 255.0
-            goalDetector.U_S.value = 255.0
-            goalDetector.U_V.value = 255.0
+            goalDetector.redColor.L_H.value = 0.0
+            goalDetector.redColor.L_S.value = 0.0
+            goalDetector.redColor.L_V.value = 0.0
+            goalDetector.redColor.U_H.value = 255.0
+            goalDetector.redColor.U_S.value = 255.0
+            goalDetector.redColor.U_V.value = 255.0
+            goalDetector.blueColor.L_H.value = 0.0
+            goalDetector.blueColor.L_S.value = 0.0
+            goalDetector.blueColor.L_V.value = 0.0
+            goalDetector.blueColor.U_H.value = 255.0
+            goalDetector.blueColor.U_S.value = 255.0
+            goalDetector.blueColor.U_V.value = 255.0
             console.display(1, "Vals Squonked")
             render()
         }

@@ -11,6 +11,8 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
         BLUE
     }
 
+    var targetHue = TargetHue.RED
+
     private val font = Imgproc.FONT_HERSHEY_COMPLEX
 
     var displayMode: String = "frame"
@@ -25,20 +27,26 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
         //DANGEROUS STUFFS BELOW! These define what color to filter through (and the layer chucks the rest. Use the AutoAimTestAndCal method to find the proper values using a SNAZZY, SNAZZY gui.
         //Values for Detecting Red
-    var rL_H = NamedVar("Low Hue", 0.0)
-    var rL_S = NamedVar("Low Saturation", 65.0)
-    var rL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-    var rU_H = NamedVar("Uppper Hue", 105.0)
-    var rU_S = NamedVar("Upper Saturation", 255.0)
-    var rU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
-            //Values for Detecting Blue
-    var bL_H = NamedVar("Low Hue", 0.0)
-    var bL_S = NamedVar("Low Saturation", 65.0)
-    var bL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-    var bU_H = NamedVar("Uppper Hue", 105.0)
-    var bU_S = NamedVar("Upper Saturation", 255.0)
-    var bU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+    class ColorRange(val L_H: NamedVar, val L_S: NamedVar, val L_V: NamedVar, val U_H: NamedVar, val U_S: NamedVar, val U_V: NamedVar)
+
+    val redColor = ColorRange(NamedVar("Low Hue", 0.0), NamedVar("Low Saturation", 65.0), NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0), NamedVar("Uppper Hue", 105.0), NamedVar("Upper Saturation", 255.0), NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0))
+    val blueColor = ColorRange(NamedVar("Low Hue", 0.0), NamedVar("Low Saturation", 65.0), NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0), NamedVar("Uppper Hue", 105.0), NamedVar("Upper Saturation", 255.0), NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0))
+//
+//    var rL_H = NamedVar("Low Hue", 0.0)
+//    var rL_S = NamedVar("Low Saturation", 65.0)
+//    var rL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+//    var rU_H = NamedVar("Uppper Hue", 105.0)
+//    var rU_S = NamedVar("Upper Saturation", 255.0)
+//    var rU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+//
+//            //Values for Detecting Blue
+//    var bL_H = NamedVar("Low Hue", 0.0)
+//    var bL_S = NamedVar("Low Saturation", 65.0)
+//    var bL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
+//    var bU_H = NamedVar("Uppper Hue", 105.0)
+//    var bU_S = NamedVar("Upper Saturation", 255.0)
+//    var bU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
 
     //Declares X and Y of the Goal's... well, something... that other code can use and request.
     var x = 0.0
@@ -49,15 +57,15 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
     private val maskB = Mat()
     private val kernel = Mat(5, 5, CvType.CV_8U)
 
-    fun scoopFrame(frame: Mat, targetHue: TargetHue): Mat {
+    fun scoopFrame(frame: Mat): Mat {
 
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV)
 
-        val lower_red = Scalar(rL_H.value, rL_S.value, rL_V.value)
-        val upper_red = Scalar(rU_H.value, rU_S.value, rU_V.value)
+        val lower_red = Scalar(redColor.L_H.value, redColor.L_S.value, redColor.L_V.value)
+        val upper_red = Scalar(redColor.U_H.value, redColor.U_S.value, redColor.U_V.value)
 
-        val lower_blue = Scalar(bL_H.value, bL_S.value, bL_V.value)
-        val upper_blue = Scalar(bU_H.value, bU_S.value, bU_V.value)
+        val lower_blue = Scalar(blueColor.L_H.value, blueColor.L_S.value, blueColor.L_V.value)
+        val upper_blue = Scalar(blueColor.U_H.value, blueColor.U_S.value, blueColor.U_V.value)
 
         if (targetHue == TargetHue.RED) {
             Core.inRange(hsv, lower_red, upper_red, maskA)
