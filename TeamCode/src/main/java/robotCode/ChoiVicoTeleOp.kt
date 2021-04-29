@@ -52,7 +52,6 @@ class ChoiVicoTeleOp: OpMode() {
 //        opencv.onNewFrame(goalDetector::scoopFrame)
 //        opencv.init(hardwareMap)
 //        opencv.start()
-
     }
 
     override fun start() {
@@ -83,7 +82,6 @@ class ChoiVicoTeleOp: OpMode() {
 
 
 //        LIFT
-        hardware.lift1.position = gamepad2.left_stick_y.toDouble()
 //        if (ringsIn == 0) {
 //            hardware.lift1.position = 0.5
 //            hardware.lift2.position = 0.5
@@ -121,7 +119,7 @@ class ChoiVicoTeleOp: OpMode() {
         }
 
         if (gamepad2.b || gamepad1.b)
-            hardware.lift1.position = 1.0
+            hardware.lift1.position = 0.7
         else
             hardware.lift1.position = 0.0
 
@@ -154,14 +152,7 @@ class ChoiVicoTeleOp: OpMode() {
             gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
         }
 
-        if (gamepad2.b || gamepad1.b)
-            shoot()
-
 //        TURRET
-        if (gamepad1.a || gamepad2.a)
-            hardware.flap.position = 0.6
-        else
-            hardware.flap.position = 0.0
 
         if (abs(gamepad2.left_stick_x.toDouble()) !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
