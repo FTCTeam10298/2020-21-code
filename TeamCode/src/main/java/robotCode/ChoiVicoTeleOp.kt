@@ -92,8 +92,6 @@ class ChoiVicoTeleOp: OpMode() {
 
         // LIFT
         hardware.lift1.position = gamepad2.left_stick_y.toDouble()
-        hardware.lift2.position = gamepad2.left_stick_y.toDouble()
-
 //        if (ringsIn == 0) {
 //            hardware.lift1.position = 0.5
 //            hardware.lift2.position = 0.5
@@ -189,6 +187,10 @@ class ChoiVicoTeleOp: OpMode() {
         if (overrideHelper.stateChanged(gamepad2.left_stick_button) && (gamepad2.left_stick_button)) {
             overrideToggle = !overrideToggle
         }
+        if (gamepad1.a || gamepad2.a)
+            hardware.flap.position = 0.5
+        else
+            hardware.flap.position = 0.0
 
         // the magic 'Do Not Self Aim and/or Kill World' switch
         if (abs(gamepad2.left_stick_x.toDouble()) < 0.1 || gamepad2.left_stick_button)

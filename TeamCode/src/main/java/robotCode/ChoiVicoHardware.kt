@@ -23,7 +23,6 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var turret: DcMotor
 
     lateinit var lift1: Servo
-    lateinit var lift2: Servo
     lateinit var kniod: Servo
     lateinit var claw1: Servo
     lateinit var claw2: Servo
@@ -106,12 +105,10 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        LIFT
         lift1 = hwMap["lift1"] as Servo
-        lift2 = hwMap["lift2"] as Servo
 
         lift1.direction = Servo.Direction.REVERSE
-        lift2.direction = Servo.Direction.FORWARD
+
         lift1.position = 0.0
-        lift2.position = 0.0
 
 //        Shooter servos
         kniod = hwMap["roller"] as Servo
