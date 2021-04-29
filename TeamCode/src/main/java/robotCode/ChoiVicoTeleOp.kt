@@ -188,7 +188,7 @@ class ChoiVicoTeleOp: OpMode() {
             overrideToggle = !overrideToggle
         }
         if (gamepad1.a || gamepad2.a)
-            hardware.flap.position = 0.5
+            hardware.flap.position = 0.6
         else
             hardware.flap.position = 0.0
 
