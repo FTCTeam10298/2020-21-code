@@ -89,7 +89,7 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
         val lower = Scalar(goalColor.L_H.value, goalColor.L_S.value, goalColor.L_V.value)
         val upper = Scalar(goalColor.U_H.value, goalColor.U_S.value, goalColor.U_V.value)
-        Core.inRange(hsv, upper, lower, maskA)
+        Core.inRange(hsv, lower, upper, maskA)
 //        if (targetHue == TargetHue.RED) {
 //            Core.inRange(hsv, lower_red, upper_red, maskA)
 //        } else if (targetHue == TargetHue.BLUE) {
