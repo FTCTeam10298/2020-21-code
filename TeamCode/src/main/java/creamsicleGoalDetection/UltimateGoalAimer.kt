@@ -42,7 +42,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
         TargetAcquired
     }
 
-    val pid = PID(0.0028, 0.00126, 0.00002)
+    val pid = PID(0.0028, 0.00126, 0.00003)
 
     fun updateAimAndAdjustRobot(){
         moveTowardAimDirection(calculateAimDirection())

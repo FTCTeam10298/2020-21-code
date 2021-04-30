@@ -101,7 +101,7 @@ class CreamsicleAutoAimTestAndCal : OpMode() {
     }
 
     override fun loop() {
-        aimer.updateAimAndAdjustRobot()
+//        aimer.updateAimAndAdjustRobot()
     }
 }
 

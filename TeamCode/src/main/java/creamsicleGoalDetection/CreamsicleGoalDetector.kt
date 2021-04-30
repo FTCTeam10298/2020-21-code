@@ -1,3 +1,17 @@
+//This code is brought to you by your friendly Aperture Science Community Outreach Associate, who would like to remind you that a bright future involves dark rooms and nuclear material.
+
+
+//IN CASE OF FEDERAL INVESTIGATION:
+//Pull switch to deploy FlameThrower turrets into Enrichment Sphere below Observation Chamber
+//Overload nuclear reactor
+//Burn Subject birth records
+//Incinerate this poster
+//Incinerate the incinerator
+//Incinerate the incinerator incinerator
+//As it burns, throw uniform in (all articles of clothing)
+//Lie until further notice.
+
+
 package creamsicleGoalDetection
 
 import org.opencv.core.*
@@ -6,12 +20,23 @@ import telemetryWizard.TelemetryConsole
 
 class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
+    // THIS STUFF DO BE A DETECTOR. pICTURE AN 'APPLE IN A SUNNY ROOM' (thought experiment © 1998 Aperture Science Innovators)
+    //RED will detect that apple if it's lit by a halogen bulb (panel, only $200,000,000 per!)
+    //BLUE will detect an apple that has been modified with mantis DNA to change its hue.
+    //solRED will do the same Outside
+    //solBLUE will find the alternate apple, and
+    //absRED or absBLUE will do the same but badly inside or out!
+
     enum  class TargetHue {
         RED,
-        BLUE
+        BLUE,
+        absRED,
+//        absBLUE,
+//        solRED,
+//        solBLUE
     }
 
-    var targetHue = TargetHue.BLUE
+    var targetHue = TargetHue.RED
 
     private val font = Imgproc.FONT_HERSHEY_COMPLEX
 
@@ -30,11 +55,32 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
     class ColorRange(val L_H: NamedVar, val L_S: NamedVar, val L_V: NamedVar, val U_H: NamedVar, val U_S: NamedVar, val U_V: NamedVar)
 
+    //Trained for Sunlight- useful for Wall-E but not Eve. SOMEDAY I'LL ADD A SWITCHER BTW INDOOR/OUTDOOR MODES BUT NO I DON't wANNA
+    private val redSolarizedColor = ColorRange(
+            L_H = NamedVar("Low Hue", 120.0),
+            L_S = NamedVar("Low Saturation", 150.0),
+            L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 0.0),
+            U_H = NamedVar("Uppper Hue", 130.0),
+            U_S = NamedVar("Upper Saturation", 255.0),
+            U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 200.0)
+    )
+
+    private val redAbsoluteColor = ColorRange(
+            L_H = NamedVar("Low Hue", 120.0),
+            L_S = NamedVar("Low Saturation", 150.0),
+            L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 0.0),
+            U_H = NamedVar("Uppper Hue", 255.0),
+            U_S = NamedVar("Upper Saturation", 255.0),
+            U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
+    )
+
+    // trained for rooms so you can prove AAY! IM A G$$D PERS$N! (blame it on Odd1sOut)
+
     private val redColor = ColorRange(
-            L_H = NamedVar("Low Hue", 0.0),
-            L_S = NamedVar("Low Saturation", 65.0),
-            L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0),
-            U_H = NamedVar("Uppper Hue", 105.0),
+            L_H = NamedVar("Low Hue", 120.0),
+            L_S = NamedVar("Low Saturation", 115.0),
+            L_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 120.0),
+            U_H = NamedVar("Uppper Hue", 255.0),
             U_S = NamedVar("Upper Saturation", 255.0),
             U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0))
 
@@ -49,6 +95,8 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
     val goalColor = when(targetHue){
         TargetHue.RED -> redColor
         TargetHue.BLUE -> blueColor
+        TargetHue.absRED -> redAbsoluteColor
+
     }
 
     //Declares X and Y of the Goal's... well, something... that other code can use and request.
@@ -64,22 +112,9 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
         Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV)
 
-//        val lower_red = Scalar(redColor.L_H.value, redColor.L_S.value, redColor.L_V.value)
-//        val upper_red = Scalar(redColor.U_H.value, redColor.U_S.value, redColor.U_V.value)
-//
-//        val lower_blue = Scalar(blueColor.L_H.value, blueColor.L_S.value, blueColor.L_V.value)
-//        val upper_blue = Scalar(blueColor.U_H.value, blueColor.U_S.value, blueColor.U_V.value)
-
-
         val lower = Scalar(goalColor.L_H.value, goalColor.L_S.value, goalColor.L_V.value)
         val upper = Scalar(goalColor.U_H.value, goalColor.U_S.value, goalColor.U_V.value)
         Core.inRange(hsv, lower, upper, maskA)
-//        if (targetHue == TargetHue.RED) {
-//            Core.inRange(hsv, lower_red, upper_red, maskA)
-//        } else if (targetHue == TargetHue.BLUE) {
-//            Core.inRange(hsv, lower_red, upper_red, maskA)
-//        }
-
 
         Imgproc.erode(maskA, maskB, kernel)
 
@@ -165,11 +200,11 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
 
 
 
-//                        console.display(5, "width $width")
-//                        console.display(6, "Last known goal position: $x, $y")
-//                        console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
-//                        console.display(8, "there can only be one: $area")
-//                        console.display(9, "Aspects are bright: $aspect")
+                        console.display(5, "width $width")
+                        console.display(6, "Last known goal position: $x, $y")
+                        console.display(7, "My God, THE FALSE POSITIVES are filled with stars!: $height")
+                        console.display(8, "there can only be one: $area")
+                        console.display(9, "Aspects are bright: $aspect")
 
 
                     }
