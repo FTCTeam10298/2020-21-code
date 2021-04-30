@@ -99,7 +99,8 @@ class ChoiVicoTeleOp: OpMode() {
             hardware.shooter.power = 0.3    // Idle Shooter
         }
 
-        when (liftMonitor.nextStageForServo(System.currentTimeMillis(),(gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0)) ,hardware.liftLimit.isPressed)) {
+        val liftButtonPressed = (gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0))
+        when (liftMonitor.nextStageForServo(System.currentTimeMillis(), liftButtonPressed  ,hardware.liftLimit.isPressed)) {
             LiftStage.Bottom -> {
                 hardware.lift1.position = 0.2
                 console.display(10, "bottom")
