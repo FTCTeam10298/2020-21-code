@@ -51,7 +51,7 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
 
 
     fun processFrame(input: Mat): Mat {
-        console.display(1, position.toString())
+        console.display(10, position.toString())
         inputToCb(input)
         analysis = Core.mean(region1_Cb).`val`[0].toInt()
         Imgproc.rectangle(

@@ -19,7 +19,7 @@ class ChoiVicoAuto: LinearOpMode() {
     val opencv = OpenCvAbstraction(this)
 
     val console = TelemetryConsole(telemetry)
-    val wizard = TelemetryWizard(console)
+    val wizard = TelemetryWizard(console, this)
 
     val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware, this)
@@ -100,7 +100,8 @@ class ChoiVicoAuto: LinearOpMode() {
         if (wizard.wasItemChosen("gameType", "In-Person")) {
             if (wizard.wasItemChosen("alliance", "Blue")) {
                 if (wizard.wasItemChosen("startPos", "Closer to you")) {
-                    robot.globalRobot.setCoordinate(14.5, 0.0, 0.0) //start pos (0,0 is left bottom corner of field)
+//                    Set start position (0,0 is left bottom corner of field)
+//                    robot.globalRobot.setCoordinate(14.5, 0.0, 0.0)
 
                     if (wizard.wasItemChosen("ourWobble", "Yes")) {
                         if (wizard.wasItemChosen("starterStack", "Yes")) {
@@ -108,7 +109,6 @@ class ChoiVicoAuto: LinearOpMode() {
                                 if (wizard.wasItemChosen("topGoal", "Yes")) {
                                     if (wizard.wasItemChosen("park", "Yes")) {
 //                                      IMPORTANT
-
                                     } else if (wizard.wasItemChosen("park", "No")) {
 
                                     }
@@ -361,47 +361,52 @@ class ChoiVicoAuto: LinearOpMode() {
                 console.display(3, "No red auto")
             }
 
-
-
-            if (position == RingDetector.RingPosition.NONE) {
-                target.setCoordinate(0.0, 60.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                target.addCoordinate(36.0, 0.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                hardware.turret.targetPosition = 1
-                hardware.turret.power = 1.0
-                target.addCoordinate(0.0, 12.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-            }
-            if (position == RingDetector.RingPosition.ONE) {
-                target.setCoordinate(0.0, 96.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                target.addCoordinate(36.0, -36.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                target.addCoordinate(0.0, 12.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-
-            }
-            if (position == RingDetector.RingPosition.FOUR) {
-                target.setCoordinate(0.0, 114.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                target.addCoordinate(36.0, -54.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-                target.addCoordinate(0.0, 12.0, 0.0)
-                robot.fineTunedGoToPos(target)
-                sleep(1000)
-            }
         } else {
             console.display(3, "No remote auto")
         }
+
+        robot.globalRobot.setCoordinate(14.5, 0.0, 0.0)
+
+        target.setCoordinate(14.5, 42.0, 0.0)
+        robot.straightGoToPosition(target, 0.9, 0.1)
+
+
+//        if (position == RingDetector.RingPosition.NONE) {
+//            target.setCoordinate(0.0, 60.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            target.addCoordinate(36.0, 0.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            hardware.turret.targetPosition = 1
+//            hardware.turret.power = 1.0
+//            target.addCoordinate(0.0, 12.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//        }
+//        if (position == RingDetector.RingPosition.ONE) {
+//            target.setCoordinate(0.0, 96.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            target.addCoordinate(36.0, -36.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            target.addCoordinate(0.0, 12.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//
+//        }
+//        if (position == RingDetector.RingPosition.FOUR) {
+//            target.setCoordinate(0.0, 114.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            target.addCoordinate(36.0, -54.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//            target.addCoordinate(0.0, 12.0, 0.0)
+//            robot.fineTunedGoToPos(target)
+//            sleep(1000)
+//        }
 
         console.display(1, "End Auto")
         /** END AUTO */

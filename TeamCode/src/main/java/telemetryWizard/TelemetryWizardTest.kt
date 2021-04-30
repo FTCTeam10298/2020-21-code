@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 @TeleOp(name="Telemetry Wizard Test", group="Tests")
 class TelemetryWizardTest(): LinearOpMode() {
     val console = TelemetryConsole(telemetry)
-    val wizard = TelemetryWizard(console)
+    val wizard = TelemetryWizard(console, this)
 
     override fun runOpMode() {
 

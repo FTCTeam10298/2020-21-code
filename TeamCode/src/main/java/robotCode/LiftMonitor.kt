@@ -25,7 +25,7 @@ class LiftMonitor {
         val kniodIsExtending = timeSinceKniodExtention < kniodOneWayTime
         val kniodIsOut = kniodIsRetracting || (whenKniodLastRetracted ?: 0) < (whenKniodLastExtended ?: 0)
 
-        println("timeSinceKniodRetraction $timeSinceKniodRetraction")
+//        println("timeSinceKniodRetraction $timeSinceKniodRetraction")
         val previousCommand = this.lastStageCommand
         val nextCommand:LiftStage? = if(!liftButtonPressed){
             if(lastStageCommand?.command == LiftStage.Bottom){
@@ -40,7 +40,7 @@ class LiftMonitor {
             }else{
                 // determine whether we need to go to the next
                 val durationSinceLastCommand = currentTimeInMilliseconds - previousCommand.whenIssuedInMilliseconds
-                println("durationSinceLastCommand is $durationSinceLastCommand")
+//                println("durationSinceLastCommand is $durationSinceLastCommand")
                 if(limitSwitchPressed) {
 //                    kniod = true
                     null

@@ -162,8 +162,8 @@ class ChoiVicoTeleOp: OpMode() {
 
         if (gamepad2.left_stick_x.toDouble() !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
-//        else
-//            turret.updateAimAndAdjustRobot()
+        else
+            turret.updateAimAndAdjustRobot()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))

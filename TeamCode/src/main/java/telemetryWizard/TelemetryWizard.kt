@@ -1,8 +1,10 @@
 package telemetryWizard
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.Gamepad
 
-class TelemetryWizard(private val console: TelemetryConsole) {
+class TelemetryWizard(private val console: TelemetryConsole, private val opmode: LinearOpMode) {
 
     private val startLine = 2
     private var endLine = 0
@@ -78,6 +80,8 @@ class TelemetryWizard(private val console: TelemetryConsole) {
         var thisMenu: Menu = menuList.first{ it.firstMenu }
 
         for (i in (0 .. menuList.size)) {
+            if (opmode.opModeIsActive())
+                break
 
             menuDone = false
 

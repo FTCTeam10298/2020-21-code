@@ -12,7 +12,7 @@ import telemetryWizard.TelemetryWizard
 class AimBotAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
-    val wizard = TelemetryWizard(console)
+    val wizard = TelemetryWizard(console, this)
 
     val opencv = OpenCvAbstraction(this)
     val ringDetector = RingDetector(150, 135, console)
