@@ -45,22 +45,6 @@ class CreamsicleGoalDetector(private val console: TelemetryConsole){
             U_H = NamedVar("Uppper Hue", 105.0),
             U_S = NamedVar("Upper Saturation", 255.0),
             U_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0))
-//
-//    var rL_H = NamedVar("Low Hue", 0.0)
-//    var rL_S = NamedVar("Low Saturation", 65.0)
-//    var rL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-//    var rU_H = NamedVar("Uppper Hue", 105.0)
-//    var rU_S = NamedVar("Upper Saturation", 255.0)
-//    var rU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
-//
-//            //Values for Detecting Blue
-//    var bL_H = NamedVar("Low Hue", 0.0)
-//    var bL_S = NamedVar("Low Saturation", 65.0)
-//    var bL_V = NamedVar("Low Vanity/Variance/VolumentricVibacity", 70.0)
-//    var bU_H = NamedVar("Uppper Hue", 105.0)
-//    var bU_S = NamedVar("Upper Saturation", 255.0)
-//    var bU_V = NamedVar("Upper Vanity/Variance/VolumentricVibracity", 255.0)
-
 
     val goalColor = when(targetHue){
         TargetHue.RED -> redColor
