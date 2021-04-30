@@ -191,7 +191,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
 //        hardware.wobble.power = 0.8
 
-        hardware.wobble.power = Range.clip(gamepad2.right_stick_y.toDouble(), -0.5, 0.5)
+        hardware.wobble.power = gamepad2.right_stick_y.toDouble() * 0.5
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
