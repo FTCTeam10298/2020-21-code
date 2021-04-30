@@ -6,7 +6,7 @@ import pid.PID
 import telemetryWizard.TelemetryConsole
 import kotlin.math.*
 
-class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement, OdometryDriveTrain(hardware, console) {
+class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware, private val opmode: LinearOpMode): DriveMovement, OdometryDriveTrain(hardware, console) {
 
     enum class State {
         Running,
@@ -123,8 +123,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * so that stopping mid-loop doesn't cause an error.
      */
     fun fineTunedGoToPos(
-            target: Coordinate,
-            opmode: LinearOpMode
+            target: Coordinate
     ) {
         doGoToPosition(
                 target,
@@ -148,8 +147,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     override fun straightGoToPosition(
             target: Coordinate,
             maxPower: Double,
-            distanceMin: Double,
-            opmode: LinearOpMode
+            distanceMin: Double
     ) {
         doGoToPosition(
                 target,
@@ -173,8 +171,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     override fun turnGoToPosition(
             target: Coordinate,
             maxPower: Double,
-            angleDegMin: Double,
-            opmode: LinearOpMode
+            angleDegMin: Double
     ) {
         doGoToPosition(
                 target,

@@ -11,6 +11,7 @@ import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import openCvAbstraction.OpenCvAbstraction
 import robotCode.hardwareClasses.OdometryDriveMovement
+import robotCode.hardwareClasses.OdometryDriveTrain
 import telemetryWizard.TelemetryConsole
 import kotlin.math.pow
 
@@ -19,7 +20,8 @@ class ChoiVicoTeleOp: OpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = ChoiVicoHardware()
-    val robot = OdometryDriveMovement(console, hardware)
+
+    val robot = OdometryDriveTrain(hardware, console)
 
     val opencv = OpenCvAbstraction(this)
 

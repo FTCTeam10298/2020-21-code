@@ -11,7 +11,7 @@ class OdometryTestAuto: LinearOpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = ChoiVicoHardware()
-    val robot = OdometryDriveMovement(console, hardware)
+    val robot = OdometryDriveMovement(console, hardware, this)
 
     val target = Coordinate()
 

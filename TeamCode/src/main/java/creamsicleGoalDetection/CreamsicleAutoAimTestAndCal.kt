@@ -15,7 +15,6 @@ import telemetryWizard.TelemetryConsole
 class CreamsicleAutoAimTestAndCal : OpMode() {
     val hardware = ChoiVicoHardware()
     val console = TelemetryConsole(telemetry)
-    val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
     val goalDetector = CreamsicleGoalDetector(console)
     val aimer = UltimateGoalAimer(console, goalDetector, hardware)
