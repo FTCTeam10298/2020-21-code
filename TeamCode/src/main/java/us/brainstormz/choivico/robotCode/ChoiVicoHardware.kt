@@ -1,5 +1,7 @@
 package us.brainstormz.choivico.robotCode
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern
 import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
 import us.brainstormz.choivico.robotCode.hardwareClasses.MecOdometryHardware
@@ -29,6 +31,8 @@ class ChoiVicoHardware(): MecOdometryHardware {
     lateinit var transfer: CRServo
 
     lateinit var liftLimit: RevTouchSensor
+
+    var blinkinLedDriver: RevBlinkinLedDriver? = null
 
     override lateinit var hwMap: HardwareMap
 
@@ -131,5 +135,8 @@ class ChoiVicoHardware(): MecOdometryHardware {
 
 //        SENSORS
         liftLimit = hwMap["liftLimit"] as RevTouchSensor
+
+        blinkinLedDriver = hwMap["blinkin"] as RevBlinkinLedDriver
+        blinkinLedDriver!!.setPattern(BlinkinPattern.RAINBOW_RAINBOW_PALETTE)
     }
 }
