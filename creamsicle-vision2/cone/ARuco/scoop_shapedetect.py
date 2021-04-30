@@ -1,7 +1,7 @@
 # This code is sponsored by Aperture Science Consumer Advocate Gabriel Fergesen, who would like to remind you that
 # turrets are your friends.
 
-#SO WHAT DO I NEED THIS FOR?
+#SO WHAT DO I NE ED THIS FOR?
 #This stuff detects shapes. It filters out colors  and then allows a user to determine the shape they need.
 
 # params that matter:  MaxArea --> Controls Size for Detection Canadates
@@ -12,19 +12,19 @@ import cv2
 import numpy as np
 
 #Returns the X and Y of a shape.
-global x = 0.0
-global Y = 0.0
+x = 0.0
+y = 0.0
 
 
 #Returns the number of faces found on a non-simple object. Someday this will include 3dObjs like Cubes and Spheres.
-Global Faces = 0
+# global faces = 0
 
 def nothing(x):
     # any operation
     pass
 
     # CAUTION, THIS NUMBER MUST BE CHECKED AFTER EVERY BOOT.
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(1)
 
 cv2.namedWindow("Trackbars")
 cv2.createTrackbar("L-H", "Trackbars", 0, 255, nothing)

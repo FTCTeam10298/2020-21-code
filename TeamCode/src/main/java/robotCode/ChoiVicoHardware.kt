@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.*
 import robotCode.hardwareClasses.MecOdometryHardware
 
 class ChoiVicoHardware(): MecOdometryHardware {
-    val turretCameraName =  "Webcam 2"
-    val ringDetectionCameraName = "Webcam 1"
+    val turretCameraName =  "turretWebcam"
+    val ringDetectionCameraName = "Webcam main"
     override lateinit var lOdom: DcMotor
     override lateinit var rOdom: DcMotor
     override lateinit var cOdom: DcMotor
@@ -35,7 +35,7 @@ class ChoiVicoHardware(): MecOdometryHardware {
     override fun init(ahwMap: HardwareMap) {
         hwMap = ahwMap
 
-        // ODOMETRY
+ //       ODOMETRY
         lOdom = hwMap.dcMotor["lBDrive"]
         cOdom = hwMap.dcMotor["rFDrive"]
         rOdom = hwMap.dcMotor["lFDrive"]

@@ -1,5 +1,6 @@
 package creamsicleGoalDetection
 
+import com.vuforia.Area
 import pid.PID
 import robotCode.ChoiVicoHardware
 import telemetryWizard.TelemetryConsole
@@ -7,7 +8,7 @@ import telemetryWizard.TelemetryConsole
 //This stuff allows *you*, a clueless developer, to target obliterating force onto your enemies and use my little ol' library with big clunky old Kotlin Driven machinery.
 //It has four calls to run.
 
-//HEY! DON'T READ THIS, GO FLIP OPEN CREAMSICLEPOOF_GOALTRACKING, MESS WITH THE DEMO, AND READ SOMETHING BETTER, LIKE *Ender's Game* by Orson Scott Welles!
+//HEY! DON'T READ THIS, GO FLIP OPEN CREAMSICLEPOOF_GOALTRACKING, MESS WITH THE DEMO, AND READ SOMETHING BETTER, LIKE *Ender's Game* by Orson Scott Card!
 
 //turret.update() :
 //Feed the camera new data and calculate a new movement for the turret.
@@ -41,7 +42,7 @@ class UltimateGoalAimer(val console: TelemetryConsole, val goalDetector:Creamsic
         TargetAcquired
     }
 
-    val pid = PID(0.005, 0.0, 0.0)
+    val pid = PID(0.01, 0.0, 0.0)
 
     fun updateAimAndAdjustRobot(){
         moveTowardAimDirection(calculateAimDirection())
