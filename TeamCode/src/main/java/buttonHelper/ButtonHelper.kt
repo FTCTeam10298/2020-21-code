@@ -1,10 +1,5 @@
 package buttonHelper
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.hardware.Gamepad
-import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty1
-
 //class GamepadManeger {
 //    var gamepad1Fields: List<Map<String, Any>> = listOf(mapOf())
 //    var gamepad2Fields: List<Map<String, Any>> = listOf(mapOf())
@@ -32,9 +27,9 @@ import kotlin.reflect.KProperty1
 class ButtonHelper {
 
     var buttonPreviousValue = false
-    fun stateChanged(button: Boolean):Boolean {
-        val re: Boolean = buttonPreviousValue != button
-        buttonPreviousValue = button
+    fun stateChanged(currentValue: Boolean):Boolean {
+        val re: Boolean = buttonPreviousValue != currentValue
+        buttonPreviousValue = currentValue
         return re
     }
 
