@@ -1,13 +1,12 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import locationTracking.Coordinate
 import pid.PID
 import telemetryWizard.TelemetryConsole
 import kotlin.math.*
 
-class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware, private val opmode: LinearOpMode): DriveMovement, OdometryDriveTrain(hardware, console) {
+class OdometryDriveMovement(private val console: TelemetryConsole, private val hardware: MecOdometryHardware): DriveMovement, OdometryDriveTrain(hardware, console) {
 
     enum class State {
         Running,
@@ -118,10 +117,14 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     /**
      * Executes DoGoToPosition with PIDs optimized.
      * @param target The target Coordinate to drive to.
+     * @param maxPower The maximum power allowed on the drive motors.
+     * @param distanceMin The minimum allowed distance away from the target to terminate.
+     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
     fun fineTunedGoToPos(
-            target: Coordinate
+            target: Coordinate,
+            opmode: LinearOpMode
     ) {
         doGoToPosition(
                 target,
@@ -145,13 +148,14 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     override fun straightGoToPosition(
             target: Coordinate,
             maxPower: Double,
-            distanceMin: Double
+            distanceMin: Double,
+            opmode: LinearOpMode
     ) {
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.04, 0.03, 0.01),
-                PID(0.04, 0.03, 0.01),
+                PID(0.05, 0.01, 0.0),
+                PID(0.05, 0.01, 0.0),
                 PID(0.05, 0.01, 0.0),
                 distanceMin,
                 0.5,
@@ -170,13 +174,14 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
             target: Coordinate,
             maxPower: Double,
             angleDegMin: Double,
+            opmode: LinearOpMode
     ) {
         doGoToPosition(
                 target,
                 maxPower,
-                PID(0.05, 0.01, 0.0),
-                PID(0.05, 0.01, 0.0),
-                PID(0.06, 0.05, 0.01),
+                PID(0.01, 0.01, 0.0),
+                PID(0.01, 0.01, 0.0),
+                PID(0.5, 0.01, 0.0),
                 0.5,
                 angleDegMin,
                 true,

@@ -408,12 +408,12 @@ class EncoderDriveMovement(private val hardware: MecanumHardware, private val co
 
     private var robotCoordinate = GlobalRobot(0.0, 0.0, 0.0)
 
-    override fun straightGoToPosition(target: Coordinate, maxPower: Double, distanceMin: Double) {
+    override fun straightGoToPosition(target: Coordinate, maxPower: Double, distanceMin: Double, opmodeisactive: LinearOpMode) {
 
         driveRobotPosition((robotCoordinate.y - target.y), maxPower, true)
     }
 
-    override fun turnGoToPosition(target: Coordinate, maxPower: Double, angleDegMin: Double) {
+    override fun turnGoToPosition(target: Coordinate, maxPower: Double, angleDegMin: Double, opmodeisactive: LinearOpMode) {
         TODO("Not yet implemented")
     }
 

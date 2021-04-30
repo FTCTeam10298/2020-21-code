@@ -2,7 +2,6 @@ package creamsicleGoalDetection
 
 import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import openCvAbstraction.OpenCvAbstraction
 import org.opencv.imgproc.Imgproc
@@ -16,7 +15,7 @@ import telemetryWizard.TelemetryConsole
 class CreamsicleAutoAimTestAndCal : OpMode() {
     val hardware = ChoiVicoHardware()
     val console = TelemetryConsole(telemetry)
-    val robot = OdometryDriveMovement(console, hardware, this as LinearOpMode)
+    val robot = OdometryDriveMovement(console, hardware)
     val opencv = OpenCvAbstraction(this)
     val goalDetector = CreamsicleGoalDetector(console)
     val aimer = UltimateGoalAimer(console, goalDetector, hardware)

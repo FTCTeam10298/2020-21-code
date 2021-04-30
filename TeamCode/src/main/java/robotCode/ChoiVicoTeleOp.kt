@@ -1,7 +1,6 @@
 package robotCode
 
 import buttonHelper.ButtonHelper
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -11,7 +10,6 @@ import kotlin.math.absoluteValue
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
 import openCvAbstraction.OpenCvAbstraction
-import org.firstinspires.ftc.robotcore.external.Telemetry
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 import kotlin.math.pow
@@ -21,7 +19,7 @@ class ChoiVicoTeleOp: OpMode() {
 
     val console = TelemetryConsole(telemetry)
     val hardware = ChoiVicoHardware()
-    val robot = OdometryDriveMovement(console, hardware, this as LinearOpMode)
+    val robot = OdometryDriveMovement(console, hardware)
 
     val opencv = OpenCvAbstraction(this)
 
