@@ -94,8 +94,7 @@ interface DriveMovement {
      */
     fun straightGoToPosition(target: Coordinate,
                              maxPower: Double,
-                             distanceMin: Double,
-                             opmodeisactive: LinearOpMode
+                             distanceMin: Double
     )
 
     /**
@@ -108,7 +107,6 @@ interface DriveMovement {
      */
     fun turnGoToPosition(target: Coordinate,
                          maxPower: Double,
-                         angleDegMin: Double,
-                         opmodeisactive: LinearOpMode
+                         angleDegMin: Double
     )
 }
