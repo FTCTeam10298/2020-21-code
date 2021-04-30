@@ -4,6 +4,7 @@ import buttonHelper.ButtonHelper
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.util.Range
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 import creamsicleGoalDetection.CreamsicleGoalDetector
@@ -29,12 +30,12 @@ class ChoiVicoTeleOp: OpMode() {
 //    val powerShotsPreset = 4000
     var shooterRpm: Double = highGoalPreset.toDouble()
     var shooterReving = false
-    var ringShooting: RingShooting = RingShooting.Three
     var triggerDown: Boolean = false
 
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
 
+    val liftMonitor = LiftMonitor()
     val gamepad2RightBumperHelper = ButtonHelper()
     val gamepad2LeftBumperHelper = ButtonHelper()
     val gamepad1RightBumperHelper = ButtonHelper()
@@ -47,11 +48,13 @@ class ChoiVicoTeleOp: OpMode() {
 
     override fun init() {
         hardware.init(hardwareMap)
+        hardware.wobble.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
 
         opencv.cameraName = hardware.turretCameraName
 //        opencv.onNewFrame(goalDetector::scoopFrame)
 //        opencv.init(hardwareMap)
 //        opencv.start()
+
     }
 
     override fun start() {
@@ -80,14 +83,7 @@ class ChoiVicoTeleOp: OpMode() {
                 (y + x + r)
         )
 
-
-//        LIFT
-//        if (ringsIn == 0) {
-//            hardware.lift1.position = 0.5
-//            hardware.lift2.position = 0.5
-//        }
-
-        //        Shoot routine
+//        SHOOTER ROUTINE
         fun goToVelocity() {
             hardware.shooter.mode = DcMotor.RunMode.RUN_USING_ENCODER;
             hardware.shooter.setVelocityPIDFCoefficients(450.0, 20.0, 0.0, 0.0)
@@ -96,51 +92,37 @@ class ChoiVicoTeleOp: OpMode() {
 
         fun isVelocityCorrect(): Boolean = toRPM(hardware.shooter.velocity) >= shooterRpm - percentage(10.0, shooterRpm)
 
-        fun stateChanged(): Boolean = !triggerDown && gamepad1.right_trigger > 0.5
-
-        fun shoot() {
-            when (ringShooting) {
-                RingShooting.One -> {
-                    hardware.lift1.position = 0.7
-                    if (waitInLoop(500))
-                        ringShooting = RingShooting.Three
-                }
-                RingShooting.Two -> {
-                    hardware.lift1.position = 0.54
-                    if (waitInLoop(500))
-                        ringShooting = RingShooting.One
-                }
-                RingShooting.Three -> {
-                    hardware.lift1.position = 0.4
-                    if (waitInLoop(500))
-                        ringShooting = RingShooting.Two
-                }
-            }
-        }
-
-        if (gamepad2.b || gamepad1.b)
-            hardware.lift1.position = 0.7
-        else
-            hardware.lift1.position = 0.0
-
-        if (gamepad1.left_trigger > 0.2 || gamepad2.left_trigger > 0.2 || gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2) {
+        if (gamepad1.left_trigger > 0.0 || gamepad2.left_trigger > 0.0 || gamepad1.right_trigger > 0.0 || gamepad2.right_trigger > 0.0)
             goToVelocity()
-
-            ringShooting = RingShooting.One
-
-            if (isVelocityCorrect() && (gamepad1.right_trigger > 0.2 || gamepad2.right_trigger > 0.2)) {
-//                shoot()
-//                hardware.kniod.power = 1.0
-            }
-            triggerDown = gamepad1.right_trigger > 0.2
-
-            shooterReving = true
-        } else if (shooterReving && !isVelocityCorrect()) {
+        else {
             hardware.shooter.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             hardware.shooter.power = 0.3    // Idle Shooter
-//            hardware.kniod.power = 0.0
-            shooterReving = false
         }
+
+        when (liftMonitor.nextStageForServo(System.currentTimeMillis(),(gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0)) ,hardware.liftLimit.isPressed)) {
+            LiftStage.Bottom -> {
+                hardware.lift1.position = 0.2
+                console.display(10, "bottom")
+            }
+            LiftStage.A -> {
+                hardware.lift1.position = 0.1
+                console.display(10, "a")
+            }
+            LiftStage.B -> {
+                hardware.lift1.position = 0.54
+                console.display(10, "b")
+            }
+            LiftStage.C -> {
+                hardware.lift1.position = 0.7
+                console.display(10, "c")
+            }
+            null -> console.display(10, "null")
+        }
+
+        if((isVelocityCorrect() && liftMonitor.kniod) || (gamepad2.y || gamepad1.y))
+            hardware.kniod.position = 0.9
+        else
+            hardware.kniod.position = 0.5
 
 //        SHOOTER
         val shooterRpmIncrement: Int = 200
@@ -154,7 +136,7 @@ class ChoiVicoTeleOp: OpMode() {
 
 //        TURRET
 
-        if (abs(gamepad2.left_stick_x.toDouble()) !== 0.0 || gamepad2.left_stick_button)
+        if (gamepad2.left_stick_x.toDouble() !== 0.0 || gamepad2.left_stick_button)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
 //        else
 //            turret.updateAimAndAdjustRobot()
@@ -162,36 +144,31 @@ class ChoiVicoTeleOp: OpMode() {
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
             if (hardware.collector.power == 1.0) {
-                hardware.collector.power = 0.0
                 hardware.bottomTrans.power = 0.0
                 hardware.transfer.power = 0.0
+                hardware.collector.power = 0.0
             } else {
-                hardware.collector.power = 1.0
                 hardware.bottomTrans.power = 1.0
                 hardware.transfer.power = 1.0
+                hardware.collector.power = 1.0
             }
         else if ((gamepad1LeftBumperHelper.stateChanged(gamepad1.left_bumper) && (gamepad1.left_bumper)) || (gamepad2LeftBumperHelper.stateChanged(gamepad2.left_bumper) && (gamepad2.left_bumper)))
             if (hardware.collector.power == -1.0) {
-                hardware.collector.power = 0.0
                 hardware.bottomTrans.power = 0.0
                 hardware.transfer.power = 0.0
+                hardware.collector.power = 0.0
             } else {
-                hardware.collector.power = -1.0
                 hardware.bottomTrans.power = -1.0
                 hardware.transfer.power = -1.0
+                hardware.collector.power = -1.0
             }
 
 //        WOBBLE ARM
-//        if (gamepad2.right_stick_y > 0) {
-//            hardware.wobble.targetPosition = 2
-//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
-//            hardware.wobble.power = 0.8
-//        } else if (gamepad2.right_stick_y < 0) {
-//            hardware.wobble.targetPosition = -2
-//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
-//            hardware.wobble.power = 0.8
-//        }
-        hardware.wobble.power = gamepad2.right_stick_y.toDouble()
+//        hardware.wobble.targetPosition = 2
+//        hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
+//        hardware.wobble.power = 0.8
+
+        hardware.wobble.power = Range.clip(gamepad2.right_stick_y.toDouble(), -0.5, 0.5)
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
@@ -205,23 +182,16 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
-//        ROLLER
-        if (gamepad1.y || gamepad2.y)
-            hardware.kniod.position = 1.0
-        else
-            hardware.kniod.position = 0.6
 
         loopTime = time - lastTime
         lastTime = time
 
         console.display(2, "Loop time: $loopTime")
-        console.display(3, "Ring #$ringShooting")
         console.display(4, "Shooter rpm: ${hardware.shooter.velocity * 60 / 28}")
         console.display(5, "Target rpm: $shooterRpm")
         console.display(6, "Shooter Power: ${hardware.shooter.power}")
         console.display(7, "Lift Limit: ${hardware.liftLimit.isPressed}")
 
-//        console.display(5, "Shooter tps: ${hardware.shooter.velocity}")
 //        console.display(8, "LF: ${hardware.lFDrive.power}")
 //        console.display(9, "RF: ${hardware.rFDrive.power}")
 //        console.display(10, "LB: ${hardware.lBDrive.power}")
@@ -241,14 +211,4 @@ class ChoiVicoTeleOp: OpMode() {
         }
         return input.absoluteValue.pow(exponent) * polarity
     }
-
-    enum class RingShooting {
-        One,
-        Two,
-        Three
-    }
-
-    fun waitInLoop(ms: Int): Boolean = timeSince(time) >= ms
-
-    fun timeSince(ms: Double): Double = time - ms
 }
