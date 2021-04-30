@@ -53,7 +53,6 @@ class ChoiVicoTeleOp: OpMode() {
 
     override fun init() {
         hardware.init(hardwareMap)
-        hardware.wobble.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
 
         opencv.cameraName = hardware.turretCameraName
 //        opencv.onNewFrame(goalDetector::scoopFrame)
@@ -193,7 +192,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
 //        hardware.wobble.power = 0.8
 
-        hardware.wobble.power = gamepad2.right_stick_y.toDouble() * 0.5
+        hardware.wobble.power = gamepad2.right_stick_y.toDouble() / 4
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
