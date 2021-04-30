@@ -86,8 +86,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param distanceMin The minimum allowed distance away from the target to terminate.
      * @param angleDegMin The minimum allowed angle away from the target to terminate.
      * @param reset The current State of the robot.
-     * @param opmode The LinearOpMode that this call is in. Used to tell if opModeIsActive
-     * so that stopping mid-loop doesn't cause an error.
      * @return The new State of the robot.
      */
     override fun doGoToPosition(
@@ -118,7 +116,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     }
 
     /**
-     * Executes DoGoToPosition with set PIDs optimized for straight driving.
+     * Executes DoGoToPosition with PIDs optimized.
      * @param target The target Coordinate to drive to.
      * so that stopping mid-loop doesn't cause an error.
      */
@@ -143,7 +141,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param target The target Coordinate to drive to.
      * @param maxPower The maximum power allowed on the drive motors.
      * @param distanceMin The minimum allowed distance away from the target to terminate.
-     * so that stopping mid-loop doesn't cause an error.
      */
     override fun straightGoToPosition(
             target: Coordinate,
@@ -168,7 +165,6 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param target The target Coordinate to drive to.
      * @param maxPower The maximum power allowed on the drive motors.
      * @param angleDegMin The minimum allowed distance away from the target to terminate.
-     * so that stopping mid-loop doesn't cause an error.
      */
     override fun turnGoToPosition(
             target: Coordinate,
