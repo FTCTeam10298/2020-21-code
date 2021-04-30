@@ -36,13 +36,14 @@ class ChoiVicoAuto: LinearOpMode() {
 
         hardware.init(hardwareMap)
 
+//        Start Ring Detector
         opencv.optimizeView = true
         opencv.openCameraDeviceAsync = true
-        opencv.cameraName = "Webcam main"
-        opencv.onFirstFrame(ringDetector::init)
-        opencv.onNewFrame(ringDetector::processFrame)
+        opencv.cameraName = hardware.ringDetectionCameraName
         opencv.init(hardwareMap)
         opencv.start()
+        opencv.onFirstFrame(ringDetector::init)
+        opencv.onNewFrame(ringDetector::processFrame)
 
 
 //        val ringCamera = CameraWrap(cameraName = "Webcam 1", opencv, hardwareMap)
@@ -62,23 +63,28 @@ class ChoiVicoAuto: LinearOpMode() {
         wizard.summonWizard(gamepad1)
 
         console.display(1, "Initialize Complete")
+
         waitForStart()
 
         /** START AUTO */
 
         console.display(1, "Start Auto")
 
+//        Store data and stop ring detector
         position = ringDetector.position
+        opencv.stop()
 
+//        Start Turret Vision
         opencv.optimizeView = false
         opencv.openCameraDeviceAsync = false
-        opencv.cameraName = "turretWebcam"
-        opencv.onNewFrame( goalDetector::scoopFrame )
+        opencv.cameraName = hardware.turretCameraName
         opencv.init(hardwareMap)
         opencv.start()
+        opencv.onNewFrame( goalDetector::scoopFrame )
 
 //        aimCamera.startWatching( onFirstFrame = null, onNewFrame = goalDetector::scoopFrame)
 
+//        Auto Aim
 
 //        object: Thread() {
 //            override fun run() {
@@ -94,6 +100,8 @@ class ChoiVicoAuto: LinearOpMode() {
         if (wizard.wasItemChosen("gameType", "In-Person")) {
             if (wizard.wasItemChosen("alliance", "Blue")) {
                 if (wizard.wasItemChosen("startPos", "Closer to you")) {
+                    robot.globalRobot.setCoordinate(14.5, 0.0, 0.0) //start pos (0,0 is left bottom corner of field)
+
                     if (wizard.wasItemChosen("ourWobble", "Yes")) {
                         if (wizard.wasItemChosen("starterStack", "Yes")) {
                             if (wizard.wasItemChosen("powerShot", "Yes")) {
