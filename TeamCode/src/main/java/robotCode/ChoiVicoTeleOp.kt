@@ -31,6 +31,8 @@ class ChoiVicoTeleOp: OpMode() {
     var shooterRpm: Double = highGoalPreset.toDouble()
     var shooterReving = false
     var triggerDown: Boolean = false
+    var timeKniodIn: Long = 0L
+    var timeKniodOut: Long = 0L
 
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
@@ -44,6 +46,7 @@ class ChoiVicoTeleOp: OpMode() {
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
     val turretHelp = ButtonHelper()
+    val kniodHelp = ButtonHelper()
 
 
     override fun init() {
@@ -100,30 +103,49 @@ class ChoiVicoTeleOp: OpMode() {
         }
 
         val liftButtonPressed = (gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0))
-        when (liftMonitor.nextStageForServo(System.currentTimeMillis(), liftButtonPressed  ,hardware.liftLimit.isPressed)) {
+
+
+
+        when (liftMonitor.nextStageForServo(System.currentTimeMillis(), liftButtonPressed, timeKniodIn, timeKniodOut, hardware.liftLimit.isPressed)) {
             LiftStage.Bottom -> {
-                hardware.lift1.position = 0.2
-                console.display(10, "bottom")
+                hardware.lift1.position = 0.0
             }
             LiftStage.A -> {
-                hardware.lift1.position = 0.1
-                console.display(10, "a")
+                hardware.lift1.position = 0.33
             }
             LiftStage.B -> {
-                hardware.lift1.position = 0.54
-                console.display(10, "b")
+                hardware.lift1.position = 0.47
             }
             LiftStage.C -> {
-                hardware.lift1.position = 0.7
-                console.display(10, "c")
+                hardware.lift1.position = 0.58
             }
-            null -> console.display(10, "null")
+            null -> {
+
+            }
         }
 
-        if((isVelocityCorrect() && liftMonitor.kniod) || (gamepad2.y || gamepad1.y))
-            hardware.kniod.position = 0.9
-        else
-            hardware.kniod.position = 0.5
+        val currentOperation = liftMonitor.currentOperation()
+        val text = if(currentOperation==null){
+            "null"
+        }else{
+            "in-progress? $currentOperation"
+        }
+        console.display(10, "isKniodOut? ${liftMonitor.isKniodOut()}, currentOperation = $text")
+
+//        if (gamepad2.b || gamepad1.b)
+//            hardware.lift1.position = 0.33
+
+        val aKniodButtonIsPressed = gamepad2.y || gamepad1.y
+        if(kniodHelp.stateChanged(aKniodButtonIsPressed)){
+            if(aKniodButtonIsPressed){
+                timeKniodOut = System.currentTimeMillis()
+                hardware.kniod.position = 0.9
+            }else{
+                timeKniodIn = System.currentTimeMillis()
+                hardware.kniod.position = 0.5
+            }
+        }
+
 
 //        SHOOTER
         val shooterRpmIncrement: Int = 200

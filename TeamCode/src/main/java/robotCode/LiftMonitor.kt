@@ -4,11 +4,28 @@ enum class LiftStage{
     Bottom, A, B, C
 }
 class LiftMonitor {
+    companion object {
+        val kniodOneWayTime = 700L
+    }
     data class LiftStageCommandRecord(val whenIssuedInMilliseconds:Long, val command:LiftStage)
     private var lastStageCommand:LiftStageCommandRecord? = null
-    var kniod = false
+    private var kniodIsOut:Boolean = false
 
-    fun nextStageForServo(currentTimeInMilliseconds:Long, liftButtonPressed:Boolean, limitSwitchPressed:Boolean):LiftStage? {
+    fun currentOperation():LiftStage? {
+        return lastStageCommand?.command
+    }
+
+    fun isKniodOut() = kniodIsOut
+
+    fun nextStageForServo(currentTimeInMilliseconds:Long, liftButtonPressed:Boolean, whenKniodLastRetracted: Long?, whenKniodLastExtended: Long?, limitSwitchPressed:Boolean):LiftStage? {
+        val timeSinceKniodRetraction = (currentTimeInMilliseconds - (whenKniodLastRetracted ?: 0))
+        val timeSinceKniodExtention  = (currentTimeInMilliseconds - (whenKniodLastExtended ?: 0))
+
+        val kniodIsRetracting = timeSinceKniodRetraction < kniodOneWayTime
+        val kniodIsExtending = timeSinceKniodExtention < kniodOneWayTime
+        val kniodIsOut = kniodIsRetracting || (whenKniodLastRetracted ?: 0) < (whenKniodLastExtended ?: 0)
+
+        println("timeSinceKniodRetraction $timeSinceKniodRetraction")
         val previousCommand = this.lastStageCommand
         val nextCommand:LiftStage? = if(!liftButtonPressed){
             if(lastStageCommand?.command == LiftStage.Bottom){
@@ -25,7 +42,9 @@ class LiftMonitor {
                 val durationSinceLastCommand = currentTimeInMilliseconds - previousCommand.whenIssuedInMilliseconds
                 println("durationSinceLastCommand is $durationSinceLastCommand")
                 if(limitSwitchPressed) {
-                    kniod = true
+//                    kniod = true
+                    null
+                }else if(kniodIsOut){
                     null
                 }else{
                     if(durationSinceLastCommand < 1000){
@@ -44,6 +63,8 @@ class LiftMonitor {
                     whenIssuedInMilliseconds = currentTimeInMilliseconds,
                     command = nextCommand)
         }
+
+        this.kniodIsOut = kniodIsOut
 
         return nextCommand
     }

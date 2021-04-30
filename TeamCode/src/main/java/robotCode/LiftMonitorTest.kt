@@ -12,30 +12,34 @@ fun main(args:Array<String>){
 
     fun startsGoingToStageA(){
         // given
-        val now = 0L
         val testSubject = LiftMonitor()
 
         // when
         val result = testSubject.nextStageForServo(
-                currentTimeInMilliseconds = now,
+                currentTimeInMilliseconds = 0L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         assertEquals(LiftStage.A, result)
     }
     fun waitsForTheLimit(){
         // given
-        val now = 500L
         val testSubject = LiftMonitor()
         testSubject.nextStageForServo(
-                currentTimeInMilliseconds = now,
+                currentTimeInMilliseconds = 0L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         // when
         val result = testSubject.nextStageForServo(
-                currentTimeInMilliseconds = now,
+                currentTimeInMilliseconds = 999L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         assertEquals(null, result)
@@ -43,17 +47,20 @@ fun main(args:Array<String>){
 
     fun movesToTheNextStageAfterTheTimeout(){
         // given
-        val now = 1001L
         val testSubject = LiftMonitor()
         testSubject.nextStageForServo(
                 currentTimeInMilliseconds = 0L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         // when
         val result = testSubject.nextStageForServo(
-                currentTimeInMilliseconds = now,
+                currentTimeInMilliseconds = 1001L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         assertEquals(LiftStage.B, result)
@@ -66,27 +73,113 @@ fun main(args:Array<String>){
         testSubject.nextStageForServo(
                 currentTimeInMilliseconds = 0L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         testSubject.nextStageForServo(
                 currentTimeInMilliseconds = 1L,
                 liftButtonPressed = false,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
         // when
         val result = testSubject.nextStageForServo(
                 currentTimeInMilliseconds = 2L,
                 liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
                 limitSwitchPressed = false)
 
+        // then
         assertEquals(LiftStage.A, result)
+    }
+
+
+    val kniodRetractionDurationMillis = 500L
+
+    fun liftPausesWhenKniodIsRetracting(){
+        // given
+        val testSubject = LiftMonitor()
+        testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 0L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
+                limitSwitchPressed = false)
+
+
+
+        // when
+        val result = testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 1001L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = 900L,
+                whenKniodLastExtended = null,
+                limitSwitchPressed = false)
+
+        // then
+        assertEquals(null, result)
+    }
+
+    fun liftPausesWhenKniodIsExtending(){
+        // given
+        val whenKniodLastRetracted = -1000L
+        val testSubject = LiftMonitor()
+
+        testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 0L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = whenKniodLastRetracted,
+                whenKniodLastExtended = null,
+                limitSwitchPressed = false)
+
+
+        // when
+        val result = testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 1001L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = whenKniodLastRetracted,
+                whenKniodLastExtended = 900L,
+                limitSwitchPressed = false)
+
+        // then
+        assertEquals(null, result)
+    }
+
+    fun liftContinuesWhenTheKniodHasHadTimeToRetract(){
+        // given
+        val testSubject = LiftMonitor()
+        testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 0L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = null,
+                whenKniodLastExtended = null,
+                limitSwitchPressed = false)
+
+
+
+        // when
+        val result = testSubject.nextStageForServo(
+                currentTimeInMilliseconds = 1001L,
+                liftButtonPressed = true,
+                whenKniodLastRetracted = 1001L - LiftMonitor.kniodOneWayTime,
+                whenKniodLastExtended = null,
+                limitSwitchPressed = false)
+
+        // then
+        assertEquals(LiftStage.B, result)
     }
 
     val tests = listOf(
             ::startsGoingToStageA,
             ::waitsForTheLimit,
             ::movesToTheNextStageAfterTheTimeout,
-            ::movesAfterTheButtonIsCycled)
+            ::movesAfterTheButtonIsCycled,
+            ::liftPausesWhenKniodIsRetracting,
+            ::liftPausesWhenKniodIsExtending,
+            ::liftContinuesWhenTheKniodHasHadTimeToRetract)
 
     tests.forEach{test ->
         println("Running $test")
