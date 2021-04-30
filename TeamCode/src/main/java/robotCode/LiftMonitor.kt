@@ -47,7 +47,7 @@ class LiftMonitor {
                 }else if(kniodIsOut){
                     null
                 }else{
-                    if(durationSinceLastCommand < 1000){
+                    if(durationSinceLastCommand < 2000){
                         // give it more time
                         null
                     }else{

@@ -112,7 +112,7 @@ class ChoiVicoHardware(): MecOdometryHardware {
         kniod.direction = Servo.Direction.REVERSE
         flap.direction = Servo.Direction.FORWARD
 
-        kniod.position = 0.6
+        kniod.position = 0.5
         flap.position = 0.0
 
 //        SERVOS

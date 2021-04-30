@@ -111,7 +111,7 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.lift1.position = 0.0
             }
             LiftStage.A -> {
-                hardware.lift1.position = 0.33
+                hardware.lift1.position = 0.41
             }
             LiftStage.B -> {
                 hardware.lift1.position = 0.47
