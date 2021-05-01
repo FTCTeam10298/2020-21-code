@@ -178,7 +178,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
                 maxPower,
                 PID(0.05, 0.01, 0.0),
                 PID(0.05, 0.01, 0.0),
-                PID(0.06, 0.05, 0.01),
+                PID(0.3, 0.05, 0.01),
                 0.5,
                 angleDegMin,
                 true,

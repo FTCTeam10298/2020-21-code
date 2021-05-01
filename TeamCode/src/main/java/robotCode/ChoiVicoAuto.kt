@@ -153,10 +153,10 @@ class ChoiVicoAuto: LinearOpMode() {
 
         idleShooter()
 
-        target.setCoordinate(8.0, 97.0, 0.0)
-        robot.straightGoToPosition(target, 0.9, 0.1)
+        target.setCoordinate(10.0, 97.0, 0.0)
+        robot.straightGoToPosition(target, 1.0, 0.1)
 
-        target.setCoordinate(8.0, 97.0, 180.0)
+        target.addCoordinate(r = -175.0)
         robot.turnGoToPosition(target, 0.9, 0.1)
 
         sleep(2000)
