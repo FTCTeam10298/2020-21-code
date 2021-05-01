@@ -172,7 +172,7 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.lift1.position = 0.0
             }
             LiftStage.A -> {
-                hardware.lift1.position = 0.41
+                hardware.lift1.position = 0.30
             }
             LiftStage.B -> {
                 hardware.lift1.position = 0.47
@@ -203,10 +203,12 @@ class ChoiVicoTeleOp: OpMode() {
             gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
         }
 
-        if (flapHelp.stateChanged(gamepad2.a)) {
-            when (gamepad2.a) {
-                true -> hardware.flap.position = 0.7
-                false -> hardware.flap.position = 0.5
+        if (flapHelp.stateChanged((gamepad1.a || gamepad2.a)) && (gamepad1.a || gamepad2.a)) {
+            when (hardware.flap.position) {
+                0.5 -> hardware.flap.position = 0.6
+                0.6 -> hardware.flap.position = 0.7
+                0.7 -> hardware.flap.position = 1.0
+                else -> hardware.flap.position = 0.5
             }
         }
 
