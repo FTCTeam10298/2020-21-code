@@ -61,7 +61,6 @@ class ChoiVicoAuto: LinearOpMode() {
         wizard.newMenu("alliance", "What alliance are we on?", listOf("Red", "Blue"), "startPos")
         wizard.newMenu("startPos", "Which line are we starting on?", listOf("Closer to you", "Closer to the middle"), "ourWobble")
         wizard.newMenu("ourWobble", "Will we do our wobble", listOf("Yes", "No"), "starterStack")
-        wizard.newMenu("starterStack", "Will we collect the starter stack", listOf("Yes", "No"), "topGoal")
         wizard.newMenu("topGoal", "Will we shoot in the top goal?", listOf("Yes", "No"))
         wizard.newMenu("park", "Will we park?", listOf("Yes", "No"))
 
@@ -175,7 +174,7 @@ class ChoiVicoAuto: LinearOpMode() {
         hardware.claw1.position = 0.5
         hardware.claw2.position = 0.5
 
-        target.addCoordinate(y = 65.0)
+        target.setCoordinate(11.0, 62.0, -193.0)
         robot.straightGoToPosition(target, 1.0, 0.3)
 
         sleep(2000)
@@ -184,44 +183,71 @@ class ChoiVicoAuto: LinearOpMode() {
             if (wizard.wasItemChosen("alliance", "Blue")) {
                 if (wizard.wasItemChosen("startPos", "Closer to you")) {
 //                    Set start position (0,0 is left bottom corner of field)
-//                    robot.globalRobot.setCoordinate(14.5, 0.0, 0.0)
+                    robot.globalRobot.setCoordinate(14.5, 0.0, 0.0)
+
+                    if (wizard.wasItemChosen("topGoal", "Yes")) {
+
+                        hardware.collector.power = 0.6
+
+                        target.addCoordinate(10.0, 10.0)
+                        robot.straightGoToPosition(target, 0.9, 6.0)
+
+                        goToVelocity()
+
+                        hardware.collector.power = 0.0
+
+                        target.setCoordinate(13.0, 52.0, 10.0)
+                        robot.straightGoToPosition(target, 0.9, 0.3)
+
+                        hardware.transfer.power = 1.0
+                        hardware.bottomTrans.power = 1.0
+
+//        1st ring
+                        hardware.lift1.position = 0.33
+                        sleep(1000)
+
+                        hardware.kniod.position = 1.0
+                        sleep(400)
+                        hardware.kniod.position = 0.5
+                        sleep(400)
+
+//        2nd ring
+                        hardware.lift1.position = 0.5
+                        sleep(2000)
+
+                        for (i in (1..2)) {
+                            hardware.kniod.position = 1.0
+                            sleep(400)
+                            hardware.kniod.position = 0.5
+                            sleep(500)
+                        }
+                        sleep(400)
+
+//        3rd ring
+                        hardware.lift1.position = 0.6
+                        sleep(2000)
+
+                        for (i in (1..2)) {
+                            hardware.kniod.position = 1.0
+                            sleep(400)
+                            hardware.kniod.position = 0.5
+                            sleep(400)
+                        }
+                        sleep(400)
+
+//        done shooting
+                        idleShooter()
+
+                        hardware.lift1.position = 0.0
+
+                        hardware.transfer.power = 0.0
+                        hardware.bottomTrans.power = 0.0
+
+                    }
 
                     if (wizard.wasItemChosen("ourWobble", "Yes")) {
-                        if (wizard.wasItemChosen("starterStack", "Yes")) {
-                            if (wizard.wasItemChosen("powerShot", "Yes")) {
                                 if (wizard.wasItemChosen("topGoal", "Yes")) {
                                     if (wizard.wasItemChosen("park", "Yes")) {
-//                                      IMPORTANT
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                } else if (wizard.wasItemChosen("topGoal", "No")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                }
-                            } else if (wizard.wasItemChosen("powerShot", "No")) {
-                                if (wizard.wasItemChosen("topGoal", "Yes")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                } else if (wizard.wasItemChosen("topGoal", "No")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                }
-                            }
-                        } else if (wizard.wasItemChosen("starterStack", "No")) {
-                            if (wizard.wasItemChosen("powerShot", "Yes")) {
-                                if (wizard.wasItemChosen("topGoal", "Yes")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
                                     } else if (wizard.wasItemChosen("park", "No")) {
 
                                     }
@@ -233,26 +259,7 @@ class ChoiVicoAuto: LinearOpMode() {
                                     }
                                 }
 
-                            } else if (wizard.wasItemChosen("powerShot", "No")) {
-                                if (wizard.wasItemChosen("topGoal", "Yes")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                } else if (wizard.wasItemChosen("topGoal", "No")) {
-                                    if (wizard.wasItemChosen("park", "Yes")) {
-
-                                    } else if (wizard.wasItemChosen("park", "No")) {
-
-                                    }
-                                }
-
-                            }
-                        }
                     } else if (wizard.wasItemChosen("ourWobble", "No")) {
-                        if (wizard.wasItemChosen("starterStack", "Yes")) {
-                            if (wizard.wasItemChosen("powerShot", "Yes")) {
                                 if (wizard.wasItemChosen("topGoal", "Yes")) {
                                     if (wizard.wasItemChosen("park", "Yes")) {
 
