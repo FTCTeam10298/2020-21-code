@@ -4,6 +4,8 @@ import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource
 import org.opencv.core.Mat
 import org.openftc.easyopencv.*
 

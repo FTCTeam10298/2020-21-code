@@ -14,14 +14,12 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
         FOUR, ONE, NONE
     }
 
+    lateinit var REGION1_TOPLEFT_ANCHOR_POINT: Point
+
     //val FOUR_RING_THRESHOLD = 150
     //val ONE_RING_THRESHOLD = 135
-    var region1_pointA = Point(
-            REGION1_TOPLEFT_ANCHOR_POINT.x,
-            REGION1_TOPLEFT_ANCHOR_POINT.y)
-    var region1_pointB = Point(
-            REGION1_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
-            REGION1_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT)
+    lateinit var region1_pointA: Point
+    lateinit var region1_pointB: Point
 
     /*
      * Working variables
@@ -30,6 +28,7 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
     var YCrCb = Mat()
     var Cb = Mat()
     var analysis = 0
+
 
     // Volatile since accessed by OpMode thread w/o synchronization
     @Volatile
@@ -45,6 +44,13 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
     }
 
     fun init(firstFrame: Mat) {
+        region1_pointA = Point(
+                REGION1_TOPLEFT_ANCHOR_POINT.x,
+                REGION1_TOPLEFT_ANCHOR_POINT.y)
+        region1_pointB = Point(
+                REGION1_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
+                REGION1_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT)
+
         inputToCb(firstFrame)
         region1_Cb = Cb.submat(Rect(region1_pointA, region1_pointB))
     }
@@ -92,7 +98,6 @@ class RingDetector(val FOUR_RING_THRESHOLD : Int, val ONE_RING_THRESHOLD : Int, 
      * The core values which define the location and size of the sample regions
      */
 //        Camera is landscape top left is 0,0
-        val REGION1_TOPLEFT_ANCHOR_POINT = Point(290.0, 197.0)
         const val REGION_WIDTH = 35
         const val REGION_HEIGHT = 25
     }
