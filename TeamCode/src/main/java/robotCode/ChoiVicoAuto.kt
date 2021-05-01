@@ -255,7 +255,180 @@ class ChoiVicoAuto: LinearOpMode() {
 
                 }
             } else {
-                console.display(3, "No red auto")
+                /** RED */
+                if (wizard.wasItemChosen("startPos", "Closer to you")) {
+//                    Set start position (0,0 is left bottom corner of field)
+                    robot.globalRobot.setCoordinate(116.5, 0.0, 0.0)
+
+                    if (wizard.wasItemChosen("topGoal", "Yes")) {
+
+                        hardware.collector.power = 0.6
+
+                        target.addCoordinate(115.0, 10.0)
+                        robot.straightGoToPosition(target, 0.9, 6.0)
+
+                        goToVelocity()
+
+                        hardware.collector.power = 0.0
+
+                        target.setCoordinate(114.0, 52.0, -10.0)
+                        robot.straightGoToPosition(target, 0.9, 0.3)
+
+                        hardware.transfer.power = 1.0
+                        hardware.bottomTrans.power = 1.0
+
+//        1st ring
+                        hardware.lift1.position = 0.33
+                        sleep(1000)
+
+                        hardware.kniod.position = 1.0
+                        sleep(400)
+                        hardware.kniod.position = 0.5
+                        sleep(400)
+
+//        2nd ring
+                        hardware.lift1.position = 0.48
+                        sleep(2000)
+
+                        for (i in (1..3)) {
+                            hardware.kniod.position = 1.0
+                            sleep(500)
+                            hardware.kniod.position = 0.5
+                            sleep(500)
+                        }
+                        sleep(400)
+
+//        3rd ring
+                        hardware.lift1.position = 0.6
+                        sleep(2000)
+
+                        for (i in (1..2)) {
+                            hardware.kniod.position = 1.0
+                            sleep(400)
+                            hardware.kniod.position = 0.5
+                            sleep(400)
+                        }
+                        sleep(400)
+
+//        done shooting
+                        idleShooter()
+
+                        hardware.lift1.position = 0.0
+
+                        hardware.transfer.power = 0.0
+                        hardware.bottomTrans.power = 0.0
+
+                    }
+
+                } else if (wizard.wasItemChosen("startPos", "Closer to the middle")) {
+
+//                    Set start position (0,0 is left bottom corner of field)
+                    robot.globalRobot.setCoordinate(111.5, 0.0, 0.0)
+
+
+                    if (wizard.wasItemChosen("topGoal", "Yes")) {
+
+                        hardware.collector.power = 0.6
+
+                        goToVelocity()
+
+                        target.setCoordinate(36.0, 52.0, 8.0)
+                        robot.straightGoToPosition(target, 0.9, 0.3)
+
+                        hardware.collector.power = 0.0
+
+                        hardware.transfer.power = 1.0
+                        hardware.bottomTrans.power = 1.0
+
+//        1st ring
+                        hardware.lift1.position = 0.33
+                        sleep(1000)
+
+                        hardware.kniod.position = 1.0
+                        sleep(400)
+                        hardware.kniod.position = 0.5
+                        sleep(400)
+
+//        2nd ring
+                        hardware.lift1.position = 0.48
+                        sleep(2000)
+
+                        for (i in (1..3)) {
+                            hardware.kniod.position = 1.0
+                            sleep(500)
+                            hardware.kniod.position = 0.5
+                            sleep(500)
+                        }
+                        sleep(400)
+
+//        3rd ring
+                        hardware.lift1.position = 0.6
+                        sleep(2000)
+
+                        for (i in (1..2)) {
+                            hardware.kniod.position = 1.0
+                            sleep(400)
+                            hardware.kniod.position = 0.5
+                            sleep(400)
+                        }
+                        sleep(400)
+
+//        done shooting
+                        idleShooter()
+
+                        hardware.lift1.position = 0.0
+
+                        hardware.transfer.power = 0.0
+                        hardware.bottomTrans.power = 0.0
+
+                    }
+
+                }
+
+//                        deliver wobble
+                if (wizard.wasItemChosen("ourWobble", "Yes")) {
+
+                    hardware.wobble.power = 0.2
+
+                    when (position) {
+                        RingDetector.RingPosition.FOUR -> {
+                            target.setCoordinate(120.0, 99.0, 0.0)
+                            robot.straightGoToPosition(target, 1.0, 0.2)
+
+                            target.addCoordinate(r = 193.0)
+                            robot.turnGoToPosition(target, 1.0, 0.5)
+                        }
+                        RingDetector.RingPosition.ONE -> {
+                            target.setCoordinate(131.0, 79.0, 0.0)
+                            robot.straightGoToPosition(target, 1.0, 0.2)
+
+                            target.addCoordinate(r = 193.0)
+                            robot.turnGoToPosition(target, 1.0, 0.5)
+                        }
+                        RingDetector.RingPosition.NONE -> {
+                            target.addCoordinate(r = 200.0)
+                            robot.turnGoToPosition(target, 1.0, 0.5)
+
+                            target.setCoordinate(117.0, 66.0, 200.0)
+                            robot.straightGoToPosition(target, 1.0, 0.3)
+                        }
+                    }
+                    hardware.wobble.power = -0.5
+                    sleep(1300)
+                    hardware.wobble.power = 0.0
+
+                    hardware.claw1.position = 0.5
+                    hardware.claw2.position = 0.5
+
+                    sleep(1000)
+
+                }
+                if (wizard.wasItemChosen("park", "Yes")) {
+//        park
+                    target.setCoordinate(11.0, 68.0, -193.0)
+                    robot.straightGoToPosition(target, 1.0, 0.3)
+
+                }
             }
 
         } else {
