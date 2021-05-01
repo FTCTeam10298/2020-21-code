@@ -217,7 +217,7 @@ class ChoiVicoAuto: LinearOpMode() {
 
                     when (position) {
                         RingDetector.RingPosition.FOUR -> {
-                            target.setCoordinate(11.0, 92.0, 0.0)
+                            target.setCoordinate(11.0, 99.0, 0.0)
                             robot.straightGoToPosition(target, 1.0, 0.2)
 
                             target.addCoordinate(r = -193.0)
@@ -231,11 +231,11 @@ class ChoiVicoAuto: LinearOpMode() {
                             robot.turnGoToPosition(target, 1.0, 0.5)
                         }
                         RingDetector.RingPosition.NONE -> {
-                            target.setCoordinate(11.0, 66.0, -193.0)
-                            robot.straightGoToPosition(target, 1.0, 0.3)
-
-                            target.addCoordinate(r = -193.0)
+                            target.addCoordinate(r = -200.0)
                             robot.turnGoToPosition(target, 1.0, 0.5)
+
+                            target.setCoordinate(8.0, 66.0, -200.0)
+                            robot.straightGoToPosition(target, 1.0, 0.3)
                         }
                     }
                     hardware.wobble.power = -0.5
