@@ -35,6 +35,9 @@ class ChoiVicoTeleOp: OpMode() {
     var triggerDown: Boolean = false
     var timeKniodIn: Long = 0L
     var timeKniodOut: Long = 0L
+    var ringLevel: LiftStage = LiftStage.Bottom
+
+    var turretState: Boolean = false
 
     var loopTime: Double = 0.0
     var lastTime: Double = 0.0
@@ -47,8 +50,11 @@ class ChoiVicoTeleOp: OpMode() {
     val dUpHelp = ButtonHelper()
     val dDownHelp = ButtonHelper()
     val clawHelp = ButtonHelper()
-    val turretHelp = ButtonHelper()
+    val flapHelp = ButtonHelper()
     val kniodHelp = ButtonHelper()
+    val liftUpHelp = ButtonHelper()
+    val liftDownHelp = ButtonHelper()
+    val turrethelp = ButtonHelper()
 
 
     override fun init() {
@@ -103,11 +109,65 @@ class ChoiVicoTeleOp: OpMode() {
             hardware.shooter.power = 0.3    // Idle Shooter
         }
 
-        val liftButtonPressed = (gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0))
+//        val liftButtonPressed = (gamepad2.b || gamepad1.b || (gamepad1.right_trigger > 0) || (gamepad2.right_trigger > 0))
+//
+//        when (liftMonitor.nextStageForServo(System.currentTimeMillis(), liftButtonPressed, timeKniodIn, timeKniodOut, hardware.liftLimit.isPressed)) {
+//            LiftStage.Bottom -> {
+//                hardware.lift1.position = 0.0
+//            }
+//            LiftStage.A -> {
+//                hardware.lift1.position = 0.41
+//            }
+//            LiftStage.B -> {
+//                hardware.lift1.position = 0.47
+//            }
+//            LiftStage.C -> {
+//                hardware.lift1.position = 0.58
+//            }
+//            null -> {
+//
+//            }
+//        }
+//
+//        val currentOperation = liftMonitor.currentOperation()
+//        val text = if(currentOperation==null){
+//            "null"
+//        }else{
+//            "in-progress? $currentOperation"
+//        }
+//        console.display(10, "isKniodOut? ${liftMonitor.isKniodOut()}, currentOperation = $text")
+//
+////        if (gamepad2.b || gamepad1.b)
+////            hardware.lift1.position = 0.33
+//
+//        val aKniodButtonIsPressed = gamepad2.y || gamepad1.y
+//        if(kniodHelp.stateChanged(aKniodButtonIsPressed)){
+//            if(aKniodButtonIsPressed){
+//                timeKniodOut = System.currentTimeMillis()
+//                hardware.kniod.position = 0.9
+//            }else{
+//                timeKniodIn = System.currentTimeMillis()
+//                hardware.kniod.position = 0.5
+//            }
+//        }
 
+        if (liftUpHelp.stateChanged(gamepad2.dpad_up) && gamepad2.dpad_up)
+            ringLevel = when (ringLevel) {
+                LiftStage.Bottom -> LiftStage.A
+                LiftStage.A -> LiftStage.B
+                LiftStage.B -> LiftStage.C
+                LiftStage.C -> LiftStage.Bottom
+            }
 
+        if (liftDownHelp.stateChanged(gamepad2.dpad_down) && gamepad2.dpad_down)
+            ringLevel = when (ringLevel) {
+                LiftStage.Bottom -> LiftStage.C
+                LiftStage.A -> LiftStage.Bottom
+                LiftStage.B -> LiftStage.A
+                LiftStage.C -> LiftStage.B
+            }
 
-        when (liftMonitor.nextStageForServo(System.currentTimeMillis(), liftButtonPressed, timeKniodIn, timeKniodOut, hardware.liftLimit.isPressed)) {
+        when (ringLevel) {
             LiftStage.Bottom -> {
                 hardware.lift1.position = 0.0
             }
@@ -118,23 +178,9 @@ class ChoiVicoTeleOp: OpMode() {
                 hardware.lift1.position = 0.47
             }
             LiftStage.C -> {
-                hardware.lift1.position = 0.58
-            }
-            null -> {
-
+                hardware.lift1.position = 0.592
             }
         }
-
-        val currentOperation = liftMonitor.currentOperation()
-        val text = if(currentOperation==null){
-            "null"
-        }else{
-            "in-progress? $currentOperation"
-        }
-        console.display(10, "isKniodOut? ${liftMonitor.isKniodOut()}, currentOperation = $text")
-
-//        if (gamepad2.b || gamepad1.b)
-//            hardware.lift1.position = 0.33
 
         val aKniodButtonIsPressed = gamepad2.y || gamepad1.y
         if(kniodHelp.stateChanged(aKniodButtonIsPressed)){
@@ -147,7 +193,6 @@ class ChoiVicoTeleOp: OpMode() {
             }
         }
 
-
 //        SHOOTER
         val shooterRpmIncrement: Int = 200
 
@@ -158,12 +203,26 @@ class ChoiVicoTeleOp: OpMode() {
             gamepad1.dpad_right || gamepad2.dpad_right -> shooterRpm = highGoalPreset.toDouble()
         }
 
+        if (flapHelp.stateChanged(gamepad2.a)) {
+            when (gamepad2.a) {
+                true -> hardware.flap.position = 0.7
+                false -> hardware.flap.position = 0.5
+            }
+        }
+
+        console.display(12, "current high ${ringLevel}")
+
+
 //        TURRET
 
-        if (gamepad2.left_stick_x.toDouble() !== 0.0 || gamepad2.left_stick_button)
+        if (abs(gamepad2.left_stick_x.toDouble()) > 0.1)
             hardware.turret.power = gamepad2.left_stick_x.toDouble()
-        else
+        else if (turrethelp.stateChanged(gamepad2.left_stick_button) && gamepad2.left_stick_button) {
+            turretState = !turretState
+        } else if (turretState)
             turret.updateAimAndAdjustRobot()
+        else
+            hardware.turret.power = gamepad2.left_stick_x.toDouble()
 
 //        COLLECTOR
         if ((gamepad1RightBumperHelper.stateChanged(gamepad1.right_bumper) && (gamepad1.right_bumper)) || (gamepad2RightBumperHelper.stateChanged(gamepad2.right_bumper) && (gamepad2.right_bumper)))
@@ -188,11 +247,19 @@ class ChoiVicoTeleOp: OpMode() {
             }
 
 //        WOBBLE ARM
-//        hardware.wobble.targetPosition = 2
-//        hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
-//        hardware.wobble.power = 0.8
 
-        hardware.wobble.power = gamepad2.right_stick_y.toDouble() / 4
+//        if (gamepad2.right_stick_y > 0) {
+//            hardware.wobble.targetPosition = -1
+//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            hardware.wobble.power = 0.4
+//        } else if (gamepad2.right_stick_y < 0) {
+//            hardware.wobble.targetPosition = 1
+//            hardware.wobble.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            hardware.wobble.power = -0.4
+//        } else
+//            hardware.wobble.power = 0.0
+
+        hardware.wobble.power = gamepad2.right_stick_y.toDouble() / 3
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
@@ -215,6 +282,7 @@ class ChoiVicoTeleOp: OpMode() {
         console.display(5, "Target rpm: $shooterRpm")
         console.display(6, "Shooter Power: ${hardware.shooter.power}")
         console.display(7, "Lift Limit: ${hardware.liftLimit.isPressed}")
+        console.display(8, "wobble: ${hardware.wobble.currentPosition}")
 
 //        console.display(8, "LF: ${hardware.lFDrive.power}")
 //        console.display(9, "RF: ${hardware.rFDrive.power}")

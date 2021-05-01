@@ -95,8 +95,8 @@ class ChoiVicoHardware(): MecOdometryHardware {
         wobble = hwMap["wobble"] as DcMotor
 
         wobble.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        wobble.direction = DcMotorSimple.Direction.FORWARD
-        wobble.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        wobble.direction = DcMotorSimple.Direction.REVERSE
+//        wobble.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
 
 //        LIFT
         lift1 = hwMap["lift1"] as Servo
