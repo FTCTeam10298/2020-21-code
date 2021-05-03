@@ -261,7 +261,7 @@ class ChoiVicoTeleOp: OpMode() {
 //        } else
 //            hardware.wobble.power = 0.0
 
-        hardware.wobble.power = gamepad2.right_stick_y.toDouble() / 3
+        hardware.wobble.power = gamepad2.right_stick_y.toDouble() / 2
 
 //        CLAW
         if (clawHelp.stateChanged(gamepad2.x) && gamepad2.x) {
