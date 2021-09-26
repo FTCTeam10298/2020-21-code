@@ -17,14 +17,12 @@ class OdometryLocalizer(
     private val ticksPerRotation = 8192
     private val rotationsPerInch = 4.3290
 
-
     private var deltaL = 0.0
     private var deltaC = 0.0
     private var deltaR = 0.0
     private var previousC = 0.0
     private var previousL = 0.0
     private var previousR = 0.0
-
 
     private var current = Coordinate(0.0, 0.0, 0.0)
 
@@ -56,9 +54,6 @@ class OdometryLocalizer(
     override fun setPositionAndRotation(x: Double?, y: Double?, r: Double?){
         this.current.setCoordinate(x=x, y=y, r=r)
     }
-
-
-
 
     /**
      * Update the robot's global coordinates with inputs of the change in the encoders.
