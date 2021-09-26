@@ -82,7 +82,7 @@ class ChoiVicoAuto: LinearOpMode() {
             if (wizard.wasItemChosen("alliance", "Blue")) {
                 if (wizard.wasItemChosen("startPos", "Closer to you")) {
 //                    Set start position (0,0 is left bottom corner of field)
-                    robot.localizer.setCoordinate(14.5, 0.0, 0.0)
+                    robot.localizer.setPositionAndRotation(14.5, 0.0, 0.0)
 
                     if (wizard.wasItemChosen("topGoal", "Yes")) {
 
@@ -147,7 +147,7 @@ class ChoiVicoAuto: LinearOpMode() {
                 } else if (wizard.wasItemChosen("startPos", "Closer to the middle")) {
 
 //                    Set start position (0,0 is left bottom corner of field)
-                    robot.localizer.setCoordinate(36.0, 0.0, 0.0) //smth else
+                    robot.localizer.setPositionAndRotation(36.0, 0.0, 0.0) //smth else
 
 
                     if (wizard.wasItemChosen("topGoal", "Yes")) {
@@ -258,7 +258,7 @@ class ChoiVicoAuto: LinearOpMode() {
                 /** RED */
                 if (wizard.wasItemChosen("startPos", "Closer to you")) {
 //                    Set start position (0,0 is left bottom corner of field)
-                    robot.localizer.setCoordinate(116.5, 0.0, 0.0)
+                    robot.localizer.setPositionAndRotation(116.5, 0.0, 0.0)
 
                     if (wizard.wasItemChosen("topGoal", "Yes")) {
 
@@ -323,7 +323,7 @@ class ChoiVicoAuto: LinearOpMode() {
                 } else if (wizard.wasItemChosen("startPos", "Closer to the middle")) {
 
 //                    Set start position (0,0 is left bottom corner of field)
-                    robot.localizer.setCoordinate(111.5, 0.0, 0.0)
+                    robot.localizer.setPositionAndRotation(111.5, 0.0, 0.0)
 
 
                     if (wizard.wasItemChosen("topGoal", "Yes")) {

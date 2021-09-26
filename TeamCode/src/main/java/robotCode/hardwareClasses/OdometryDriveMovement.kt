@@ -29,13 +29,13 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     ): State {
 
         // Find the error in distance for X
-        val distanceErrorX = target.x - localizer.current.x
+        val distanceErrorX = target.x - localizer.currentPositionAndRotation().x
 
         // Find there error in distance for Y
-        val distanceErrorY = target.y - localizer.current.y
+        val distanceErrorY = target.y - localizer.currentPositionAndRotation().y
 
         // Find the error in angle
-        var tempAngleError = target.r - localizer.current.r
+        var tempAngleError = target.r - localizer.currentPositionAndRotation().r
 
         while (tempAngleError > Math.PI)
             tempAngleError -= Math.PI * 2
@@ -55,14 +55,14 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         }
 
         // Calculate the error in x and y and use the PID to find the error in angle
-        val speedX: Double = distancePIDX.calcPID(sin(localizer.current.r) * distanceErrorY + cos(localizer.current.r) * -distanceErrorX)
-        val speedY: Double = distancePIDY.calcPID(cos(localizer.current.r) * distanceErrorY + sin(localizer.current.r) * distanceErrorX)
+        val speedX: Double = distancePIDX.calcPID(sin(localizer.currentPositionAndRotation().r) * distanceErrorY + cos(localizer.currentPositionAndRotation().r) * -distanceErrorX)
+        val speedY: Double = distancePIDY.calcPID(cos(localizer.currentPositionAndRotation().r) * distanceErrorY + sin(localizer.currentPositionAndRotation().r) * distanceErrorX)
         val speedA: Double = anglePID.calcPID(angleError)
 
         console.display(5, "Target Robot X, Error X: ${target.x}, $distanceErrorX")
         console.display(6, "Target Robot Y, Error Y: ${target.y}, $distanceErrorY")
         console.display(7, "Target Robot A, Error A: ${Math.toDegrees(target.r)}, ${Math.toDegrees(angleError)}")
-        console.display(8, "Global Coordinate X, Y, A: ${localizer.current.x}, ${localizer.current.y}, ${Math.toDegrees(localizer.current.r)}")
+        console.display(8, "Global Coordinate X, Y, A: ${localizer.currentPositionAndRotation().x}, ${localizer.currentPositionAndRotation().y}, ${Math.toDegrees(localizer.currentPositionAndRotation().r)}")
         console.display(9, "X P, I, D in, P, I, D out: ${distancePIDX.k_p}, ${distancePIDX.k_i}, ${distancePIDX.k_d}, ${distancePIDX.p}, ${distancePIDX.i}, ${distancePIDX.d}")
         console.display(10, "Y P, I, D in, P, I, D out: ${distancePIDY.k_p}, ${distancePIDY.k_i}, ${distancePIDY.k_d}, ${distancePIDY.p}, ${distancePIDY.i}, ${distancePIDY.d}")
         console.display(11, "A P, I, D in, P, I, D out: ${anglePID.k_p}, ${anglePID.k_i}, ${anglePID.k_d}, ${anglePID.p}, ${anglePID.i}, ${anglePID.d}")
@@ -107,11 +107,11 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
         var state = State.Running
         while (state != State.Done && opmode.opModeIsActive()) {
             state = goToPosition(target, maxPower, distancePIDX, distancePIDY, anglePID, distanceMin, angleDegMin)
-            localizer.updatePosition()
+            localizer.recalculatePositionAndRotation()
         }
 
         drivePowerZero()
-        localizer.updatePosition()
+        localizer.recalculatePositionAndRotation()
     }
 
     /**

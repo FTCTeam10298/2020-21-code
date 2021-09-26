@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.Range
 import locationTracking.Coordinate
-import us.brainstormz.localization.GlobalRobot
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import pid.PID
 import telemetryWizard.TelemetryConsole
@@ -406,7 +405,7 @@ class EncoderDriveMovement(private val hardware: MecanumHardware, private val co
         TODO("Not yet implemented")
     }
 
-    private var robotCoordinate = GlobalRobot(0.0, 0.0, 0.0)
+    private var robotCoordinate = Coordinate(0.0, 0.0, 0.0)
 
     override fun straightGoToPosition(target: Coordinate, maxPower: Double, distanceMin: Double) {
 

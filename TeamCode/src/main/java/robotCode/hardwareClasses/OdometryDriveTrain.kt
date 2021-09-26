@@ -1,14 +1,13 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.util.Range
-import us.brainstormz.localization.GlobalRobot
 import telemetryWizard.TelemetryConsole
-import us.brainstormz.localization.Localizer
+import us.brainstormz.localization.OdometryLocalizer
 import kotlin.math.abs
 
 open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
-    val localizer = Localizer(
+    val localizer = OdometryLocalizer(
         lOdom = hardware.lOdom,
         rOdom = hardware.rOdom,
         cOdom = hardware.cOdom)
