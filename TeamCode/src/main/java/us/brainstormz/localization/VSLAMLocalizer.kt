@@ -4,14 +4,14 @@ import locationTracking.Coordinate
 
 class VSLAMLocalizer:Localizer {
     override fun currentPositionAndRotation(): Coordinate {
-        TODO("Not yet implemented")
+        TODO("Gabe will implement me!")
     }
 
     override fun recalculatePositionAndRotation() {
-        TODO("Not yet implemented")
+        TODO("Gabe will implement me!")
     }
 
     override fun setPositionAndRotation(x: Double?, y: Double?, r: Double?) {
-        TODO("Not yet implemented")
+        TODO("Gabe will implement me!")
     }
 }
