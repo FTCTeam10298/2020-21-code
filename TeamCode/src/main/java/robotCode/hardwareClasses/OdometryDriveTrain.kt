@@ -1,22 +1,17 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.util.Range
-import locationTracking.GlobalRobot
+import us.brainstormz.localization.GlobalRobot
 import telemetryWizard.TelemetryConsole
+import us.brainstormz.localization.Localizer
 import kotlin.math.abs
 
 open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private val console: TelemetryConsole): MecanumDriveTrain(hardware) {
 
-    val ticksPerRotation = 8192
-    val rotationsPerInch = 4.3290
-
-    var deltaL = 0.0
-    var deltaC = 0.0
-    var deltaR = 0.0
-    var previousC = 0.0
-    var previousL = 0.0
-    var previousR = 0.0
-    var globalRobot = GlobalRobot(0.0, 0.0, 0.0)
+    val localizer = Localizer(
+        lOdom = hardware.lOdom,
+        rOdom = hardware.rOdom,
+        cOdom = hardware.cOdom)
 
     /**
      * Sets the speed of the four drive motors given desired speeds in the robot's x, y, and angle.
@@ -66,26 +61,4 @@ open class OdometryDriveTrain(private val hardware: MecOdometryHardware, private
         hardware.rBDrive.power = br
     }
 
-    /**
-     * Updates the current position (globalRobot) of the robot based off of the change in the
-     * odometry encoders.
-     */
-
-    fun updatePosition() {
-
-//        bulkData = expansionHub.getBulkInputData()
-        val currentL = -hardware.lOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
-        val currentR = -hardware.rOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
-        val currentC = hardware.cOdom.currentPosition.toDouble() / (ticksPerRotation / rotationsPerInch)
-
-        deltaL = currentL - previousL
-        deltaR = currentR - previousR
-        deltaC = currentC - previousC
-
-        previousL = currentL
-        previousR = currentR
-        previousC = currentC
-
-        globalRobot.updatePosition(deltaL, deltaC, deltaR)
-    }
 }

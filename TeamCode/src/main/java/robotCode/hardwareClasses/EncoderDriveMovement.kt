@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.Range
 import locationTracking.Coordinate
-import locationTracking.GlobalRobot
+import us.brainstormz.localization.GlobalRobot
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import pid.PID
 import telemetryWizard.TelemetryConsole

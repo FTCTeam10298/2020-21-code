@@ -1,5 +1,6 @@
-package locationTracking
+package us.brainstormz.localization
 
+import locationTracking.Coordinate
 import kotlin.math.cos
 import kotlin.math.sin
 
