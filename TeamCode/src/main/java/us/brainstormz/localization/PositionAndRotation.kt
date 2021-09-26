@@ -1,6 +1,5 @@
-package locationTracking
+package us.brainstormz.localization
 
-import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
@@ -9,7 +8,7 @@ import kotlin.math.hypot
  * @param y Y position
  * @param r Angle, in radians
  */
-open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0) {
+open class PositionAndRotation(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0) {
 
     /**
      * Sets the parameters of the Coordinate.
@@ -50,11 +49,11 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
 
     /**
      * Gives the absolute value of the distance between the given Coordinate and the current Coordinate.
-     * @param coordinate Coordinate to compare
+     * @param positionAndRotation Coordinate to compare
      * @return distance from current Coordinate
      */
-    fun distance(coordinate: Coordinate): Double {
-        return hypot(coordinate.x - x, coordinate.y - y)
+    fun distance(positionAndRotation: PositionAndRotation): Double {
+        return hypot(positionAndRotation.x - x, positionAndRotation.y - y)
     }
 
     /**
@@ -78,11 +77,11 @@ open class Coordinate(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 
 
     /**
      * Gives the error of the angle from the given Coordinate and the current Coordinate.
-     * @param coordinate Coordinate to compare
+     * @param positionAndRotation Coordinate to compare
      * @return angle error from current Coordinate
      */
-    fun theta(coordinate: Coordinate): Double {
-        return theta(coordinate.r)
+    fun theta(positionAndRotation: PositionAndRotation): Double {
+        return theta(positionAndRotation.r)
     }
 
     override fun equals(other: Any?): Boolean {

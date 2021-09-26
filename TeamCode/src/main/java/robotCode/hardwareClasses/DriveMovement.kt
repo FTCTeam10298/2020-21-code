@@ -1,7 +1,7 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 import pid.PID
 
 interface DriveMovement {
@@ -73,7 +73,7 @@ interface DriveMovement {
      * so that stopping mid-loop doesn't cause an error.
      * @return The new State of the robot.
      */
-    fun doGoToPosition(target: Coordinate,
+    fun doGoToPosition(target: PositionAndRotation,
                        maxPower: Double,
                        distancePIDX: PID,
                        distancePIDY: PID,
@@ -92,7 +92,7 @@ interface DriveMovement {
      * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
-    fun straightGoToPosition(target: Coordinate,
+    fun straightGoToPosition(target: PositionAndRotation,
                              maxPower: Double,
                              distanceMin: Double
     )
@@ -105,7 +105,7 @@ interface DriveMovement {
      * @param opmodeisactive The LinearOpMode that this call is in. Used to tell if opModeIsActive
      * so that stopping mid-loop doesn't cause an error.
      */
-    fun turnGoToPosition(target: Coordinate,
+    fun turnGoToPosition(target: PositionAndRotation,
                          maxPower: Double,
                          angleDegMin: Double
     )

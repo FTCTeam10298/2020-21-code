@@ -1,9 +1,7 @@
 package us.brainstormz.localization
 
-import locationTracking.Coordinate
-
 class VSLAMLocalizer:Localizer {
-    override fun currentPositionAndRotation(): Coordinate {
+    override fun currentPositionAndRotation(): PositionAndRotation {
         TODO("Gabe will implement me!")
     }
 

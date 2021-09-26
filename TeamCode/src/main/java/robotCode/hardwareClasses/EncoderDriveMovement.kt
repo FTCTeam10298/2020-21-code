@@ -4,7 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.Range
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import pid.PID
 import telemetryWizard.TelemetryConsole
@@ -401,18 +401,18 @@ class EncoderDriveMovement(private val hardware: MecanumHardware, private val co
         drivePowerAll(0.0)
     }
 
-    override fun doGoToPosition(target: Coordinate, maxPower: Double, distancePIDX: PID, distancePIDY: PID, anglePID: PID, distanceMin: Double, angleDegMin: Double, reset: Boolean, opmode: LinearOpMode) {
+    override fun doGoToPosition(target: PositionAndRotation, maxPower: Double, distancePIDX: PID, distancePIDY: PID, anglePID: PID, distanceMin: Double, angleDegMin: Double, reset: Boolean, opmode: LinearOpMode) {
         TODO("Not yet implemented")
     }
 
-    private var robotCoordinate = Coordinate(0.0, 0.0, 0.0)
+    private var robotCoordinate = PositionAndRotation(0.0, 0.0, 0.0)
 
-    override fun straightGoToPosition(target: Coordinate, maxPower: Double, distanceMin: Double) {
+    override fun straightGoToPosition(target: PositionAndRotation, maxPower: Double, distanceMin: Double) {
 
         driveRobotPosition((robotCoordinate.y - target.y), maxPower, true)
     }
 
-    override fun turnGoToPosition(target: Coordinate, maxPower: Double, angleDegMin: Double) {
+    override fun turnGoToPosition(target: PositionAndRotation, maxPower: Double, angleDegMin: Double) {
         TODO("Not yet implemented")
     }
 

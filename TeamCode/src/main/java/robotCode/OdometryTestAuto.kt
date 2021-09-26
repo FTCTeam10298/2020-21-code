@@ -2,7 +2,7 @@ package robotCode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 import robotCode.hardwareClasses.OdometryDriveMovement
 import telemetryWizard.TelemetryConsole
 
@@ -13,7 +13,7 @@ class OdometryTestAuto: LinearOpMode() {
     val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware, this)
 
-    val target = Coordinate()
+    val target = PositionAndRotation()
 
     override fun runOpMode() {
         hardware.init(hardwareMap)

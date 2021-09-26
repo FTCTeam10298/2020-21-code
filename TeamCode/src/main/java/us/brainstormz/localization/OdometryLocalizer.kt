@@ -1,7 +1,6 @@
 package us.brainstormz.localization
 
 import com.qualcomm.robotcore.hardware.DcMotor
-import locationTracking.Coordinate
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -24,7 +23,7 @@ class OdometryLocalizer(
     private var previousL = 0.0
     private var previousR = 0.0
 
-    private var current = Coordinate(0.0, 0.0, 0.0)
+    private var current = PositionAndRotation(0.0, 0.0, 0.0)
 
     override fun currentPositionAndRotation() = current
 
@@ -61,7 +60,7 @@ class OdometryLocalizer(
      * @param deltaC Change in the center encoder.
      * @param deltaR Change in the right encoder.
      */
-    private fun recalculatePositionAndRotation(deltaL: Double, deltaC: Double, deltaR: Double, previous:Coordinate) {
+    private fun recalculatePositionAndRotation(deltaL: Double, deltaC: Double, deltaR: Double, previous: PositionAndRotation) {
         val deltaAngle = (deltaL - deltaR) / trackwidth
         val deltaMiddle = (deltaL + deltaR) / 2
         val deltaPerp = deltaC - forwardOffset * deltaAngle

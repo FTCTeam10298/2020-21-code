@@ -2,7 +2,7 @@
 //
 //import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 //import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-//import locationTracking.Coordinate
+//import us.brainstormz.localization.Coordinate
 //import openCvAbstraction.OpenCvAbstraction
 //import ringDetector.RingDetector
 //import robotCode.ChoiVicoHardware

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.HardwareMap
 import creamsicleGoalDetection.CreamsicleGoalDetector
 import creamsicleGoalDetection.UltimateGoalAimer
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 import openCvAbstraction.OpenCvAbstraction
 import org.opencv.core.Mat
 import org.opencv.core.Point
@@ -25,7 +25,7 @@ class ChoiVicoAuto: LinearOpMode() {
 
     val hardware = ChoiVicoHardware()
     val robot = OdometryDriveMovement(console, hardware, this)
-    val target = Coordinate()
+    val target = PositionAndRotation()
 
     val ringDetector = RingDetector(150, 135, console)
     var position: RingDetector.RingPosition = RingDetector.RingPosition.NONE

@@ -1,8 +1,8 @@
 package us.brainstormz.path
 
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 
 interface Path {
     fun length():Double
-    fun positionAt(distance:Double):Coordinate
+    fun positionAt(distance:Double): PositionAndRotation
 }

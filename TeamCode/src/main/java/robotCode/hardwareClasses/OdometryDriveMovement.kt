@@ -1,7 +1,7 @@
 package robotCode.hardwareClasses
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import locationTracking.Coordinate
+import us.brainstormz.localization.PositionAndRotation
 import pid.PID
 import telemetryWizard.TelemetryConsole
 import kotlin.math.*
@@ -19,13 +19,13 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
     }
 
     fun goToPosition(
-            target: Coordinate,
-            maxPower: Double,
-            distancePIDX: PID,
-            distancePIDY: PID,
-            anglePID: PID,
-            distanceMin: Double,
-            angleDegMin: Double,
+        target: PositionAndRotation,
+        maxPower: Double,
+        distancePIDX: PID,
+        distancePIDY: PID,
+        anglePID: PID,
+        distanceMin: Double,
+        angleDegMin: Double,
     ): State {
 
         // Find the error in distance for X
@@ -88,15 +88,15 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @return The new State of the robot.
      */
     override fun doGoToPosition(
-            target: Coordinate,
-            maxPower: Double,
-            distancePIDX: PID,
-            distancePIDY: PID,
-            anglePID: PID,
-            distanceMin: Double,
-            angleDegMin: Double,
-            reset: Boolean,
-            opmode: LinearOpMode
+        target: PositionAndRotation,
+        maxPower: Double,
+        distancePIDX: PID,
+        distancePIDY: PID,
+        anglePID: PID,
+        distanceMin: Double,
+        angleDegMin: Double,
+        reset: Boolean,
+        opmode: LinearOpMode
     ) {
         if (reset)
             reset()
@@ -123,7 +123,7 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * so that stopping mid-loop doesn't cause an error.
      */
     fun fineTunedGoToPos(
-            target: Coordinate
+            target: PositionAndRotation
     ) {
         doGoToPosition(
                 target,
@@ -145,9 +145,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param distanceMin The minimum allowed distance away from the target to terminate.
      */
     override fun straightGoToPosition(
-            target: Coordinate,
-            maxPower: Double,
-            distanceMin: Double
+        target: PositionAndRotation,
+        maxPower: Double,
+        distanceMin: Double
     ) {
         doGoToPosition(
                 target,
@@ -169,9 +169,9 @@ class OdometryDriveMovement(private val console: TelemetryConsole, private val h
      * @param angleDegMin The minimum allowed distance away from the target to terminate.
      */
     override fun turnGoToPosition(
-            target: Coordinate,
-            maxPower: Double,
-            angleDegMin: Double
+        target: PositionAndRotation,
+        maxPower: Double,
+        angleDegMin: Double
     ) {
         doGoToPosition(
                 target,
