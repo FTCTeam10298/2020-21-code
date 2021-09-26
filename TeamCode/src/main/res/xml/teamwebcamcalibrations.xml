@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <!-- 
   This file can provide additional camera calibration settings beyond those built into the SDK itself.
-  Each calibration is for a particular camera (indicated by USB vid & pid pair) and a particular
+  Each calibration is for a particular camera (indicated by USB vid & us.brainstormz.choivico.pid pair) and a particular
   capture resolution for the camera. Note: it is very important when capturing images used to calibrate
   a camera that the image acquisition tool can actually control this capture resolution within the camera
   itself and that you use this setting correctly. Many image acquistion tools do not in fact provide
@@ -9,7 +9,7 @@
 
   Beyond simply providing additional, new camera calibrations, calibrations provided herein can
   *replace/update* those that are builtin to the SDK. This matching is keyed, of course, by the
-  (vid, pid, size) triple. Further, if such a calibration has the 'remove' attribute with value 'true',
+  (vid, us.brainstormz.choivico.pid, size) triple. Further, if such a calibration has the 'remove' attribute with value 'true',
   any existing calibration with that key is removed (and the calibration itself not added).
 
   Calibrations are internally processed according to aspect ratio. If a format is requested in a size
@@ -55,7 +55,7 @@
     <!-- ======================================================================================= -->
 
     <!-- Microsoft Lifecam HD 3000 v1, Calibrated by PTC using unknown tooling -->
-    <!-- <Camera vid="Microsoft" pid="0x0779">
+    <!-- <Camera vid="Microsoft" us.brainstormz.choivico.pid="0x0779">
         <Calibration
             size="640 480"
             focalLength="678.154f, 678.17f"
@@ -67,7 +67,7 @@
     <!-- ======================================================================================= -->
 
     <!-- Microsoft Lifecam HD 3000 v2, Calibrated by PTC using unknown tooling -->
-    <!-- <Camera vid="Microsoft" pid="0x0810">
+    <!-- <Camera vid="Microsoft" us.brainstormz.choivico.pid="0x0810">
         <Calibration
             size="640 480"
             focalLength="678.154f, 678.17f"
@@ -79,7 +79,7 @@
     <!-- ======================================================================================= -->
 
     <!-- Logitech HD Webcam C310, Calibrated by by Robert Atkinson, 2018.05.30 using 3DF Zephyr -->
-    <!-- <Camera vid="Logitech" pid="0x081B">
+    <!-- <Camera vid="Logitech" us.brainstormz.choivico.pid="0x081B">
         <Calibration
             size="640 480"
             focalLength="821.993f, 821.993f"
@@ -98,7 +98,7 @@
     <!-- ======================================================================================= -->
 
     <!-- Logitech HD Pro Webcam C920, Calibrated by Robert Atkinson, 2018.05.30 using 3DF Zephyr -->
-    <!-- <Camera vid="Logitech" pid="0x082D">
+    <!-- <Camera vid="Logitech" us.brainstormz.choivico.pid="0x082D">
 
         <Calibration
             size="640 480"
@@ -147,7 +147,7 @@
     <!-- ======================================================================================= -->
 
     <!-- Logitech HD Webcam C270, Calibrated by Noah Andrews, 2019.03.13 using 3DF Zephyr -->
-    <!--<Camera vid="Logitech" pid="0x0825">
+    <!--<Camera vid="Logitech" us.brainstormz.choivico.pid="0x0825">
         <Calibration
             size="640 480"
             focalLength="822.317f, 822.317f"
